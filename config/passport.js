@@ -1,6 +1,6 @@
-var passport = require("passport");
+var passport 	  = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
-var db = require("../models");
+var db 			  = require("../models");
 
 passport.serializeUser(function(user, done) {
 	done(null, user.email);
@@ -14,27 +14,13 @@ passport.deserializeUser(function(email, done) {
 	})
 	.then(function(admin){
 		if (!admin) {
-            db.Professor.findOne({
+            db.User.findOne({
                 where: {
                     email: email
                 }
             })
-			.then(function(professor){
-				if (!professor) {
-					db.Student.findOne({
-						where: {
-							email: email
-						}
-					})
-					.then(function(student){
-  						done(null, student);
-					})
-					.catch(function(error){
-  						done(error, null);
-					});
-				} else {
-                    done(null, professor);
-				}
+			.then(function(user){
+				done(null, user);
 			})
 			.catch(function(error){
 				done(error, null);
