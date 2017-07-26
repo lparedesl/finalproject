@@ -9,21 +9,21 @@ var session        = require("express-session");
 var passport       = require("passport");
 var flash          = require("connect-flash");
 var validator      = require("express-validator");
-var db             = require("./models");
-var SequelizeStore = require('connect-session-sequelize')(session.Store);
+// var db             = require("./models");
+// var SequelizeStore = require('connect-session-sequelize')(session.Store);
 
-require("./associations")(db);
+// require("./associations")(db);
 require("./config/passport");
 
 var index = require('./routes/index');
 
 var app = express();
 
-var sessionStore = new SequelizeStore({
-    db: db.sequelize,
-    checkExpirationInterval: 15 * 60 * 1000,
-    expiration: 3 * 3600 * 1000
-});
+// var sessionStore = new SequelizeStore({
+//     db: db.sequelize,
+//     checkExpirationInterval: 15 * 60 * 1000,
+//     expiration: 3 * 3600 * 1000
+// });
 
 // view engine setup
 app.engine(".hbs", expressHbs({
@@ -45,18 +45,18 @@ app.use(bodyParser.json({
 }));
 app.use(validator());
 app.use(cookieParser());
-app.use(session({
-    secret: "mysecret",
-    resave: false,
-    saveUninitialized: false,
-    store: sessionStore
-}));
+// app.use(session({
+//     secret: "mysecret",
+//     resave: false,
+//     saveUninitialized: false,
+//     store: sessionStore
+// }));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, "public")));
 
-sessionStore.sync();
+// sessionStore.sync();
 
 app.use(function(req, res, next) {
     res.locals.login = req.isAuthenticated();
