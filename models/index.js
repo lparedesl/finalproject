@@ -14,19 +14,19 @@ env.DATABASE_PASSWORD, {
     }
 });
 
-db.User          = require("./user")(sequelize, Sequelize);
-db.Schedule       = require("./schedule")(sequelize, Sequelize);
-db.Location       = require("./location")(sequelize, Sequelize);
+db.User        = require("./user")(sequelize, Sequelize);
+db.Schedule    = require("./schedule")(sequelize, Sequelize);
+db.Location    = require("./location")(sequelize, Sequelize);
 db.Sport       = require("./sport")(sequelize, Sequelize);
 db.Field       = require("./field")(sequelize, Sequelize);
-db.Reservation       = require("./reservation")(sequelize, Sequelize);
-db.Team       = require("./team")(sequelize, Sequelize);
+db.Reservation = require("./reservation")(sequelize, Sequelize);
+db.Team        = require("./team")(sequelize, Sequelize);
 
 // Join Tables
-db.LocationSport      = require("./location_sport")(sequelize, Sequelize);
-db.UserLocation      = require("./user_location")(sequelize, Sequelize);
-db.UserTeam      = require("./user_team")(sequelize, Sequelize);
-db.FavoriteLocation      = require("./favorite_location")(sequelize, Sequelize);
+db.LocationSport    = require("./location_sport")(sequelize, Sequelize);
+db.UserLocation     = require("./user_location")(sequelize, Sequelize);
+db.UserTeam         = require("./user_team")(sequelize, Sequelize);
+db.FavoriteLocation = require("./favorite_location")(sequelize, Sequelize);
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
