@@ -1,21 +1,14 @@
 module.exports = function(sequelize, DataTypes) {
     var Schedule = sequelize.define("schedule", {
-        days: {
+        days_short: {
             type: DataTypes.STRING(20),
             allowNull: false,
             validate: {
                 notEmpty: true
             }
         },
-        begin_time: {
-            type: DataTypes.TIME,
-            allowNull: false,
-            validate: {
-                notEmpty: true
-            }
-        },
-        end_time: {
-            type: DataTypes.TIME,
+        days_long: {
+            type: DataTypes.STRING(100),
             allowNull: false,
             validate: {
                 notEmpty: true
