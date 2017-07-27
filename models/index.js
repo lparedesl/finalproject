@@ -9,7 +9,8 @@ env.DATABASE_PASSWORD, {
     host: env.DATABASE_HOST,
     dialect: env.DATABASE_DIALECT,
     define: {
-        underscored: true
+        underscored: true,
+        freezeTableName: true
     }
 });
 
