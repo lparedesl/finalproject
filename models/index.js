@@ -16,13 +16,12 @@ env.DATABASE_PASSWORD, {
 
 db.User          = require("./user")(sequelize, Sequelize);
 db.Schedule       = require("./schedule")(sequelize, Sequelize);
-db.Reservation       = require("./schedule")(sequelize, Sequelize);
+db.Location       = require("./location")(sequelize, Sequelize);
+db.Sport       = require("./sport")(sequelize, Sequelize);
+db.Field       = require("./field")(sequelize, Sequelize);
 
 // Join Tables
-// db.ClassStudent      = require("./class_student")(sequelize, Sequelize);
-// db.AttendanceStudent = require("./attendance_student")(sequelize, Sequelize);
-// db.AssignmentStudent = require("./assignment_student")(sequelize, Sequelize);
-// db.OrderBook         = require("./order_book")(sequelize, Sequelize);
+db.LocationSport      = require("./location_sport")(sequelize, Sequelize);
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
