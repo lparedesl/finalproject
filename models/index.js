@@ -13,9 +13,7 @@ env.DATABASE_PASSWORD, {
     }
 });
 
-db.Admin          = require("./admin")(sequelize, Sequelize);
-db.User          = require("./admin")(sequelize, Sequelize);
-db.Person         = require("./person")(sequelize, Sequelize);
+db.User          = require("./user")(sequelize, Sequelize);
 db.Schedule       = require("./schedule")(sequelize, Sequelize);
 db.Reservation       = require("./schedule")(sequelize, Sequelize);
 
