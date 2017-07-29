@@ -1,6 +1,6 @@
-var passport 	  = require("passport");
+var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
-var db 			  = require("../models");
+var db = require("../models");
 
 passport.serializeUser(function(user, done) {
 	done(null, user.email);
@@ -12,8 +12,8 @@ passport.deserializeUser(function(email, done) {
 			email: email
 		}
 	})
-	.then(function(admin) {
-		done(null, admin);
+	.then(function(user){
+		done(null, user);
 	})
 	.catch(function(error){
 		done(error, null);
@@ -49,7 +49,7 @@ passport.use('local.signup', new LocalStrategy({
 	.then(function (user){
 		if (user) {
 			return done(null, false, {
-				message: "This username already exists"
+				message: "This email already exists"
 			});
 		}
 
@@ -60,13 +60,15 @@ passport.use('local.signup', new LocalStrategy({
 		}
 
 		var newUser = db.User.build({
-			first_name: req.body.first_name,
-			last_name: req.body.last_name,
-			date_of_birth: req.body.dob,
-			gender: req.body.gender,
-			phone_number: req.body.phone,
-			email: req.body.email
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
+            date_of_birth: req.body.dob,
+            gender: req.body.gender,
+            phone: req.body.phone,
+            email: email,
+            password: password
 		});
+
 		db.User.encryptPassword(password, function(hash) {
             newUser.password = hash;
             newUser.save().then(function(user) {
@@ -75,19 +77,20 @@ passport.use('local.signup', new LocalStrategy({
         });
 	})
 	.catch(function(error) {
-	  console.log(error);
+	    console.log(error);
 	});
 }));
 
 passport.use("local.signin", new LocalStrategy({
 	usernameField: "email",
-	passwordField: "password",
+	passwordField: "userPassword",
 	passReqToCallback: true
 }, function(req, email, password, done) {
+    req.session.userType = req.body.userType;
 	req.checkBody("email", "Invalid email")
 	.notEmpty()
 	.isEmail();
-	req.checkBody("password", "Invalid password")
+	req.checkBody("userPassword", "Invalid password")
 	.notEmpty();
 	var errors = req.validationErrors();
 	if (errors) {
@@ -105,9 +108,10 @@ passport.use("local.signin", new LocalStrategy({
 	.then(function(user){
 		if (!user) {
 			return done(null, false, {
-				message: "Email not found"
+				message: req.body.userType + " not found"
 			});
 		}
+
 		db.User.validPassword(password, user.password, function(isMatch) {
             if (isMatch) {
                 return done(null, user);

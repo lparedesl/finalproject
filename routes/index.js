@@ -1,4 +1,4 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 var csrf = require("csurf");
 var passport = require("passport");
@@ -6,41 +6,71 @@ var passport = require("passport");
 var csrfProtection = csrf();
 router.use(csrfProtection);
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-
-router.get("/signin", function(req, res, next) {
-    // var messages = req.flash("error");
-    res.render("user/signin", {
-        title: "Project Title | Sign In",
-        csrfToken: req.csrfToken(),
-        // messages: messages,
-        // hasErrors: messages.length > 0
+router.get('/profile', isLoggedIn, function(req, res, next) {
+    res.render('user/profile_test', {
+        userEmail: req.session.passport.user
     });
 });
 
-router.post("/signin", passport.authenticate("local.signin", {
-    successRedirect: "/dashboard",
-    failureRedirect: "/",
-    failureFlash: true
-}));
+router.get("/", function(req, res, next) {
+    res.render("index", {
+        title: "Project Title | Home"
+    });
+});
+
+router.get("/logout", isLoggedIn, function(req, res, next) {
+    req.logout();
+    res.redirect("/");
+});
+
+router.use("/", notLoggedIn, function(req, res, next) {
+    next();
+});
 
 router.get("/signup", function(req, res, next) {
-    // const messages = req.flash("error");
+    var messages = req.flash("error");
     res.render("user/signup", {
-        title: "Mercado Libre Analytics | Sign Up",
+        title: "Project Title | Sign Up",
         csrfToken: req.csrfToken(),
-        // messages: messages,
-        // hasErrors: messages.length > 0
+        messages: messages,
+        hasErrors: messages.length > 0
     });
 });
 
 router.post("/signup", passport.authenticate("local.signup", {
-    successRedirect: "/dashboard",
+    successRedirect: "/profile",
     failureRedirect: "/signup",
     failureFlash: true
 }));
+
+router.get("/signin", function(req, res, next) {
+    var messages = req.flash("error");
+    res.render("user/signin", {
+        title: "Project Title | Sign In",
+        csrfToken: req.csrfToken(),
+        messages: messages,
+        hasErrors: messages.length > 0
+    });
+});
+
+router.post("/signin", passport.authenticate("local.signin", {
+    successRedirect: "/profile",
+    failureRedirect: "/signin",
+    failureFlash: true
+}));
+
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect("/");
+}
+
+function notLoggedIn(req, res, next) {
+    if (!req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect("/");
+}
 
 module.exports = router;
