@@ -1,33 +1,19 @@
-var passport 	  = require("passport");
+var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
-var db 			  = require("../models");
+var db = require("../models");
 
 passport.serializeUser(function(user, done) {
 	done(null, user.email);
 });
 
 passport.deserializeUser(function(email, done) {
-	db.Admin.findOne({
+	db.User.findOne({
 		where: {
 			email: email
 		}
 	})
-	.then(function(admin){
-		if (!admin) {
-            db.User.findOne({
-                where: {
-                    email: email
-                }
-            })
-			.then(function(user){
-				done(null, user);
-			})
-			.catch(function(error){
-				done(error, null);
-			});
-		} else {
-            done(null, admin);
-		}
+	.then(function(user){
+		done(null, user);
 	})
 	.catch(function(error){
 		done(error, null);
@@ -35,10 +21,10 @@ passport.deserializeUser(function(email, done) {
 });
 
 passport.use('local.signup', new LocalStrategy({
-	usernameField: "username",
+	usernameField: "email",
 	passwordField: "password",
 	passReqToCallback: true
-}, function(req, username, password, done) {
+}, function(req, email, password, done) {
 	req.checkBody("email", "Invalid email")
 	.notEmpty()
 	.isEmail();
@@ -57,43 +43,32 @@ passport.use('local.signup', new LocalStrategy({
 	}
 	db.User.findOne({
 		where: {
-			username: username
+			email: email
 		}
 	})
 	.then(function (user){
 		if (user) {
 			return done(null, false, {
-				message: "This username is taken"
-			});
-		}
-		return db.User.findOne({
-			where: {
-				email: req.body.email
-			}
-		});
-	})
-	.then(function (user){
-		if (user) {
-			return done(null, false, {
-				message: "A user with this email already exists"
+				message: "This email already exists"
 			});
 		}
 
-		if (password !== req.body.rpassword) {
+		if (password !== req.body.confirm_password) {
 			return done(null, false, {
 				message: "Passwords don't match"
 			});
 		}
 
 		var newUser = db.User.build({
-			username: username,
-			password: password,
-			first_name: req.body.firstname,
-			last_name: req.body.lastname,
-			email: req.body.email,
-			city: req.body.city,
-			state: req.body.state
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
+            date_of_birth: req.body.dob,
+            gender: req.body.gender,
+            phone: req.body.phone,
+            email: email,
+            password: password
 		});
+
 		db.User.encryptPassword(password, function(hash) {
             newUser.password = hash;
             newUser.save().then(function(user) {
@@ -102,7 +77,7 @@ passport.use('local.signup', new LocalStrategy({
         });
 	})
 	.catch(function(error) {
-	  console.log(error);
+	    console.log(error);
 	});
 }));
 
@@ -125,7 +100,7 @@ passport.use("local.signin", new LocalStrategy({
 		});
 		return done(null, false, req.flash("error", messages));
 	}
-	db[req.body.userType].findOne({
+	db.User.findOne({
 		where: {
             email: email
 		}
@@ -136,7 +111,8 @@ passport.use("local.signin", new LocalStrategy({
 				message: req.body.userType + " not found"
 			});
 		}
-		db.Person.validPassword(password, user.password, function(isMatch) {
+
+		db.User.validPassword(password, user.password, function(isMatch) {
             if (isMatch) {
                 return done(null, user);
             } else {
