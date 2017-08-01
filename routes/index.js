@@ -31,6 +31,7 @@ router.get("/signup", function(req, res, next) {
     var messages = req.flash("error");
     res.render("user/signup", {
         title: "Project Title | Sign Up",
+        signinPage: true,
         csrfToken: req.csrfToken(),
         messages: messages,
         hasErrors: messages.length > 0
@@ -47,6 +48,7 @@ router.get("/signin", function(req, res, next) {
     var messages = req.flash("error");
     res.render("user/signin", {
         title: "Project Title | Sign In",
+        signinPage: true,
         csrfToken: req.csrfToken(),
         messages: messages,
         hasErrors: messages.length > 0
@@ -63,7 +65,7 @@ function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
         return next();
     }
-    res.redirect("/");
+    res.redirect("/profile");
 }
 
 function notLoggedIn(req, res, next) {

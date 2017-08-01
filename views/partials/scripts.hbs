@@ -1,35 +1,31 @@
 {{!-- jQuery --}}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-{{!--Latest compiled and minified JavaScript--}}
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-<script src="/javascript/classEnroll.js"></script>
-<script src="/javascript/addProfessor.js"></script>
+{{!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>--}}
 
-<script src="/javascript/amcharts/amcharts.js"></script>
-<script src="/javascript/amcharts/pie.js"></script>
-<script src="/javascript/amcharts/radar.js"></script>
-<script src="/javascript/amcharts/serial.js"></script>
-<script src="/javascript/amcharts/themes/light.js"></script>
-<script src="/javascript/amcharts/themes/patterns.js"></script>
-<script src="/javascript/amcharts/themes/chalk.js"></script>
-<script src="/javascript/stats.js"></script>
-<script>
-    $(document).ready( function() {
-        $('#customTable').dataTable( {
-        "iDisplayLength": 10,
-        "lengthChange": false
-        });
+{{!--BEGIN CORE PLUGINS--}}
+<script src="/global/plugins/jquery.min.js" type="text/javascript"></script>
+<script src="/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="/global/plugins/js.cookie.min.js" type="text/javascript"></script>
+<script src="/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+<script src="/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+<script src="/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+{{!--END CORE PLUGINS--}}
+{{!--BEGIN PAGE LEVEL PLUGINS--}}
+<script src="/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+<script src="/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
+<script src="/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
+<script src="/global/plugins/backstretch/jquery.backstretch.min.js" type="text/javascript"></script>
+{{!--END PAGE LEVEL PLUGINS--}}
+{{!--BEGIN THEME GLOBAL SCRIPTS--}}
+<script src="/global/scripts/app.js" type="text/javascript"></script>
+{{!--END THEME GLOBAL SCRIPTS--}}
 
-        $("#dob").datepicker({
-            dateFormat: "yy-mm-dd",
-            changeYear: true,
-            yearRange: "1950:2017"
-        });
 
-        $("#due_date").datepicker({
-            dateFormat: "yy-mm-dd"
-        });
-    })
-</script>
+{{!--<script>--}}
+    {{!--$(document).ready( function() {--}}
+        {{!--$("#dob").datepicker({--}}
+            {{!--dateFormat: "yy-mm-dd",--}}
+            {{!--changeYear: true,--}}
+            {{!--yearRange: "1950:2017"--}}
+        {{!--});--}}
+    {{!--})--}}
+{{!--</script>--}}
