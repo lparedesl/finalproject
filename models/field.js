@@ -17,26 +17,8 @@ module.exports = function(sequelize, DataTypes) {
         available: {
             type: DataTypes.INTEGER(2)
         },
-        start_time: {
-            type: DataTypes.TIME,
-            allowNull: false,
-            validate: {
-                notEmpty: true
-            }
-        },
-        end_time: {
-            type: DataTypes.TIME,
-            allowNull: false,
-            validate: {
-                notEmpty: true
-            }
-        },
         price: {
-            type: DataTypes.FLOAT(4,2),
-            allowNull: false,
-            validate: {
-                notEmpty: true
-            }
+            type: DataTypes.FLOAT(4,2)
         }
     });
 

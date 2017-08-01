@@ -6,6 +6,9 @@ module.exports = function(sequelize, DataTypes) {
             validate: {
                 notEmpty: true
             }
+        },
+        image: {
+            type: DataTypes.STRING
         }
     });
 

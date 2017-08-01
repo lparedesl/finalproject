@@ -18,7 +18,7 @@ env.DATABASE_PASSWORD, {
 db.Field = require("./field")(sequelize, Sequelize);
 db.Location = require("./location")(sequelize, Sequelize);
 db.Reservation = require("./reservation")(sequelize, Sequelize);
-db.Schedule = require("./schedule")(sequelize, Sequelize);
+db.Schedule = require("./location_schedule")(sequelize, Sequelize);
 db.Sport = require("./sport")(sequelize, Sequelize);
 db.Team = require("./team")(sequelize, Sequelize);
 db.User = require("./user")(sequelize, Sequelize);
