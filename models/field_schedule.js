@@ -1,5 +1,5 @@
 module.exports = function(sequelize, DataTypes) {
-    var Schedule = sequelize.define("schedule", {
+    var FieldSchedule = sequelize.define("field_schedule", {
         days_short: {
             type: DataTypes.STRING(20),
             allowNull: false,
@@ -30,9 +30,9 @@ module.exports = function(sequelize, DataTypes) {
         }
     });
 
-    // Schedule.sync({
+    // FieldSchedule.sync({
     // 	force: true
     // });
 
-    return Schedule;
+    return FieldSchedule;
 };
