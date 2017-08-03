@@ -12,29 +12,39 @@ router.get('/profile', isLoggedIn, function(req, res, next) {
     });
 });
 
+router.get("/logout", isLoggedIn, function(req, res, next) {
+    req.logout();
+    res.redirect("/");
+});
+
 router.get("/", function(req, res, next) {
     res.render("index", {
         title: "Project Title | Home"
     });
 });
 
-router.get("/logout", isLoggedIn, function(req, res, next) {
-    req.logout();
-    res.redirect("/");
-});
-
 router.use("/", notLoggedIn, function(req, res, next) {
     next();
 });
 
-router.get("/signup", function(req, res, next) {
+router.get("/get-csrf-token", function (req, res, next) {
     var messages = req.flash("error");
-    res.render("user/signup", {
-        title: "Project Title | Sign Up",
-        signinPage: true,
-        csrfToken: req.csrfToken(),
+    var data = {
         messages: messages,
-        hasErrors: messages.length > 0
+        hasErrors: messages.length > 0,
+        csrfToken: req.csrfToken()
+    };
+    res.json(data);
+    // res.json(req.csrfToken());
+});
+
+router.get("*", function(req, res, next) {
+    // var messages = req.flash("error");
+    res.render("user/authentication", {
+        title: "Project Title",
+        signinPage: true,
+        // messages: messages,
+        // hasErrors: messages.length > 0
     });
 });
 
@@ -43,17 +53,6 @@ router.post("/signup", passport.authenticate("local.signup", {
     failureRedirect: "/signup",
     failureFlash: true
 }));
-
-router.get("/signin", function(req, res, next) {
-    var messages = req.flash("error");
-    res.render("user/signin", {
-        title: "Project Title | Sign In",
-        signinPage: true,
-        csrfToken: req.csrfToken(),
-        messages: messages,
-        hasErrors: messages.length > 0
-    });
-});
 
 router.post("/signin", passport.authenticate("local.signin", {
     successRedirect: "/profile",
