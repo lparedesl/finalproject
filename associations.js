@@ -21,7 +21,7 @@ module.exports = function(db) {
             allowNull: false
         }
     });
-    db.Location.belongsTo(db.Schedule, {
+    db.Location.belongsTo(db.LocationSchedule, {
         foreignKey: {
             allowNull: false
         }
@@ -56,8 +56,17 @@ module.exports = function(db) {
     db.Field.hasMany(db.Reservation, {
         onDelete: "cascade"
     });
+    db.User.hasMany(db.FieldSchedule, {
+        onDelete: "cascade"
+    });
 
-    db.Schedule.hasMany(db.Location, {
+    db.FieldSchedule.belongsTo(db.Field, {
+        foreignKey: {
+            allowNull: false
+        }
+    });
+
+    db.LocationSchedule.hasMany(db.Location, {
         onDelete: "cascade"
     });
 
