@@ -1,10 +1,6 @@
 var express = require("express");
 var router = express.Router();
-var csrf = require("csurf");
 var passport = require("passport");
-
-var csrfProtection = csrf();
-router.use(csrfProtection);
 
 router.get('/profile', isLoggedIn, function(req, res, next) {
     res.render('user/profile_test', {
@@ -27,14 +23,10 @@ router.use("/", notLoggedIn, function(req, res, next) {
     next();
 });
 
-router.get("/get-csrf-token", function (req, res, next) {
-    var messages = req.flash("error");
-    var data = {
-        messages: messages,
-        hasErrors: messages.length > 0,
-        csrfToken: req.csrfToken()
-    };
-    res.json(data);
+router.get("/locations", function(req, res, next) {
+    res.render("locations", {
+        title: "Project Title | Locations"
+    });
 });
 
 router.get("*", function(req, res, next) {
