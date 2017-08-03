@@ -2,11 +2,11 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
-import {getCsrfToken} from '../../actions/index';
+import {getAuthData} from '../../actions/index';
 
 class SignUpForm extends Component {
     componentDidMount() {
-        this.props.getCsrfToken();
+        this.props.getAuthData();
     }
 
     renderTextField(field) {
@@ -36,9 +36,23 @@ class SignUpForm extends Component {
         return (
             <div className={className}>
                 <select className="form-control" name={field.bodyName} required>
-                    <option value="" disabled defaultValue="">{field.title}</option>
+                    <option value="" disabled selected={true}>{field.title}</option>
                     {options.map(data => <option key={data.value} value={data.value}>{data.name}</option>)}
                 </select>
+                <div className="text-help">
+                    {touched ? error : ''}
+                </div>
+            </div>
+        );
+    }
+
+    renderDateField(field) {
+        const {meta: {touched, error}} = field;
+        const className = `col-xs-6 ${touched && error ? 'has-error' : ''}`;
+
+        return (
+            <div className={className}>
+                <input className="form-control form-control-inline input-medium date-picker" size="16" type={field.type} name={field.bodyName} placeholder={field.placeholder} value="" />
                 <div className="text-help">
                     {touched ? error : ''}
                 </div>
@@ -84,7 +98,7 @@ class SignUpForm extends Component {
                                 placeholder="Date of Birth"
                                 bodyName="dob"
                                 type="text"
-                                component={this.renderTextField}
+                                component={this.renderDateField}
                             />
                             <Field
                                 title="Gender"
@@ -206,5 +220,5 @@ export default reduxForm({
     validate,
     form: 'SignUpForm'
 })(
-    connect(mapStateToProps, {getCsrfToken})(SignUpForm)
+    connect(mapStateToProps, {getAuthData})(SignUpForm)
 );

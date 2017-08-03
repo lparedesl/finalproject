@@ -2,11 +2,11 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
-import {getCsrfToken} from '../../actions/index';
+import {getAuthData} from '../../actions/index';
 
 class ForgotPassForm extends Component {
     componentDidMount() {
-        this.props.getCsrfToken();
+        this.props.getAuthData();
     }
 
     renderTextField(field) {
@@ -94,5 +94,5 @@ export default reduxForm({
     validate,
     form: 'ForgotPassForm'
 })(
-    connect(mapStateToProps, {getCsrfToken})(ForgotPassForm)
+    connect(mapStateToProps, {getAuthData})(ForgotPassForm)
 );

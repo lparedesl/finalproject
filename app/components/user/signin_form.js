@@ -2,11 +2,11 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
-import {getCsrfToken} from '../../actions/index';
+import {getAuthData} from '../../actions/index';
 
 class SignInForm extends Component {
     componentDidMount() {
-        this.props.getCsrfToken();
+        this.props.getAuthData();
     }
 
     renderTextField(field) {
@@ -138,5 +138,5 @@ export default reduxForm({
     validate,
     form: 'SignInForm'
 })(
-    connect(mapStateToProps, {getCsrfToken})(SignInForm)
+    connect(mapStateToProps, {getAuthData})(SignInForm)
 );

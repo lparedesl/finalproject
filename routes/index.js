@@ -35,16 +35,12 @@ router.get("/get-csrf-token", function (req, res, next) {
         csrfToken: req.csrfToken()
     };
     res.json(data);
-    // res.json(req.csrfToken());
 });
 
 router.get("*", function(req, res, next) {
-    // var messages = req.flash("error");
     res.render("user/authentication", {
         title: "Project Title",
-        signinPage: true,
-        // messages: messages,
-        // hasErrors: messages.length > 0
+        signinPage: true
     });
 });
 
