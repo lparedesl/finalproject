@@ -5,19 +5,28 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{title}}</title>
-
-    {{!-- CSS --}}
-    {{!-- Bootstrap --}}
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="/css/styles.css">
+    {{!--BEGIN GLOBAL MANDATORY STYLES--}}
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+    <link href="/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    {{!--END GLOBAL MANDATORY STYLES--}}
+    {{!--BEGIN PAGE LEVEL PLUGINS--}}
+    <link href="/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+    <link href="/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+    {{!--END PAGE LEVEL PLUGINS--}}
+    {{!--BEGIN THEME GLOBAL STYLES--}}
+    <link href="/global/css/components-md.css" rel="stylesheet" id="style_components" type="text/css" />
+    <link href="/global/css/plugins-md.css" rel="stylesheet" type="text/css" />
+    {{!--END THEME GLOBAL STYLES--}}
+    {{!--BEGIN PAGE LEVEL STYLES--}}
+    <link href="/pages/css/login.css" rel="stylesheet" type="text/css" />
+    {{!--END PAGE LEVEL STYLES--}}
+    <link rel="stylesheet" href="/global/css/styles.css">
 </head>
 <body>
-    {{> header }}
     {{{ body }}}
-    {{> footer }}
-    {{> scripts }}
 </body>
 </html>

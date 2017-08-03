@@ -66,7 +66,8 @@ passport.use('local.signup', new LocalStrategy({
             gender: req.body.gender,
             phone: req.body.phone,
             email: email,
-            password: password
+            password: password,
+			is_admin: req.body.is_admin
 		});
 
 		db.User.encryptPassword(password, function(hash) {
@@ -83,14 +84,14 @@ passport.use('local.signup', new LocalStrategy({
 
 passport.use("local.signin", new LocalStrategy({
 	usernameField: "email",
-	passwordField: "userPassword",
+	passwordField: "password",
 	passReqToCallback: true
 }, function(req, email, password, done) {
     req.session.userType = req.body.userType;
 	req.checkBody("email", "Invalid email")
 	.notEmpty()
 	.isEmail();
-	req.checkBody("userPassword", "Invalid password")
+	req.checkBody("password", "Invalid password")
 	.notEmpty();
 	var errors = req.validationErrors();
 	if (errors) {
@@ -108,7 +109,7 @@ passport.use("local.signin", new LocalStrategy({
 	.then(function(user){
 		if (!user) {
 			return done(null, false, {
-				message: req.body.userType + " not found"
+				message: "Email not found"
 			});
 		}
 
