@@ -1,38 +1,34 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import LocationList from './children/location_list.js';
-import Header from './children/header';
-import Calendar from './children/calendar';
-import Map from './children/map';
-import Info from './children/info';
+import Header from './children/header.js';
+import Calendar from './children/calendar.js';
+import Map from './children/map.js';
+import Info from './children/info.js';
 
 class Location extends Component {
-
     render() {
         return (
-          <div class="row">
-              <div class="col-lg-3">
+          <div className="row">
+              <div className="col-lg-3">
 
-                {/* list component */}
                 <LocationList />
 
               </div>
-              <div class="col-lg-6">
-                    <Header />
+              <div className="col-lg-6">
+                <Header />
 
-                    <Calendar />
+                <Calendar />
 
               </div>
-              <div class="col-lg-3">
-                <div class="row">
+              <div className="col-lg-3">
+                <div className="row">
 
-                  {/* Map component */}
                   <Map />
 
                 </div>
-                <div class="row">
+                <div className="row">
 
-                  {/* info Component */}
                   <Info />
 
                 </div>

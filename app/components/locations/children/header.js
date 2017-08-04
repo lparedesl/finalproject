@@ -3,7 +3,7 @@ import React, { Component } from "react";
 class Header extends Component {
   render() {
     return (
-      <div class="m-heading-1 border-green m-bordered">
+      <div className="m-heading-1 border-green m-bordered">
         <h1>Park Name</h1>
         <p> 123 Main St </p>
         <p>

@@ -30,18 +30,17 @@ class LocationList extends Component {
   render() {
     // Run {this.renderList()} inside the div to return the result of the method
     return (
-        <div class="portlet light portlet-fit bordered">
-            <div class="portlet-title">
-                <div class="caption">
-                    <i class=" icon-layers font-green"></i>
-                    <span class="caption-subject font-green bold uppercase">Locations</span>
+        <div className="portlet light portlet-fit bordered">
+            <div className="portlet-title">
+                <div className="caption">
+                    <i className=" icon-layers font-green"></i>
+                    <span className="caption-subject font-green bold uppercase">Locations</span>
                 </div>
             </div>
-            <div class="portlet-body">
-                <div class="mt-element-list">
-                    <div class="mt-list-container list-news">
+            <div className="portlet-body">
+                <div className="mt-element-list">
+                    <div className="mt-list-container list-news">
                         <ul>
-                            {/* {this.renderList()} */}
                             <li>something will go here</li>
                         </ul>
                     </div>

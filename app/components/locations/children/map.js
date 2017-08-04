@@ -3,26 +3,26 @@ import React, { Component } from "react";
 class Map extends Component {
   render() {
     return (
-      <div class="portlet light portlet-fit bordered">
-          <div class="portlet-title">
-              <div class="caption">
-                  <i class=" icon-layers font-blue"></i>
-                  <span class="caption-subject font-blue bold uppercase">Markers</span>
+      <div classsName="portlet light portlet-fit bordered">
+          <div classsName="portlet-title">
+              <div classsName="caption">
+                  <i classsName=" icon-layers font-blue"></i>
+                  <span classsName="caption-subject font-blue bold uppercase">Markers</span>
               </div>
-              <div class="actions">
-                  <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
-                      <i class="icon-cloud-upload"></i>
+              <div classsName="actions">
+                  <a classsName="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                      <i classsName="icon-cloud-upload"></i>
                   </a>
-                  <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
-                      <i class="icon-wrench"></i>
+                  <a classsName="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                      <i classsName="icon-wrench"></i>
                   </a>
-                  <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
-                      <i class="icon-trash"></i>
+                  <a classsName="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                      <i classsName="icon-trash"></i>
                   </a>
               </div>
           </div>
-          <div class="portlet-body">
-              <div id="gmap_marker" class="gmaps"> </div>
+          <div classsName="portlet-body">
+              <div id="gmap_marker" classsName="gmaps"> </div>
           </div>
       </div>
     );

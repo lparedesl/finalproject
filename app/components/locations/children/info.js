@@ -3,16 +3,16 @@ import React, { Component } from "react";
 class Info extends Component {
   render() {
     return (
-      <div class="portlet light portlet-fit bordered">
-          <div class="portlet-title">
-              <div class="caption">
-                  <i class=" icon-layers font-blue"></i>
-                  <span class="caption-subject font-blue bold uppercase">Park Information</span>
+      <div className="portlet light portlet-fit bordered">
+          <div className="portlet-title">
+              <div className="caption">
+                  <i className=" icon-layers font-blue"></i>
+                  <span className="caption-subject font-blue bold uppercase">Park Information</span>
               </div>
           </div>
-          <div class="portlet-body">
-            <div class="list-item-content">
-                <h3 class="uppercase">
+          <div className="portlet-body">
+            <div className="list-item-content">
+                <h3 className="uppercase">
                     <a href="javascript:;">Location 1</a>
                 </h3>
                 <p>
