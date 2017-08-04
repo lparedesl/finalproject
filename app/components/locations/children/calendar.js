@@ -33,29 +33,13 @@ class Calendar extends Component {
           </div>
           <div className="portlet-body">
             <div className="row">
-              <div className="col-md-3 col-sm-12">
-                <h3 className="event-form-title margin-bottom-20">Draggable Events</h3>
-                <div id="external-events">
-                  <form className="inline-form">
-                    <input type="text" value="" className="form-control" placeholder="Event Title..." id="event_title" />
-                    <br/>
-                    <a href="javascript:;" id="event_add" className="btn green"> Add Event </a>
-                  </form>
-                  <hr/>
-                  <div id="event_box" className="margin-bottom-10"></div>
-                  <label className="mt-checkbox mt-checkbox-single mt-checkbox-outline" for="drop-remove"> remove after drop
-                    <input type="checkbox" className="group-checkable" id="drop-remove" />
-                    <span></span>
-                  </label>
-                  <hr className="visible-xs" /> </div>
-                </div>
-                <div className="col-md-9 col-sm-12">
-                  <div id="calendar" className="has-toolbar"> </div>
-                </div>
+              <div className="col-md-9 col-sm-12">
+                <div id="calendar" className="has-toolbar"> </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
     );
   }
 }

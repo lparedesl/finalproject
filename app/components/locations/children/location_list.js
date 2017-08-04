@@ -1,31 +1,63 @@
 import React, { Component } from "react";
 
 // Importing our listItem component
-// import ListItem from "./ListItem";
+// import ListItem from "./list_item";
 
-// Importing an array of grocery data to use
-// import groceries from "../../groceries";
+// Importing an array of test data to use
+// import testdata from "./testdata";
 
 class LocationList extends Component {
-  // Defining a constructor method where we set our initial state
-  // constructor() {
-  //   // Calling super() here before we start assigning values
-  //   super();
-  //   // Setting this.state.groceries to our groceries array we imported
-  //   this.state = {
-  //     groceries
-  //   };
+  // getInitialState() {
+  //   return {
+  //     testdata : [
+  //       {
+  //         id: "cww10l1e8hokult6jq0k9",
+  //         name: "Park 1",
+  //         address: "123 Main St"
+  //       },
+  //       {
+  //         id: "68tcvygn9wrjoz6qd7vi",
+  //         name: "Park 2",
+  //         address: "245 Main St"
+  //       },
+  //       {
+  //         id: "qa0pz28jmtz94vj4kuik9",
+  //         name: "Park 3",
+  //         address: "789 Main St"
+  //       },
+  //       {
+  //         id: "tm5oxvlev8tol5zh0k9",
+  //         name: "Park 4",
+  //         address: "147 Main St"
+  //       },
+  //       {
+  //         id: "8bfxjtrbcbx0opjbgldi",
+  //         name: "Park 5",
+  //         address: "369 Main St"
+  //       }
+  //     ]
+  //   }
   // }
   // renderList() {
-  //   // Getting an array of only purchased items
-  //   const filteredList = this.state.groceries.filter(item => item.purchased === true);
-  //   // Mapping and through our filteredList and returning one
-  //   // ListItem component with the list object passed through as props
-  //   return filteredList.map(item => (
-  //     <ListItem key={item.id}>
-  //       {item.text}
-  //     </ListItem>
-  //     ));
+  //   return (
+  //     {props.testdata.map((data, i) =>
+  //       <li className="mt-list-item">
+  //         <div className="list-icon-container">
+  //           <a href="javascript:;">
+  //             <i className="fa fa-angle-right"></i>
+  //           </a>
+  //         </div>
+  //         <div className="list-item-content">
+  //           <h3 className="uppercase">
+  //             <a href="javascript:;">{props.testdata.name}</a>
+  //           </h3>
+  //           <p>
+  //             {props.testdata.address}
+  //           </p>
+  //         </div>
+  //       </li>
+  //      )}
+  //     );
   // }
   render() {
     // Run {this.renderList()} inside the div to return the result of the method
@@ -41,7 +73,8 @@ class LocationList extends Component {
                 <div className="mt-element-list">
                     <div className="mt-list-container list-news">
                         <ul>
-                            <li>something will go here</li>
+                          {/* {this.renderList()} */}
+                          <li>something will go here</li>
                         </ul>
                     </div>
                 </div>
