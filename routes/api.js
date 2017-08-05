@@ -32,7 +32,7 @@ router.get("/get-teams", function(req, res, next) {
     db.Team.findAll({
         include: [
             {
-                model: db.UserTeam
+                model: db.User
             }
         ]
     })

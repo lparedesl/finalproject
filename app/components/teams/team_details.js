@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import Header from './header';
+import Banner from './banner';
 
 class TeamDetails extends Component {
     constructor() {
@@ -17,20 +18,14 @@ class TeamDetails extends Component {
 
         if (!team) {
             return (
-              <div>
                 <div className="portlet light portlet-fit bordered">
                     <div className="portlet-body">
                         <h3>Please select a team or create a new one below.</h3>
+                        <button className="btn btn-circle blue btn-block btn-lg m-icon-big">Create New Team
+                            <i className="m-icon-big-swapright m-icon-white"></i>
+                        </button>
                     </div>
                 </div>
-                <div className="portlet light portlet-fit bordered">
-                    <div className="portlet-body">
-                      <button type="button" class="btn btn-info btn-lg mt-ladda-btn ladda-button" data-style="zoom-in" data-size="l">
-                          <span className="ladda-label">Create New Team</span>
-                      </button>
-                    </div>
-                </div>
-              </div>
             )
         }
 
@@ -38,6 +33,7 @@ class TeamDetails extends Component {
             <div className="row">
                 <div className="col-md-8">
                     <Header/>
+                    <Banner/>
                 </div>
                 <div className="col-md-4">
                     <div className="row">
