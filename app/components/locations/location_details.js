@@ -6,14 +6,23 @@ import Calendar from './calendar';
 import Reservation from './reservation';
 import Map from './map';
 import Info from './info';
+import {selectField} from '../../actions';
 
 class LocationDetails extends Component {
     constructor() {
         super();
 
-        this.state = {
-            selectedField: 1
-        };
+        this.getFirstField = this.getFirstField.bind(this);
+    }
+
+    getFirstField() {
+        if (this.props.field) {
+            return this.props.field;
+        }
+
+        const {location} = this.props;
+        let fields = _.filter(location.sports[0].fields, data => { return data.location_id === location.id; });
+        return fields[0].field_number;
     }
 
     render() {
@@ -41,8 +50,8 @@ class LocationDetails extends Component {
                                     path="/"
                                     render={() => <Calendar
                                         location={location}
-                                        field={this.state.selectedField}
-                                        onFieldSelect={selectedField => this.setState({selectedField})}
+                                        field={this.getFirstField()}
+                                        selectField={(field) => this.props.selectField(field)}
                                     />}
                                 />
                             </Switch>
@@ -63,7 +72,7 @@ class LocationDetails extends Component {
 }
 
 function mapStateToProps(state) {
-    return {location: state.activeLocation}
+    return {field: state.activeField}
 }
 
-export default connect(mapStateToProps)(LocationDetails);
+export default connect(mapStateToProps, {selectField})(LocationDetails);
