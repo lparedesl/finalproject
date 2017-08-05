@@ -1,42 +1,32 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
-import LocationList from './location_list.js';
-import Header from './header.js';
-import Calendar from './calendar.js';
-import Map from './map.js';
-import Info from './info.js';
+import {connect} from 'react-redux';
+import LocationDetails from './location_details';
+import LocationList from './location_list';
+import {getLocations} from '../../actions';
 
-class Location extends Component {
+class Main extends Component {
+    componentDidMount() {
+        this.props.getLocations();
+    }
+
     render() {
         return (
-          <div className="row">
-              <div className="col-lg-3">
-
-                <LocationList />
-
-              </div>
-              <div className="col-lg-6">
-                <Header />
-
-                <Calendar />
-
-              </div>
-              <div className="col-lg-3">
-                <div className="row">
-
-                  <Map />
-
+            <div className="row">
+                <div className="col-md-3">
+                    <LocationList
+                        items={this.props.locations}
+                    />
                 </div>
-                <div className="row">
-
-                  <Info />
-
+                <div className="col-md-9">
+                    <LocationDetails/>
                 </div>
-              </div>
-          </div>
+            </div>
         )
     }
 }
 
-// Exporting this component as the default (only) export
-export default Location;
+function mapStateToProps(state) {
+    return {locations: state.locations}
+}
+
+export default connect(mapStateToProps, {getLocations})(Main);
