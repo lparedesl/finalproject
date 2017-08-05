@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-import LocationList from './children/location_list.js';
-import Header from './children/header.js';
-import Calendar from './children/calendar.js';
-import Map from './children/map.js';
-import Info from './children/info.js';
+import LocationList from './location_list.js';
+import Header from './header.js';
+import Calendar from './calendar.js';
+import Map from './map.js';
+import Info from './info.js';
 
 class Location extends Component {
     render() {

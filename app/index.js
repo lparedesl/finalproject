@@ -9,7 +9,7 @@ import reducers from './reducers';
 import SignIn from './components/user/signin_form';
 import SignUp from './components/user/signup_form';
 import ForgotPassword from './components/user/forgot_pass';
-import Location from './components/locations/location';
+import Location from './components/locations/main';
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 

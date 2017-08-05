@@ -1,5 +1,5 @@
 body.login {
-  background-color: #fff !important;
+    background-color: #fff !important;
 }
 
 .signup-content {
@@ -8,4 +8,32 @@ body.login {
 
 .signup-content select {
     padding-bottom: 0 !important;
+}
+
+.portlet.calendar .caption {
+    width: 100%;
+}
+
+.location-header {
+    margin-bottom: 20px;
+}
+
+.reserve-btn {
+    font-size: 14px !important;
+    height: 40px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.fc-nonbusiness {
+    background: #000;
+}
+
+.fc-business {
+    background: transparent;
+}
+
+.fc-bgevent {
+    opacity: .02;
+    filter: alpha(opacity=2);
 }

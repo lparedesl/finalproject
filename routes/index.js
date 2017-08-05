@@ -23,6 +23,12 @@ router.use("/", notLoggedIn, function(req, res, next) {
     next();
 });
 
+router.get("/locations/*?", function(req, res, next) {
+    res.render("locations", {
+        title: "Project Title | Locations"
+    });
+});
+
 router.get("/locations", function(req, res, next) {
     res.render("locations", {
         title: "Project Title | Locations"
