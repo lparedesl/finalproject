@@ -24,14 +24,30 @@ router.use("/", notLoggedIn, function(req, res, next) {
 });
 
 router.get("/locations/*?", function(req, res, next) {
-    res.render("locations", {
-        title: "Project Title | Locations"
+    res.render("content", {
+        title: "Project Title | Locations",
+        name: "Locations"
     });
 });
 
 router.get("/locations", function(req, res, next) {
-    res.render("locations", {
-        title: "Project Title | Locations"
+    res.render("content", {
+        title: "Project Title | Locations",
+        name: "Locations"
+    });
+});
+
+router.get("/teams", function(req, res, next) {
+    res.render("content", {
+        title: "Project Title | Teams",
+        name: "Teams"
+    });
+});
+
+router.get("/teams/*?", function(req, res, next) {
+    res.render("content", {
+        title: "Project Title | Teams",
+        name: "Teams"
     });
 });
 

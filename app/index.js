@@ -10,6 +10,7 @@ import SignIn from './components/user/signin_form';
 import SignUp from './components/user/signup_form';
 import ForgotPassword from './components/user/forgot_pass';
 import Locations from './components/locations/main';
+import Teams from './components/teams/main';
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
@@ -19,6 +20,7 @@ ReactDOM.render(
             <div>
                 <Switch>
                     <Route path="/locations" component={Locations}/>
+                    <Route path="/teams" component={Teams}/>
                     <Route path="/signin" component={SignIn}/>
                     <Route path="/signup" component={SignUp}/>
                     <Route path="/forgot-password" component={ForgotPassword}/>
