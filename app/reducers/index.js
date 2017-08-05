@@ -1,9 +1,15 @@
 import {combineReducers} from 'redux';
 import {reducer as formReducer} from 'redux-form';
-import AuthData from './auth_data';
+import AuthDataReducer from './auth_data';
+import LocationsReducer from './locations';
+import ActiveLocation from './active_location';
+import FieldReservationsReducer from './field_reservations';
 
 const rootReducer = combineReducers({
-    authData: AuthData,
+    authData: AuthDataReducer,
+    locations: LocationsReducer,
+    activeLocation: ActiveLocation,
+    fieldReservations: FieldReservationsReducer,
     form: formReducer
 });
 

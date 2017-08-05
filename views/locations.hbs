@@ -1,0 +1,30 @@
+<div class="page-wrapper">
+    {{> header}}
+    {{!--BEGIN HEADER & CONTENT DIVIDER--}}
+    <div class="clearfix"> </div>
+    {{!--END HEADER & CONTENT DIVIDER--}}
+    {{!--BEGIN CONTAINER--}}
+    <div class="page-container">
+        {{> sidebar}}
+        {{!--BEGIN CONTENT--}}
+        <div class="page-content-wrapper">
+            {{!--BEGIN CONTENT BODY--}}
+            <div class="page-content">
+                {{!--BEGIN PAGE HEADER--}}
+                {{!--BEGIN PAGE TITLE--}}
+                <h1 class="page-title">
+                    Locations
+                </h1>
+                {{!--END PAGE TITLE--}}
+                {{!--END PAGE HEADER--}}
+                <div id="app"></div>
+                <script src="bundle.js"></script>
+            </div>
+            {{!--END CONTENT BODY--}}
+        </div>
+        {{!--END CONTENT--}}
+    </div>
+    {{!--END CONTAINER--}}
+    {{> footer}}
+</div>
+{{> scripts}}

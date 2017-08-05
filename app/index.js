@@ -9,6 +9,7 @@ import reducers from './reducers';
 import SignIn from './components/user/signin_form';
 import SignUp from './components/user/signup_form';
 import ForgotPassword from './components/user/forgot_pass';
+import Locations from './components/locations/main';
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
@@ -17,6 +18,7 @@ ReactDOM.render(
         <BrowserRouter>
             <div>
                 <Switch>
+                    <Route path="/locations" component={Locations}/>
                     <Route path="/signin" component={SignIn}/>
                     <Route path="/signup" component={SignUp}/>
                     <Route path="/forgot-password" component={ForgotPassword}/>
