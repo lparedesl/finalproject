@@ -11,6 +11,7 @@ class Calendar extends Component {
 
         this.onFieldSelect = this.onFieldSelect.bind(this);
         this.renderOptGroups = this.renderOptGroups.bind(this);
+        this.renderOptions = this.renderOptions.bind(this);
     }
 
     componentDidMount() {
@@ -33,7 +34,8 @@ class Calendar extends Component {
         let fields = _.filter(sport.fields, data => { return data.location_id === id; });
 
         return _.map(fields, field => {
-            return <option value={field.field_number} key={field.id}>Field {field.field_number}</option>
+            let selected = parseInt(this.props.field) === field.field_number;
+            return <option value={field.field_number} key={field.id} selected={selected}>Field {field.field_number}</option>
         })
     }
 
@@ -61,7 +63,7 @@ class Calendar extends Component {
     }
 
     onFieldSelect(option) {
-        this.props.onFieldSelect(option);
+        this.props.selectField(option);
         this.props.getFieldReservations(option);
         this.renderCalendar();
     }

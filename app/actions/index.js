@@ -3,6 +3,7 @@ import axios from 'axios';
 export const GET_AUTH_DATA = 'get_auth_data';
 export const GET_LOCATIONS = 'get_locations';
 export const LOCATION_SELECTED = 'location_selected';
+export const FIELD_SELECTED = 'field_selected';
 export const GET_FIELD_RESERVATIONS = 'get_field_reservations';
 export const GET_TEAMS = 'get_teams';
 export const TEAM_SELECTED = 'team_selected';
@@ -29,6 +30,13 @@ export function selectLocation(location) {
     return {
         type: LOCATION_SELECTED,
         payload: location
+    };
+}
+
+export function selectField(field) {
+    return {
+        type: FIELD_SELECTED,
+        payload: field
     };
 }
 

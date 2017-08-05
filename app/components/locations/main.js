@@ -18,7 +18,9 @@ class Main extends Component {
                     />
                 </div>
                 <div className="col-md-9">
-                    <LocationDetails/>
+                    <LocationDetails
+                        location={this.props.location}
+                    />
                 </div>
             </div>
         )
@@ -26,7 +28,10 @@ class Main extends Component {
 }
 
 function mapStateToProps(state) {
-    return {locations: state.locations}
+    return {
+        locations: state.locations,
+        location: state.activeLocation
+    }
 }
 
 export default connect(mapStateToProps, {getLocations})(Main);
