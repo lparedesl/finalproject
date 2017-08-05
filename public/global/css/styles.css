@@ -37,3 +37,8 @@ body.login {
     opacity: .02;
     filter: alpha(opacity=2);
 }
+
+#map {
+    width: 400px;
+    height: 400px;
+}
