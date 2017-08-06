@@ -1,12 +1,15 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import LocationDetails from './location_details';
 import LocationList from './location_list';
 import {getLocations} from '../../actions';
+import {getUserInfo} from '../../actions';
 
 class Main extends Component {
     componentDidMount() {
         this.props.getLocations();
+        this.props.getUserInfo();
     }
 
     render() {
@@ -19,6 +22,7 @@ class Main extends Component {
                 </div>
                 <div className="col-md-9">
                     <LocationDetails
+                        userId={this.props.userInfo.id}
                         location={this.props.location}
                     />
                 </div>
@@ -30,8 +34,16 @@ class Main extends Component {
 function mapStateToProps(state) {
     return {
         locations: state.locations,
-        location: state.activeLocation
+        location: state.activeLocation,
+        userInfo: state.authData
     }
 }
 
-export default connect(mapStateToProps, {getLocations})(Main);
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        getLocations: getLocations,
+        getUserInfo: getUserInfo
+    }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Main);

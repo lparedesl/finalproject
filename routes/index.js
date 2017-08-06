@@ -8,6 +8,18 @@ router.get('/profile', isLoggedIn, function(req, res, next) {
     });
 });
 
+// router.get("/locations/*?", function(req, res, next) {
+//     res.render("locations", {
+//         title: "Project Title | Locations"
+//     });
+// });
+
+router.get("/locations", function(req, res, next) {
+    res.render("locations", {
+        title: "Project Title | Locations"
+    });
+});
+
 router.get("/logout", isLoggedIn, function(req, res, next) {
     req.logout();
     res.redirect("/");
@@ -21,18 +33,6 @@ router.get("/", function(req, res, next) {
 
 router.use("/", notLoggedIn, function(req, res, next) {
     next();
-});
-
-router.get("/locations/*?", function(req, res, next) {
-    res.render("locations", {
-        title: "Project Title | Locations"
-    });
-});
-
-router.get("/locations", function(req, res, next) {
-    res.render("locations", {
-        title: "Project Title | Locations"
-    });
 });
 
 router.get("*", function(req, res, next) {

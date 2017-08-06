@@ -6,6 +6,20 @@ var csrf = require("csurf");
 var csrfProtection = csrf();
 var db = require("../models");
 
+router.get("/get-user-info", function(req, res, next) {
+    db.User.findOne({
+        where: {
+            email: req.session.passport.user
+        }
+    })
+    .then(function(data) {
+        res.json(data);
+    })
+    .catch(function(error) {
+        console.log(error);
+    })
+});
+
 router.get("/get-locations", function(req, res, next) {
     db.Location.findAll({
         include: [
@@ -92,6 +106,18 @@ router.post("/field-schedule", function(req, res, next) {
       .catch(function(error) {
           console.log(error);
       });
+});
+
+router.post("/reserve-field", function(req, res, next) {
+    var reservation = {
+        reservation_date: moment(req.body.reservation_date + " " + req.body.reservation_time, "YYYY-MM-DD hh:mm:ss").format(),
+        user_id: parseInt(req.body.user),
+        field_id: parseInt(req.body.field)
+    };
+    console.log("================");
+    console.log(reservation);
+    console.log("================");
+    res.json(reservation);
 });
 
 router.use(csrfProtection);

@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import Header from './header';
 import Calendar from './calendar';
 import Reservation from './reservation';
+// import Reservation from '../user/signup_form';
 import Map from './map';
 import Info from './info';
 import {selectField} from '../../actions';
@@ -22,7 +23,7 @@ class LocationDetails extends Component {
 
         const {location} = this.props;
         let fields = _.filter(location.sports[0].fields, data => { return data.location_id === location.id; });
-        return fields[0].field_number;
+        return fields[0].id;
     }
 
     render() {
@@ -41,13 +42,25 @@ class LocationDetails extends Component {
         return (
             <div className="row">
                 <div className="col-md-8">
-                    <Header/>
+                    <Header
+                        title={location.name}
+                        address={location.address}
+                        city={location.city}
+                        state={location.state}
+                        zipCode={location.zip_code}
+                    />
                     <Router>
                         <div>
                             <Switch>
-                                <Route exact path="/locations/reserve-field" component={Reservation} />
                                 <Route
-                                    path="/"
+                                    path="/locations/reserve-field"
+                                    render={() => <Reservation
+                                        userId={this.props.userId}
+                                        field={this.getFirstField()}
+                                    />}
+                                />
+                                <Route
+                                    path="/locations"
                                     render={() => <Calendar
                                         location={location}
                                         field={this.getFirstField()}

@@ -1,9 +1,11 @@
 import axios from 'axios';
 
 export const GET_AUTH_DATA = 'get_auth_data';
+export const GET_USER_INFO = 'get_user_info';
 export const GET_LOCATIONS = 'get_locations';
 export const LOCATION_SELECTED = 'location_selected';
 export const FIELD_SELECTED = 'field_selected';
+export const RESERVE_FIELD = 'reserve_field';
 export const GET_FIELD_RESERVATIONS = 'get_field_reservations';
 
 export function getAuthData() {
@@ -11,6 +13,15 @@ export function getAuthData() {
 
     return {
         type: GET_AUTH_DATA,
+        payload: request
+    };
+}
+
+export function getUserInfo() {
+    const request = axios.get('api/get-user-info');
+
+    return {
+        type: GET_USER_INFO,
         payload: request
     };
 }
@@ -35,6 +46,16 @@ export function selectField(field) {
     return {
         type: FIELD_SELECTED,
         payload: field
+    };
+}
+
+export function reserveField(values, cb) {
+    const request = axios.post('/api/reserve-field', values)
+                         .then((data) => cb(data));
+
+    return {
+        type: RESERVE_FIELD,
+        payload: request
     };
 }
 

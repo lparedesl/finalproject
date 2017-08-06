@@ -1,25 +1,68 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
+import $ from 'jquery';
+import {Link, withRouter} from 'react-router-dom';
+import toastr from 'toastr';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
+import {reserveField} from '../../actions';
 
 class Reservation extends Component {
-    // componentDidMount() {
-    //     this.props.getAuthData();
-    // }
-
-    renderTextField(field) {
-        const {meta: {touched, error}} = field;
-        const className = `col-xs-6 ${touched && error ? 'has-error' : ''}`;
-
+    renderDateField(field) {
         return (
-            <div className={className}>
-                <input className="form-control form-control-solid placeholder-no-fix form-group" type={field.type} autoComplete="off" placeholder={field.placeholder} name={field.bodyName} required />
-                <div className="text-help">
-                    {touched ? error : ''}
+            <div className="row">
+                <div className="form-group">
+                    <label className="control-label col-md-3">Date</label>
+                    <div className="col-md-3">
+                        <div className="date-picker" id="reservation-date"> </div>
+                        <input type="hidden" name="reservation_date"/>
+                    </div>
                 </div>
             </div>
         );
+    }
+
+    renderTimeField(field) {
+        return (
+            <div className="row">
+                <div className="form-group">
+                    <label className="control-label col-md-3">Time</label>
+                    <div className="col-md-4">
+                        <div className="input-icon">
+                            <i className="fa fa-clock-o"></i>
+                            <input type="text" className="form-control timepicker timepicker-default" name="reservation_time"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    onSubmit() {
+        const data = {
+            reservation_date: $("input[name='reservation_date']").val(),
+            reservation_time: $("input[name='reservation_time']").val(),
+            user: this.props.userId,
+            field: this.props.field
+        };
+        this.props.reserveField(data, res => {
+            if (res.data) {
+                toastr.options = {
+                    closeButton    : true,
+                    debug          : false,
+                    positionClass  : "toast-bottom-right",
+                    showDuration   : 1000,
+                    hideDuration   : 1000,
+                    timeOut        : 5000,
+                    extendedTimeOut: 1000,
+                    showEasing     : "swing",
+                    hideEasing     : "linear",
+                    showMethod     : "fadeIn",
+                    hideMethod     : "fadeOut"
+                };
+                toastr['success'](`"Field ${res.data.field_id}" was successfully reserved on ${moment(res.data.reservation_date).format("dddd MMMM D, YYYY")} from ${moment(res.data.reservation_date).format("hh:mm A")} to ${moment(res.data.reservation_date).add(1, "hours").format("hh:mm A")}.`, 'Field Reserved');
+                this.props.history.push('/locations');
+            }
+        });
     }
 
     // renderErrors() {
@@ -35,6 +78,8 @@ class Reservation extends Component {
     // }
 
     render() {
+        const {handleSubmit} = this.props;
+
         return (
             <div className="row">
                 <div className="col-md-12">
@@ -49,39 +94,16 @@ class Reservation extends Component {
                         <div className="portlet-body">
                             <div className="row">
                                 <div className="col-sm-12">
-                                    <form action="/api/reserve-field" className="login-form" method="POST">
+                                    <form className="reservation-form" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                                         {/*{this.renderErrors()}*/}
                                         <div className="row">
-                                            <Field
-                                                placeholder="Email"
-                                                bodyName="email"
-                                                name="email"
-                                                type="text"
-                                                component={this.renderTextField}
-                                            />
-                                            <Field
-                                                placeholder="Password"
-                                                bodyName="password"
-                                                name="password"
-                                                type="password"
-                                                component={this.renderTextField}
-                                            />
-                                        </div>
-                                        <div className="row">
-                                            <div className="col-sm-4">
-                                                <div className="rem-password">
-                                                    <label className="rememberme mt-checkbox mt-checkbox-outline">
-                                                        <input type="checkbox" name="remember" value="1" /> Remember me
-                                                        <span></span>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div className="col-sm-8 text-right">
-                                                <div className="forgot-password">
-                                                    <Link className="forget-password" id="forget-password" to="/forgot-password">Forgot Password ?</Link>
-                                                </div>
-                                                {/*<input type="hidden" name="_csrf" value={this.props.authData.csrfToken} />*/}
-                                                <button className="btn green" type="submit">Sign In</button>
+                                            <div className="col-md-12">
+                                                <Field
+                                                    component={this.renderDateField}
+                                                />
+                                                <Field
+                                                    component={this.renderTimeField}
+                                                />
                                             </div>
                                         </div>
                                         <div className="row">
@@ -91,6 +113,9 @@ class Reservation extends Component {
                                                         <Link className="btn blue btn-outline" to="/locations">Back</Link>
                                                     </p>
                                                 </div>
+                                            </div>
+                                            <div className="col-sm-6 text-right">
+                                                <button className="btn green" type="submit">Submit</button>
                                             </div>
                                         </div>
                                     </form>
@@ -107,21 +132,21 @@ class Reservation extends Component {
 function validate(values) {
     const errors = {};
 
-    if (!values.email) errors.email = 'Enter an email';
-    if (!values.password) errors.password = 'Enter a password';
+    // if (!values.email) errors.email = 'Enter an email';
+    // if (!values.password) errors.password = 'Enter a password';
     // if (!values.end_year) errors.end_year = 'Enter an end year';
     // if (values.end_year < values.start_year) errors.end_year = 'Enter a valid end year';
 
     return errors;
 }
 
-function mapStateToProps(state) {
-    return {authData: state.authData}
-}
+// function mapStateToProps(state) {
+//     return {authData: state.authData}
+// }
 
 export default reduxForm({
     validate,
     form: 'ReservationForm'
 })(
-    connect(null, null)(Reservation)
+    connect(null, {reserveField})(withRouter(Reservation))
 );

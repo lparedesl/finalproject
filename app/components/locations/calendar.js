@@ -34,8 +34,8 @@ class Calendar extends Component {
         let fields = _.filter(sport.fields, data => { return data.location_id === id; });
 
         return _.map(fields, field => {
-            let selected = parseInt(this.props.field) === field.field_number;
-            return <option value={field.field_number} key={field.id} selected={selected}>Field {field.field_number}</option>
+            let selected = parseInt(this.props.field) === field.id;
+            return <option value={field.id} key={field.id} selected={selected}>Field {field.field_number}</option>
         })
     }
 
@@ -73,24 +73,16 @@ class Calendar extends Component {
             <div className="row">
               <div className="col-md-12">
                 <Link className="btn blue btn-outline reserve-btn" to="/locations/reserve-field">Reserve Field</Link>
-                <div className="m-heading-1 border-green m-bordered">
-                  <div className="form-group">
-                    <div className="row">
-                      <label className="control-label col-md-6">Select Field</label>
-                      <div className="col-md-6">
-                        <select className="bs-select form-control" onChange={event => this.onFieldSelect(event.target.value)}>
-                          <option value=""></option>
-                            {this.renderOptGroups()}
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                </div>
                 <div className="portlet light portlet-fit bordered calendar">
                   <div className="portlet-title">
                     <div className="caption">
-                      <i className=" icon-layers font-green"></i>
-                      <span className="caption-subject font-green bold uppercase">Field Schedule</span>
+                        <div className="form-group form-md-line-input has-info">
+                            <select className="form-control" id="form_control_1" onChange={event => this.onFieldSelect(event.target.value)}>
+                                <option value=""></option>
+                                {this.renderOptGroups()}
+                            </select>
+                            <label htmlFor="form_control_1">SelectField</label>
+                        </div>
                     </div>
                   </div>
                   <div className="portlet-body">

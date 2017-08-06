@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
-import {getAuthData} from '../../actions/index';
+import {getAuthData} from '../../actions';
 
 class SignUpForm extends Component {
     componentDidMount() {
