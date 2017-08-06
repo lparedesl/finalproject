@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import Header from './header';
 import Calendar from './calendar';
 import Reservation from './reservation';
-// import Map from './map';
+import Map from './map';
 import Info from './info';
 import {selectField} from '../../actions';
 
@@ -72,7 +72,7 @@ class LocationDetails extends Component {
                 </div>
                 <div className="col-md-4">
                     <div className="row">
-                        {/*<Map/>*/}
+                        <Map/>
                     </div>
                     <div className="row">
                         <Info/>
