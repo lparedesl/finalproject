@@ -18,7 +18,9 @@ class Main extends Component {
                     />
                 </div>
                 <div className="col-md-9">
-                    <TeamDetails/>
+                    <TeamDetails
+                        items={this.props.teams}
+                    />
                 </div>
             </div>
         )

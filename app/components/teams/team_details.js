@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import Header from './header';
 import Banner from './banner';
+import TeamImage from './team_image';
 
 class TeamDetails extends Component {
     constructor() {
@@ -32,15 +33,22 @@ class TeamDetails extends Component {
         return (
             <div className="row">
                 <div className="col-md-8">
-                    <Header/>
+                    <Header
+                      name={team.name}
+                    />
                     <Banner/>
                 </div>
                 <div className="col-md-4">
                     <div className="row">
-                        <h2>nothing here yet</h2>
+                        <TeamImage
+                          image={team.image}
+                          name={team.name}
+                        />
                     </div>
                     <div className="row">
-                        <h2>nothing here yet</h2>
+                      <button className="btn btn-circle blue btn-block btn-lg m-icon-big">Add Members
+                          <i className="m-icon-big-swapright m-icon-white"></i>
+                      </button>
                     </div>
                 </div>
             </div>

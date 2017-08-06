@@ -11,9 +11,9 @@ const ListItem = (props) => {
                 </a>
             </div>
             <div className="list-item-content">
-                <h3 className="uppercase">
+                <h2 className="uppercase">
                     <p>{data.name}</p>
-                </h3>
+                </h2>
             </div>
         </li>
     );
