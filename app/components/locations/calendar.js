@@ -72,7 +72,7 @@ class Calendar extends Component {
         return (
             <div className="row">
               <div className="col-md-12">
-                <Link className="btn blue btn-outline reserve-btn" to="/locations/reserve-field">Reserve Field</Link>
+                <Link className="btn blue btn-outline reserve-btn" to="/dashboard/locations/reserve-field">Reserve Field</Link>
                 <div className="portlet light portlet-fit bordered calendar">
                   <div className="portlet-title">
                     <div className="caption">

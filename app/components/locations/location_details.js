@@ -4,8 +4,7 @@ import {connect} from 'react-redux';
 import Header from './header';
 import Calendar from './calendar';
 import Reservation from './reservation';
-// import Reservation from '../user/signup_form';
-import Map from './map';
+// import Map from './map';
 import Info from './info';
 import {selectField} from '../../actions';
 
@@ -27,13 +26,13 @@ class LocationDetails extends Component {
     }
 
     render() {
-        const {location} = this.props;
+        const {location, titleSingular} = this.props;
 
         if (!location) {
             return (
                 <div className="portlet light portlet-fit bordered">
                     <div className="portlet-body">
-                        <h3>Please select a location</h3>
+                        <h3>Please select a {titleSingular}</h3>
                     </div>
                 </div>
             )
@@ -53,14 +52,14 @@ class LocationDetails extends Component {
                         <div>
                             <Switch>
                                 <Route
-                                    path="/locations/reserve-field"
+                                    path="/dashboard/locations/reserve-field"
                                     render={() => <Reservation
                                         userId={this.props.userId}
                                         field={this.getFirstField()}
                                     />}
                                 />
                                 <Route
-                                    path="/locations"
+                                    path="/dashboard/locations"
                                     render={() => <Calendar
                                         location={location}
                                         field={this.getFirstField()}
@@ -73,7 +72,7 @@ class LocationDetails extends Component {
                 </div>
                 <div className="col-md-4">
                     <div className="row">
-                        <Map/>
+                        {/*<Map/>*/}
                     </div>
                     <div className="row">
                         <Info/>

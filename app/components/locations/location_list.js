@@ -23,7 +23,7 @@ class LocationList extends Component {
                 <div className="portlet-title">
                     <div className="caption">
                         <i className=" icon-layers font-green"></i>
-                        <span className="caption-subject font-green bold uppercase">Locations</span>
+                        <span className="caption-subject font-green bold uppercase">{this.props.title}</span>
                     </div>
                 </div>
                 <div className="portlet-body">

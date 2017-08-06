@@ -114,9 +114,6 @@ router.post("/reserve-field", function(req, res, next) {
         user_id: parseInt(req.body.user),
         field_id: parseInt(req.body.field)
     };
-    console.log("================");
-    console.log(reservation);
-    console.log("================");
     res.json(reservation);
 });
 
