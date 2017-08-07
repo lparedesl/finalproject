@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
-import {getAuthData} from '../../actions/index';
+import {bindActionCreators} from 'redux';
+import {getAuthData} from '../../actions';
+import {signin} from '../../actions';
 
 class SignInForm extends Component {
     componentDidMount() {
@@ -15,7 +17,7 @@ class SignInForm extends Component {
 
         return (
             <div className={className}>
-                <input className="form-control form-control-solid placeholder-no-fix form-group" type={field.type} autoComplete="off" placeholder={field.placeholder} name={field.bodyName} required />
+                <input className="form-control form-control-solid placeholder-no-fix form-group" type={field.type} autoComplete="off" placeholder={field.placeholder} name={field.bodyName} required {...field.input}/>
                 <div className="text-help">
                     {touched ? error : ''}
                 </div>
@@ -29,18 +31,27 @@ class SignInForm extends Component {
             return (
                 <div className="alert alert-danger">
                     <button className="close" data-close="alert"></button>
-                    {messages.map(message => <span> {message} </span>)}
+                    {messages.map(message => <span key={message}> {message} </span>)}
                 </div>
             )
         }
     }
 
+    // onSubmit(values) {
+    //     this.props.signin(values, () => {
+    //         this.props.getAuthData();
+    //     });
+    // }
+
     render() {
+        // const {handleSubmit} = this.props;
+
         return (
             <div className="col-md-6 login-container bs-reset mt-login-5-bsfix">
                 <div className="login-content">
                     <h1>Sign in</h1>
-                    <form action="/signin" className="login-form" method="POST">
+                    {/*<form className="login-form" onSubmit={handleSubmit(this.onSubmit.bind(this))}>*/}
+                    <form className="login-form" action="/signin" method="POST">
                         {this.renderErrors()}
                         <div className="row">
                             <Field
@@ -69,7 +80,7 @@ class SignInForm extends Component {
                             </div>
                             <div className="col-sm-8 text-right">
                                 <div className="forgot-password">
-                                    <Link className="forget-password" id="forget-password" to="/forgot-password">Forgot Password ?</Link>
+                                    <Link className="forget-password" id="forget-password" to="/user/forgot-password">Forgot Password ?</Link>
                                 </div>
                                 <input type="hidden" name="_csrf" value={this.props.authData.csrfToken} />
                                 <button className="btn green" type="submit">Sign In</button>
@@ -79,7 +90,7 @@ class SignInForm extends Component {
                             <div className="col-sm-6">
                                 <div className="create-account">
                                     <p>
-                                        <Link className="btn blue btn-outline" to="/signup">Create an account</Link>
+                                        <Link className="btn blue btn-outline" to="/user/signup">Create an account</Link>
                                     </p>
                                 </div>
                             </div>
@@ -134,9 +145,16 @@ function mapStateToProps(state) {
     return {authData: state.authData}
 }
 
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        getAuthData: getAuthData,
+        signin: signin
+    }, dispatch)
+}
+
 export default reduxForm({
     validate,
     form: 'SignInForm'
 })(
-    connect(mapStateToProps, {getAuthData})(SignInForm)
+    connect(mapStateToProps, mapDispatchToProps)(withRouter(SignInForm))
 );

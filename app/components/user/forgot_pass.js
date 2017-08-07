@@ -40,7 +40,7 @@ class ForgotPassForm extends Component {
                             />
                         </div>
                         <div className="form-actions">
-                            <Link className="btn green btn-outline" to="/signin">Back</Link>
+                            <Link className="btn green btn-outline" to="/user/signin">Back</Link>
                             <button type="submit" className="btn btn-success uppercase pull-right">Submit</button>
                         </div>
                     </form>

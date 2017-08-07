@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
-import {getAuthData} from '../../actions/index';
+import moment from 'moment';
+import {bindActionCreators} from 'redux';
+import {getAuthData} from '../../actions';
+import {signup} from '../../actions';
 
 class SignUpForm extends Component {
     componentDidMount() {
@@ -15,7 +18,7 @@ class SignUpForm extends Component {
 
         return (
             <div className={className}>
-                <input className="form-control form-control-solid placeholder-no-fix form-group" type={field.type} autoComplete="off" placeholder={field.placeholder} name={field.bodyName} required />
+                <input className="form-control form-control-solid placeholder-no-fix form-group" type={field.type} autoComplete="off" placeholder={field.placeholder} name={field.bodyName} required {...field.input}/>
                 <div className="text-help">
                     {touched ? error : ''}
                 </div>
@@ -35,7 +38,7 @@ class SignUpForm extends Component {
 
         return (
             <div className={className}>
-                <select className="form-control" name={field.bodyName} required>
+                <select className="form-control" name={field.bodyName} required {...field.input}>
                     <option value="" disabled selected={true}>{field.title}</option>
                     {options.map(data => <option key={data.value} value={data.value}>{data.name}</option>)}
                 </select>
@@ -52,7 +55,7 @@ class SignUpForm extends Component {
 
         return (
             <div className={className}>
-                <input className="form-control form-control-inline input-medium date-picker" size="16" type={field.type} name={field.bodyName} placeholder={field.placeholder} value="" />
+                <input className="form-control form-control-inline input-medium date-picker" id="signup-dob" size="16" type={field.type} name={field.bodyName} placeholder={field.placeholder} value="" {...field.input}/>
                 <div className="text-help">
                     {touched ? error : ''}
                 </div>
@@ -66,29 +69,40 @@ class SignUpForm extends Component {
             return (
                 <div className="alert alert-danger">
                     <button className="close" data-close="alert"></button>
-                    {messages.map(message => <span> {message} </span>)}
+                    {messages.map(message => <span key={message}> {message} </span>)}
                 </div>
             )
         }
     }
 
+    onSubmit(values) {
+        values.dob = moment(new Date(document.getElementById("signup-dob").value)).format();
+        this.props.signup(values, () => {
+            this.props.getAuthData();
+        });
+    }
+
     render() {
+        const {handleSubmit} = this.props;
+
         return (
             <div className="col-md-6 login-container bs-reset mt-login-5-bsfix">
                 <div className="login-content signup-content">
                     <h1>Sign up</h1>
-                    <form action="/signup" className="login-form" method="POST">
+                    <form className="login-form" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                         {this.renderErrors()}
                         <div className="row">
                             <Field
                                 placeholder="First Name"
                                 bodyName="first_name"
+                                name="first_name"
                                 type="text"
                                 component={this.renderTextField}
                             />
                             <Field
                                 placeholder="Last Name"
                                 bodyName="last_name"
+                                name="last_name"
                                 type="text"
                                 component={this.renderTextField}
                             />
@@ -97,12 +111,14 @@ class SignUpForm extends Component {
                             <Field
                                 placeholder="Date of Birth"
                                 bodyName="dob"
+                                name="date_of_birth"
                                 type="text"
                                 component={this.renderDateField}
                             />
                             <Field
                                 title="Gender"
                                 bodyName="gender"
+                                name="gender"
                                 options={[
                                     {
                                         name: "Male",
@@ -120,6 +136,7 @@ class SignUpForm extends Component {
                             <Field
                                 placeholder="Phone Number"
                                 bodyName="phone"
+                                name="phone"
                                 type="tel"
                                 component={this.renderTextField}
                             />
@@ -128,12 +145,14 @@ class SignUpForm extends Component {
                             <Field
                                 placeholder="Email"
                                 bodyName="email"
+                                name="email"
                                 type="text"
                                 component={this.renderTextField}
                             />
                             <Field
                                 placeholder="Password"
                                 bodyName="password"
+                                name="password"
                                 type="password"
                                 component={this.renderTextField}
                             />
@@ -142,6 +161,7 @@ class SignUpForm extends Component {
                             <Field
                                 title="Admin?"
                                 bodyName="is_admin"
+                                name="is_admin"
                                 options={[
                                     {
                                         name: "Yes",
@@ -157,13 +177,14 @@ class SignUpForm extends Component {
                             <Field
                                 placeholder="Confirm Password"
                                 bodyName="confirm_password"
+                                name="confirm_password"
                                 type="password"
                                 component={this.renderTextField}
                             />
                         </div>
                         <div className="form-actions">
                             <input type="hidden" name="_csrf" value={this.props.authData.csrfToken} />
-                            <Link className="btn green btn-outline" to="/signin">Back</Link>
+                            <Link className="btn green btn-outline" to="/user/signin">Back</Link>
                             <button type="submit" className="btn btn-success uppercase pull-right">Sign Up</button>
                         </div>
                     </form>
@@ -216,9 +237,16 @@ function mapStateToProps(state) {
     return {authData: state.authData}
 }
 
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        getAuthData: getAuthData,
+        signup: signup
+    }, dispatch)
+}
+
 export default reduxForm({
     validate,
     form: 'SignUpForm'
 })(
-    connect(mapStateToProps, {getAuthData})(SignUpForm)
+    connect(mapStateToProps, mapDispatchToProps)(withRouter(SignUpForm))
 );

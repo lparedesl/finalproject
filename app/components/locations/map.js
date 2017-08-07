@@ -1,18 +1,76 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
+import {connect} from 'react-redux';
+import Helmet from "react-helmet";
+import {withGoogleMap, GoogleMap, Marker} from "react-google-maps";
+
+const GettingStartedGoogleMap = withGoogleMap(props => (
+    <GoogleMap
+        ref={props.onMapLoad}
+        defaultZoom={15}
+        center={ props.coordinates }
+        onClick={props.onMapClick}
+    >
+        {props.markers.map((marker, index) => (
+            <Marker
+                {...marker}
+                onRightClick={() => props.onMarkerRightClick(index)}
+            />
+        ))}
+    </GoogleMap>
+));
 
 class Map extends Component {
-    renderMap() {
-        const map = new GMaps({
-            el: '#map',
-            zoom: 15,
-            lat: 35.22720,
-            lng: -80.84309
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            markers: [{
+                position: {
+                    lat: props.location.lat,
+                    lng: props.location.lng,
+                },
+                key: props.city,
+                defaultAnimation: 2,
+            }],
+        };
+
+        this.handleMapLoad = this.handleMapLoad.bind(this);
+        this.handleMapClick = this.handleMapClick.bind(this);
+        this.handleMarkerRightClick = this.handleMarkerRightClick.bind(this);
+    }
+
+    handleMapLoad(map) {
+        this._mapComponent = map;
+        if (map) {
+            console.log(map.getZoom());
+        }
+    }
+
+    handleMapClick(event) {
+        const nextMarkers = [
+            ...this.state.markers,
+            {
+                position: event.latLng,
+                defaultAnimation: 2,
+                key: Date.now(),
+            },
+        ];
+        this.setState({
+            markers: nextMarkers,
         });
 
-        map.addMarker({
-            lat: 35.18992,
-            lng: -80.84478,
-            title: 'Freedom Park',
+        if (nextMarkers.length === 3) {
+            this.props.toast(
+                `Right click on the marker to remove it`,
+                `Also check the code!`
+            );
+        }
+    }
+
+    handleMarkerRightClick(targetMarker) {
+        const nextMarkers = this.state.markers.filter(marker => marker !== targetMarker);
+        this.setState({
+            markers: nextMarkers,
         });
     }
 
@@ -22,7 +80,7 @@ class Map extends Component {
                 <div className="portlet-title">
                     <div className="caption">
                         <i className=" icon-layers font-blue"></i>
-                        <span className="caption-subject font-blue bold uppercase">Markers</span>
+                        <span className="caption-subject font-blue bold uppercase">Map</span>
                     </div>
                     <div className="actions">
                         <a className="btn btn-circle btn-icon-only btn-default" href="javascript:;">
@@ -37,13 +95,41 @@ class Map extends Component {
                     </div>
                 </div>
                 <div className="portlet-body">
-                    <div id="map"></div>
-                    {this.renderMap()}
+                    <div id="gmap_marker" className="gmaps" style={{position: 'relative', overflow: 'hidden'}}>
+                        <div style={{height: `100%`}}>
+                            <Helmet
+                                title="Getting Started"
+                            />
+                            <GettingStartedGoogleMap
+                                containerElement={
+                                    <div style={{ height: `100%` }} />
+                                }
+                                mapElement={
+                                    <div style={{ height: `100%` }} />
+                                }
+                                onMapLoad={this.handleMapLoad}
+                                onMapClick={this.handleMapClick}
+                                markers={[{
+                                    position: {
+                                        lat: this.props.location.lat,
+                                        lng: this.props.location.lng,
+                                    },
+                                    key: this.props.location.city,
+                                    defaultAnimation: 2,
+                                }]}
+                                onMarkerRightClick={this.handleMarkerRightClick}
+                                coordinates={ {lat: this.props.location.lat, lng: this.props.location.lng} }
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
         );
     }
 }
 
-// Exporting this component as the default (only) export
-export default Map;
+function mapStateToProps(state) {
+    return {location: state.activeLocation}
+}
+
+export default connect(mapStateToProps)(Map);
