@@ -15,7 +15,7 @@ class Calendar extends Component {
     }
 
     componentDidMount() {
-        this.props.getFieldReservations(this.props.field);
+        this.props.getFieldReservations(this.props.field.first_field_id);
     }
 
     renderOptGroups() {
@@ -34,15 +34,15 @@ class Calendar extends Component {
         let fields = _.filter(sport.fields, data => { return data.location_id === id; });
 
         return _.map(fields, field => {
-            let selected = parseInt(this.props.field) === field.id;
+            let selected = parseInt(this.props.field.first_field_id) === field.id;
             return <option value={field.id} key={field.id} selected={selected}>Field {field.field_number}</option>
         })
     }
 
     renderCalendar() {
-        const {fieldReservations} = this.props;
+        const {field} = this.props;
 
-        if (!fieldReservations) {
+        if (!field) {
             return <div>Loading...</div>;
         }
 
@@ -55,10 +55,10 @@ class Calendar extends Component {
             editable: true,
             businessHours: {
                 dow: [ 1, 2, 3, 4, 5 ],
-                start: fieldReservations.openTime,
-                end: fieldReservations.closeTime,
+                start: field.open_time,
+                end: field.close_time,
             },
-            events: fieldReservations.reservations
+            events: field.reservations
         });
     }
 

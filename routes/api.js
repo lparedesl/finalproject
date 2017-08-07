@@ -33,7 +33,13 @@ router.get("/get-locations", function(req, res, next) {
             {
                 model: db.Sport,
                 include: {
-                    model: db.Field
+                    model: db.Field,
+                    include: {
+                        model: db.Reservation,
+                        include: {
+                            model: db.User
+                        }
+                    }
                 }
             }
         ]

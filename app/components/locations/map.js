@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import {connect} from 'react-redux';
 import Helmet from "react-helmet";
 import {withGoogleMap, GoogleMap, Marker} from "react-google-maps";
 
@@ -6,7 +7,7 @@ const GettingStartedGoogleMap = withGoogleMap(props => (
     <GoogleMap
         ref={props.onMapLoad}
         defaultZoom={15}
-        defaultCenter={ props.coordinates }
+        center={ props.coordinates }
         onClick={props.onMapClick}
     >
         {props.markers.map((marker, index) => (
@@ -25,8 +26,8 @@ class Map extends Component {
         this.state = {
             markers: [{
                 position: {
-                    lat: props.lat,
-                    lng: props.lng,
+                    lat: props.location.lat,
+                    lng: props.location.lng,
                 },
                 key: props.city,
                 defaultAnimation: 2,
@@ -108,9 +109,16 @@ class Map extends Component {
                                 }
                                 onMapLoad={this.handleMapLoad}
                                 onMapClick={this.handleMapClick}
-                                markers={this.state.markers}
+                                markers={[{
+                                    position: {
+                                        lat: this.props.location.lat,
+                                        lng: this.props.location.lng,
+                                    },
+                                    key: this.props.location.city,
+                                    defaultAnimation: 2,
+                                }]}
                                 onMarkerRightClick={this.handleMarkerRightClick}
-                                coordinates={ {lat: this.props.lat, lng: this.props.lng} }
+                                coordinates={ {lat: this.props.location.lat, lng: this.props.location.lng} }
                             />
                         </div>
                     </div>
@@ -120,4 +128,8 @@ class Map extends Component {
     }
 }
 
-export default Map;
+function mapStateToProps(state) {
+    return {location: state.activeLocation}
+}
+
+export default connect(mapStateToProps)(Map);

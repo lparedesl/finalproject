@@ -1,5 +1,7 @@
+import _ from 'lodash';
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
+import moment from 'moment';
 import {connect} from 'react-redux';
 import Header from './header';
 import Calendar from './calendar';
@@ -7,10 +9,6 @@ import Reservation from './reservation';
 import Map from './map';
 import Info from './info';
 import {selectField} from '../../actions';
-// const env = require("../../../config/env");
-// const googleMapsClient = require('@google/maps').createClient({
-//     key: env.GEOCODING_KEY
-// });
 
 class LocationDetails extends Component {
     constructor() {
@@ -26,26 +24,23 @@ class LocationDetails extends Component {
 
         const {location} = this.props;
         let fields = _.filter(location.sports[0].fields, data => { return data.location_id === location.id; });
-        return fields[0].id;
+        let info = {};
+        info.reservations = [];
+        _.map(fields[0].reservations, function(reservation) {
+            let obj = {
+                title: reservation.user.first_name + " " + reservation.user.last_name,
+                start: moment(reservation.reservation_date).format(),
+                end: moment(reservation.reservation_date).add(1, 'hours').format(),
+                backgroundColor: 'green',
+                allDay: false,
+            };
+            info.reservations.push(obj);
+        });
+        info.first_field_id = fields[0].id;
+        info.open_time = location.open_time;
+        info.close_time = location.close_time;
+        return info;
     }
-
-    // getCoordinates(location, cb) {
-    //     const {address, city, state, zip_code} = location;
-    //     let coordinates = {};
-    //
-    //     googleMapsClient.geocode({
-    //         address: `${address}, ${city}, ${state} ${zip_code}`
-    //     }, function(err, response) {
-    //         if (!err) {
-    //             coordinates.lat = response.json.results[0].geometry.location.lat;
-    //             coordinates.lng = response.json.results[0].geometry.location.lng;
-    //
-    //             // console.log(coordinates);
-    //
-    //             cb(coordinates);
-    //         }
-    //     });
-    // }
 
     render() {
         const {location, titleSingular} = this.props;
@@ -94,11 +89,7 @@ class LocationDetails extends Component {
                 </div>
                 <div className="col-md-4">
                     <div className="row">
-                        <Map
-                            lat={location.lat}
-                            lng={location.lng}
-                            city={location.city}
-                        />
+                        <Map/>
                     </div>
                     <div className="row">
                         <Info/>
@@ -110,7 +101,9 @@ class LocationDetails extends Component {
 }
 
 function mapStateToProps(state) {
-    return {field: state.activeField}
+    return {
+        field: state.activeField
+    }
 }
 
 export default connect(mapStateToProps, {selectField})(LocationDetails);
