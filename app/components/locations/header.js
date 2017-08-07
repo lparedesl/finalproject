@@ -4,7 +4,13 @@ class Header extends Component {
   render() {
     return (
       <div className="m-heading-1 border-green m-bordered">
-        <h1>Park Name</h1>
+        <div className="list-icon-container">
+          <h1>Park Name</h1>
+          <a className="list-icon-container">
+            <i className="icon-star"></i>
+          </a>
+          <p>Favorite this Location</p>
+        </div>
         <p> 123 Main St </p>
         <p>
           Charlotte, NC 28202
