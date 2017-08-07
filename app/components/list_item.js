@@ -6,7 +6,7 @@ const ListItem = (props) => {
     return (
         <li className="mt-list-item">
             <div className="list-icon-container">
-                <a onClick={() => props.selectLocation(data)}>
+                <a onClick={() => props.selectItem(data)}>
                     <i className="fa fa-angle-right"></i>
                 </a>
             </div>

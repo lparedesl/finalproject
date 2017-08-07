@@ -5,7 +5,7 @@ import Header from './header';
 import Sidebar from './sidebar';
 import Footer from './footer';
 import Profile from './user/profile';
-import Locations from './locations/content';
+import Content from './page_content';
 // import Teams from './teams/content'
 
 class Dashboard extends Component {
@@ -26,7 +26,7 @@ class Dashboard extends Component {
                                 <div>
                                     <Switch>
                                         <Route path="/dashboard/profile" component={Profile}/>
-                                        <Route path="/dashboard/locations" render={() => <Locations title="Locations" titleSingular="location"/>}/>
+                                        <Route path="/dashboard/locations" render={() => <Content title="Locations" titleSingular="location" fnName="selectLocation"/>}/>
                                     </Switch>
                                 </div>
                             </Router>
