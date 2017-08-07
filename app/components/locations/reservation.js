@@ -71,18 +71,6 @@ class Reservation extends Component {
         });
     }
 
-    // renderErrors() {
-    //     const {hasErrors, messages} = this.props.authData;
-    //     if (hasErrors) {
-    //         return (
-    //             <div className="alert alert-danger">
-    //                 <button className="close" data-close="alert"></button>
-    //                 {messages.map(message => <span> {message} </span>)}
-    //             </div>
-    //         )
-    //     }
-    // }
-
     render() {
         const {handleSubmit} = this.props;
 
@@ -103,7 +91,6 @@ class Reservation extends Component {
                                 <div className="row">
                                     <div className="col-sm-12">
                                         <form className="reservation-form" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-                                            {/*{this.renderErrors()}*/}
                                             <div id="errors"></div>
                                             <div className="row">
                                                 <div className="col-md-12">
@@ -139,23 +126,7 @@ class Reservation extends Component {
     }
 }
 
-function validate(values) {
-    const errors = {};
-
-    // if (!values.email) errors.email = 'Enter an email';
-    // if (!values.password) errors.password = 'Enter a password';
-    // if (!values.end_year) errors.end_year = 'Enter an end year';
-    // if (values.end_year < values.start_year) errors.end_year = 'Enter a valid end year';
-
-    return errors;
-}
-
-// function mapStateToProps(state) {
-//     return {authData: state.authData}
-// }
-
 export default reduxForm({
-    validate,
     form: 'ReservationForm'
 })(
     connect(null, {reserveField})(withRouter(Reservation))

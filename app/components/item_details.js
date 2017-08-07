@@ -3,18 +3,20 @@ import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
 import moment from 'moment';
 import {connect} from 'react-redux';
-import Header from './header';
-import Calendar from './calendar';
-import Reservation from './reservation';
-import Map from './map';
-import Info from './info';
-import {selectField} from '../../actions';
+import LocationHeader from './locations/location_header';
+import Calendar from './locations/calendar';
+import Reservation from './locations/reservation';
+import Map from './locations/map';
+import Info from './locations/info';
+import {selectField} from '../actions/index';
 
-class LocationDetails extends Component {
+class ItemDetails extends Component {
     constructor() {
         super();
 
         this.getFirstField = this.getFirstField.bind(this);
+        this.renderHeader = this.renderHeader.bind(this);
+        this.renderRightCol = this.renderRightCol.bind(this);
     }
 
     getFirstField() {
@@ -22,8 +24,8 @@ class LocationDetails extends Component {
             return this.props.field;
         }
 
-        const {location} = this.props;
-        let fields = _.filter(location.sports[0].fields, data => { return data.location_id === location.id; });
+        const {item} = this.props;
+        let fields = _.filter(item.sports[0].fields, data => { return data.location_id === item.id; });
         let info = {};
         info.reservations = [];
         _.map(fields[0].reservations, function(reservation) {
@@ -37,15 +39,52 @@ class LocationDetails extends Component {
             info.reservations.push(obj);
         });
         info.first_field_id = fields[0].id;
-        info.open_time = location.open_time;
-        info.close_time = location.close_time;
+        info.open_time = item.open_time;
+        info.close_time = item.close_time;
         return info;
     }
 
-    render() {
-        const {location, titleSingular} = this.props;
+    renderHeader() {
+        const {item, titleSingular} = this.props;
 
-        if (!location) {
+        switch(titleSingular) {
+            case "location":
+                return (
+                    <LocationHeader
+                        title={item.name}
+                        info={{
+                            address: item.address,
+                            city: item.city,
+                            state: item.state,
+                            zipCode: item.zip_code
+                        }}
+                    />
+                )
+        }
+    }
+
+    renderRightCol() {
+        const {titleSingular} = this.props;
+
+        switch(titleSingular) {
+            case "location":
+                return (
+                    <div>
+                        <div className="row">
+                            <Map/>
+                        </div>
+                        <div className="row">
+                            <Info/>
+                        </div>
+                    </div>
+                )
+        }
+    }
+
+    render() {
+        const {item, titleSingular} = this.props;
+
+        if (!item) {
             return (
                 <div className="portlet light portlet-fit bordered">
                     <div className="portlet-body">
@@ -58,13 +97,7 @@ class LocationDetails extends Component {
         return (
             <div className="row">
                 <div className="col-md-8">
-                    <Header
-                        title={location.name}
-                        address={location.address}
-                        city={location.city}
-                        state={location.state}
-                        zipCode={location.zip_code}
-                    />
+                    {this.renderHeader()}
                     <Router>
                         <div>
                             <Switch>
@@ -77,8 +110,8 @@ class LocationDetails extends Component {
                                 />
                                 <Route
                                     path="/dashboard/locations"
-                                    render={() => <Calendar
-                                        location={location}
+                                    render={() =><Calendar
+                                        location={item}
                                         field={this.getFirstField()}
                                         selectField={(field) => this.props.selectField(field)}
                                     />}
@@ -88,12 +121,7 @@ class LocationDetails extends Component {
                     </Router>
                 </div>
                 <div className="col-md-4">
-                    <div className="row">
-                        <Map/>
-                    </div>
-                    <div className="row">
-                        <Info/>
-                    </div>
+                    {this.renderRightCol()}
                 </div>
             </div>
         )
@@ -106,4 +134,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, {selectField})(LocationDetails);
+export default connect(mapStateToProps, {selectField})(ItemDetails);

@@ -1,8 +1,9 @@
 import _ from 'lodash';
 import React, {Component} from "react";
 import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import ListItem from './list_item';
-import {selectLocation} from '../../actions';
+import {selectLocation} from '../actions/index';
 
 class LocationList extends Component {
     renderList() {
@@ -11,7 +12,7 @@ class LocationList extends Component {
                 <ListItem
                     key={item.id}
                     data={item}
-                    selectLocation={(location) => this.props.selectLocation(location)}
+                    selectItem={(item) => this.props[this.props.fnName](item)}
                 />
             )
         })
@@ -40,4 +41,10 @@ class LocationList extends Component {
     }
 }
 
-export default connect(null, {selectLocation})(LocationList);
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        selectLocation: selectLocation
+    }, dispatch)
+}
+
+export default connect(null, mapDispatchToProps)(LocationList);

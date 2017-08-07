@@ -1,13 +1,12 @@
 import React, {Component} from 'react';
-// import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import LocationDetails from './location_details';
-import LocationList from './location_list';
-import {getLocations} from '../../actions';
-import {getUserInfo} from '../../actions';
+import ItemDetails from './item_details';
+import ItemsList from './items_list';
+import {getLocations} from '../actions/index';
+import {getUserInfo} from '../actions/index';
 
-class LocationsContent extends Component {
+class Content extends Component {
     constructor() {
         super();
 
@@ -15,7 +14,7 @@ class LocationsContent extends Component {
     }
 
     componentDidMount() {
-        this.props.getLocations();
+        this.props[`get${this.props.title}`]();
         this.props.getUserInfo();
     }
 
@@ -35,16 +34,17 @@ class LocationsContent extends Component {
                 </h1>
                 <div className="row">
                     <div className="col-md-3">
-                        <LocationList
+                        <ItemsList
                             title={this.props.title}
-                            items={this.props.locations}
+                            items={this.props[this.props.title.toLowerCase()]}
+                            fnName={this.props.fnName}
                         />
                     </div>
                     <div className="col-md-9">
-                        <LocationDetails
+                        <ItemDetails
                             titleSingular={this.props.titleSingular}
                             userId={this.isSignedIn()}
-                            location={this.props.location}
+                            item={this.props[this.props.titleSingular]}
                         />
                     </div>
                 </div>
@@ -68,4 +68,4 @@ function mapDispatchToProps(dispatch) {
     }, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LocationsContent);
+export default connect(mapStateToProps, mapDispatchToProps)(Content);

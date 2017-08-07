@@ -2,13 +2,13 @@ import React, { Component } from "react";
 
 class Header extends Component {
     render() {
-        const {title, address, city, state, zipCode} = this.props;
+        const {title, info} = this.props;
         return (
             <div className="m-heading-1 border-green m-bordered">
                 <h1>{title}</h1>
-                <p> {address} </p>
+                <p> {info.address} </p>
                 <p>
-                {city}, {state} {zipCode}
+                {info.city}, {info.state} {info.zipCode}
                 </p>
             </div>
         );
