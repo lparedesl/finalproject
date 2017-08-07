@@ -3,9 +3,10 @@ import React, {Component} from "react";
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import ListItem from './list_item';
-import {selectLocation} from '../actions/index';
+import {selectLocation} from '../actions';
+import {selectTeam} from '../actions';
 
-class LocationList extends Component {
+class ItemsList extends Component {
     renderList() {
         return _.map(this.props.items, item => {
             return (
@@ -43,8 +44,9 @@ class LocationList extends Component {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        selectLocation: selectLocation
+        selectLocation: selectLocation,
+        selectTeam: selectTeam
     }, dispatch)
 }
 
-export default connect(null, mapDispatchToProps)(LocationList);
+export default connect(null, mapDispatchToProps)(ItemsList);

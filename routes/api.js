@@ -65,6 +65,22 @@ router.get("/get-locations", function(req, res, next) {
     })
 });
 
+router.get("/get-teams", function(req, res, next) {
+    db.Team.findAll({
+        include: [
+            {
+                model: db.User
+            }
+        ]
+    })
+    .then(function(data) {
+        res.json(data);
+    })
+    .catch(function(error) {
+        console.log(error);
+    })
+});
+
 router.post("/field-schedule", function(req, res, next) {
     db.Reservation.findAll({
         where: {

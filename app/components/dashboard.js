@@ -6,7 +6,6 @@ import Sidebar from './sidebar';
 import Footer from './footer';
 import Profile from './user/profile';
 import Content from './page_content';
-// import Teams from './teams/content'
 
 class Dashboard extends Component {
     componentDidMount() {
@@ -26,7 +25,8 @@ class Dashboard extends Component {
                                 <div>
                                     <Switch>
                                         <Route path="/dashboard/profile" component={Profile}/>
-                                        <Route path="/dashboard/locations" render={() => <Content title="Locations" titleSingular="location" fnName="selectLocation"/>}/>
+                                        <Route path="/dashboard/locations" render={() => <Content title="Locations" titleSingular="location" fnName="selectLocation" message="Please select a location"/>}/>
+                                        <Route path="/dashboard/teams" render={() => <Content title="Teams" titleSingular="team" fnName="selectTeam" message="Please select a team or create a new one below"/>}/>
                                     </Switch>
                                 </div>
                             </Router>
