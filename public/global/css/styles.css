@@ -38,6 +38,10 @@ body.login {
     filter: alpha(opacity=2);
 }
 
+.reservation-form .row:not(:last-child) {
+    margin-bottom: 20px;
+}
+
 #map {
     width: 400px;
     height: 400px;
