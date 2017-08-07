@@ -7,7 +7,7 @@ const TeamImage = (props) => {
     <div className="row">
         <div className="col-sm-12">
             <div className="thumbnail">
-                <img src={props.image} alt={props.name} />
+                <img src={image} alt={name} />
             </div>
         </div>
     </div>

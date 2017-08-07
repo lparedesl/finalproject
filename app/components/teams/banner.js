@@ -1,11 +1,18 @@
+import _ from 'lodash';
 import React, {Component} from "react";
 
 class Banner extends Component {
-  renderTeamList() {
-    return _.map(this.props.items, item => {
-      return (<BannerItem key={item.id} data={item} selectTeam={(team) => this.props.selectTeam(team)}/>)
-    })
-  }
+  // renderTeamList() {
+  //   return _.map(this.props.items, item => {
+  //     return (
+  //         <BannerItem
+  //           key={item.id}
+  //           data={item}
+  //           selectTeam={(team) => this.props.selectTeam(team)}
+  //         />
+  //     )
+  //   })
+  // }
 
   render() {
     return (
@@ -18,7 +25,7 @@ class Banner extends Component {
           </div>
           <div className="mt-list-container list-simple ext-1">
               <ul>
-                {this.renderTeamList()}
+                {/*{this.renderTeamList()}*/}
               </ul>
           </div>
       </div>

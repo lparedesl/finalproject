@@ -3,8 +3,9 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import ItemDetails from './item_details';
 import ItemsList from './items_list';
-import {getLocations} from '../actions/index';
-import {getUserInfo} from '../actions/index';
+import {getLocations} from '../actions';
+import {getTeams} from '../actions';
+import {getUserInfo} from '../actions';
 
 class Content extends Component {
     constructor() {
@@ -29,6 +30,7 @@ class Content extends Component {
     render() {
         return (
             <div>
+                {console.log(this.props.teams)}
                 <h1 className="page-title">
                     {this.props.title}
                 </h1>
@@ -45,6 +47,7 @@ class Content extends Component {
                             titleSingular={this.props.titleSingular}
                             userId={this.isSignedIn()}
                             item={this.props[this.props.titleSingular]}
+                            message={this.props.message}
                         />
                     </div>
                 </div>
@@ -56,7 +59,9 @@ class Content extends Component {
 function mapStateToProps(state) {
     return {
         locations: state.locations,
+        teams: state.teams,
         location: state.activeLocation,
+        team: state.activeTeam,
         userInfo: state.authData
     }
 }
@@ -64,6 +69,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         getLocations: getLocations,
+        getTeams: getTeams,
         getUserInfo: getUserInfo
     }, dispatch)
 }

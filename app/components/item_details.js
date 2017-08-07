@@ -4,11 +4,14 @@ import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
 import moment from 'moment';
 import {connect} from 'react-redux';
 import LocationHeader from './locations/location_header';
+import TeamHeader from './teams/header';
 import Calendar from './locations/calendar';
 import Reservation from './locations/reservation';
 import Map from './locations/map';
 import Info from './locations/info';
-import {selectField} from '../actions/index';
+import Banner from './teams/banner';
+import TeamImage from './teams/team_image';
+import {selectField} from '../actions';
 
 class ItemDetails extends Component {
     constructor() {
@@ -16,6 +19,7 @@ class ItemDetails extends Component {
 
         this.getFirstField = this.getFirstField.bind(this);
         this.renderHeader = this.renderHeader.bind(this);
+        this.renderAddButton = this.renderAddButton.bind(this);
         this.renderRightCol = this.renderRightCol.bind(this);
     }
 
@@ -59,12 +63,32 @@ class ItemDetails extends Component {
                             zipCode: item.zip_code
                         }}
                     />
-                )
+                );
+
+            case "team":
+                return (
+                    <TeamHeader
+                        name={item.name}
+                    />
+                );
+        }
+    }
+
+    renderAddButton() {
+        const {titleSingular} = this.props;
+
+        switch(titleSingular) {
+            case "team":
+                return (
+                    <button className="btn btn-circle blue btn-block btn-lg m-icon-big">Create New Team
+                        <i className="m-icon-big-swapright m-icon-white"></i>
+                    </button>
+                );
         }
     }
 
     renderRightCol() {
-        const {titleSingular} = this.props;
+        const {item, titleSingular} = this.props;
 
         switch(titleSingular) {
             case "location":
@@ -77,18 +101,36 @@ class ItemDetails extends Component {
                             <Info/>
                         </div>
                     </div>
-                )
+                );
+
+            case "team":
+                return (
+                    <div>
+                        <div className="row">
+                            <TeamImage
+                                image={item.image}
+                                name={item.name}
+                            />
+                        </div>
+                        <div className="row">
+                            <button className="btn btn-circle blue btn-block btn-lg m-icon-big">Add Members
+                                <i className="m-icon-big-swapright m-icon-white"></i>
+                            </button>
+                        </div>
+                    </div>
+                );
         }
     }
 
     render() {
-        const {item, titleSingular} = this.props;
+        const {item, message} = this.props;
 
         if (!item) {
             return (
                 <div className="portlet light portlet-fit bordered">
                     <div className="portlet-body">
-                        <h3>Please select a {titleSingular}</h3>
+                        <h3>{message}</h3>
+                        {this.renderAddButton()}
                     </div>
                 </div>
             )
@@ -115,6 +157,10 @@ class ItemDetails extends Component {
                                         field={this.getFirstField()}
                                         selectField={(field) => this.props.selectField(field)}
                                     />}
+                                />
+                                <Route
+                                    path="/dashboard/teams"
+                                    component={Banner}
                                 />
                             </Switch>
                         </div>

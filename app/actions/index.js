@@ -92,7 +92,7 @@ export function getFieldReservations(id) {
     };
 }
 export function getTeams() {
-    const request = axios.get('api/get-teams');
+    const request = axios.get('/api/get-teams');
 
     return {
         type: GET_TEAMS,
