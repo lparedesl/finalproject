@@ -7,6 +7,10 @@ import Reservation from './reservation';
 import Map from './map';
 import Info from './info';
 import {selectField} from '../../actions';
+// const env = require("../../../config/env");
+// const googleMapsClient = require('@google/maps').createClient({
+//     key: env.GEOCODING_KEY
+// });
 
 class LocationDetails extends Component {
     constructor() {
@@ -24,6 +28,24 @@ class LocationDetails extends Component {
         let fields = _.filter(location.sports[0].fields, data => { return data.location_id === location.id; });
         return fields[0].id;
     }
+
+    // getCoordinates(location, cb) {
+    //     const {address, city, state, zip_code} = location;
+    //     let coordinates = {};
+    //
+    //     googleMapsClient.geocode({
+    //         address: `${address}, ${city}, ${state} ${zip_code}`
+    //     }, function(err, response) {
+    //         if (!err) {
+    //             coordinates.lat = response.json.results[0].geometry.location.lat;
+    //             coordinates.lng = response.json.results[0].geometry.location.lng;
+    //
+    //             // console.log(coordinates);
+    //
+    //             cb(coordinates);
+    //         }
+    //     });
+    // }
 
     render() {
         const {location, titleSingular} = this.props;
@@ -72,7 +94,11 @@ class LocationDetails extends Component {
                 </div>
                 <div className="col-md-4">
                     <div className="row">
-                        <Map/>
+                        <Map
+                            lat={location.lat}
+                            lng={location.lng}
+                            city={location.city}
+                        />
                     </div>
                     <div className="row">
                         <Info/>

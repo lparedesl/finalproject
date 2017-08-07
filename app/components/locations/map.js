@@ -1,4 +1,3 @@
-import _ from "lodash";
 import React, {Component} from "react";
 import Helmet from "react-helmet";
 import {withGoogleMap, GoogleMap, Marker} from "react-google-maps";
@@ -7,7 +6,7 @@ const GettingStartedGoogleMap = withGoogleMap(props => (
     <GoogleMap
         ref={props.onMapLoad}
         defaultZoom={15}
-        defaultCenter={{ lat: 25.0112183, lng: 121.52067570000001 }}
+        defaultCenter={ props.coordinates }
         onClick={props.onMapClick}
     >
         {props.markers.map((marker, index) => (
@@ -19,17 +18,17 @@ const GettingStartedGoogleMap = withGoogleMap(props => (
     </GoogleMap>
 ));
 
-export default class Map extends Component {
-    constructor() {
-        super();
+class Map extends Component {
+    constructor(props) {
+        super(props);
 
         this.state = {
             markers: [{
                 position: {
-                    lat: 25.0112183,
-                    lng: 121.52067570000001,
+                    lat: props.lat,
+                    lng: props.lng,
                 },
-                key: `Taiwan`,
+                key: props.city,
                 defaultAnimation: 2,
             }],
         };
@@ -46,17 +45,13 @@ export default class Map extends Component {
         }
     }
 
-    /*
-     * This is called when you click on the map.
-     * Go and try click now.
-     */
     handleMapClick(event) {
         const nextMarkers = [
             ...this.state.markers,
             {
                 position: event.latLng,
                 defaultAnimation: 2,
-                key: Date.now(), // Add a key property for: http://fb.me/react-warning-keys
+                key: Date.now(),
             },
         ];
         this.setState({
@@ -72,11 +67,6 @@ export default class Map extends Component {
     }
 
     handleMarkerRightClick(targetMarker) {
-        /*
-         * All you modify is data, and the view is driven by data.
-         * This is so called data-driven-development. (And yes, it's now in
-         * web front end and even with google maps API.)
-         */
         const nextMarkers = this.state.markers.filter(marker => marker !== targetMarker);
         this.setState({
             markers: nextMarkers,
@@ -120,6 +110,7 @@ export default class Map extends Component {
                                 onMapClick={this.handleMapClick}
                                 markers={this.state.markers}
                                 onMarkerRightClick={this.handleMarkerRightClick}
+                                coordinates={ {lat: this.props.lat, lng: this.props.lng} }
                             />
                         </div>
                     </div>
@@ -128,3 +119,5 @@ export default class Map extends Component {
         );
     }
 }
+
+export default Map;

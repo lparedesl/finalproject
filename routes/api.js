@@ -1,10 +1,14 @@
 var express = require("express");
 var router = express.Router();
 var _ = require("lodash");
+var env = require("../config/env");
 var moment = require('moment');
 var csrf = require("csurf");
 var csrfProtection = csrf();
 var db = require("../models");
+var googleMapsClient = require('@google/maps').createClient({
+    key: env.GEOCODING_KEY
+});
 
 router.get("/get-user-info", function(req, res, next) {
     db.User.findOne({
@@ -35,7 +39,20 @@ router.get("/get-locations", function(req, res, next) {
         ]
     })
     .then(function(data) {
-        res.json(data);
+        _.map(data, function(location, i) {
+            googleMapsClient.geocode({
+                address: location.address + ', ' + location.city + ', ' + location.state + ' ' + location.zip_code
+            }, function(err, response) {
+                if (!err) {
+                    data[i].dataValues.lat = response.json.results[0].geometry.location.lat;
+                    data[i].dataValues.lng = response.json.results[0].geometry.location.lng;
+
+                    if (data.length === i + 1) {
+                        res.json(data);
+                    }
+                }
+            });
+        });
     })
     .catch(function(error) {
         console.log(error);
