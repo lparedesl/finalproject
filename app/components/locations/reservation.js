@@ -44,7 +44,13 @@ class Reservation extends Component {
             user: this.props.userId,
             field: this.props.field
         };
+
         this.props.reserveField(data, res => {
+            console.log(res.data);
+            if (res.data.error) {
+                return $("#errors").html(`<div class="alert alert-danger"><button class="close" data-close="alert"></button><span>${res.data.error}</span></div>`);
+            }
+
             if (res.data) {
                 toastr.options = {
                     closeButton    : true,
@@ -98,6 +104,7 @@ class Reservation extends Component {
                                     <div className="col-sm-12">
                                         <form className="reservation-form" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                                             {/*{this.renderErrors()}*/}
+                                            <div id="errors"></div>
                                             <div className="row">
                                                 <div className="col-md-12">
                                                     <Field

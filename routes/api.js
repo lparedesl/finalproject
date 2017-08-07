@@ -71,8 +71,8 @@ router.post("/field-schedule", function(req, res, next) {
               _.map(data, function(reservation) {
                   var obj = {
                       title: reservation.user.first_name + " " + reservation.user.last_name,
-                      start: reservation.reservation_date,
-                      end: moment(reservation.reservation_date).add(1, 'hours'),
+                      start: moment.tz(reservation.reservation_date, "America/New_York").format(),
+                      end: moment.tz(moment(reservation.reservation_date).add(1, 'hours'), "America/New_York").format(),
                       backgroundColor: 'green',
                       allDay: false,
                   };
@@ -109,12 +109,64 @@ router.post("/field-schedule", function(req, res, next) {
 });
 
 router.post("/reserve-field", function(req, res, next) {
-    var reservation = {
-        reservation_date: moment(req.body.reservation_date + " " + req.body.reservation_time, "YYYY-MM-DD hh:mm:ss").format(),
-        user_id: parseInt(req.body.user),
-        field_id: parseInt(req.body.field)
-    };
-    res.json(reservation);
+    db.Field.findOne({
+        where: {
+            id: req.body.field
+        },
+        include: [
+            {
+                model: db.Location,
+                include: {
+                    model: db.LocationSchedule
+                }
+            },
+            {
+                model: db.Reservation
+            }
+        ]
+    })
+    .then(function(field) {
+        var error = false;
+        var body = {
+            reservation_date: moment(req.body.reservation_date + " " + req.body.reservation_time, "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm:ss"),
+            user_id: parseInt(req.body.user),
+            field_id: parseInt(req.body.field)
+        };
+
+        // Field is taken
+        _.map(field.reservations, function(reservation) {
+            var dbDate = moment.tz(reservation.reservation_date, "America/New_York").format("YYYY-MM-DD HH:mm:ss");
+            if (dbDate === body.reservation_date) {
+                error = true;
+                res.json({error: "This field is reserved at the selected time"});
+            }
+        });
+
+        // Nonbusiness Day
+        if (field.location.location_schedule.days_long.indexOf(moment(req.body.reservation_date, "YYYY-MM-DD").format("dddd")) === -1) {
+            error = true;
+            res.json({error: "This location is not open on the selected day"});
+        }
+
+        // Nonbusiness Time
+        if (moment(req.body.reservation_time, "HH:mm:ss").format("HH:mm:ss") < moment(field.location.open_time, "HH:mm:ss").format("HH:mm:ss") || moment(req.body.reservation_time, "HH:mm:ss").format("HH:mm:ss") >= moment(field.location.close_time, "HH:mm:ss").format("HH:mm:ss")) {
+            error = true;
+            res.json({error: "This location is not open at the selected time"});
+        }
+
+        if (!error) {
+            db.Reservation.create(body)
+            .then(function(reservation) {
+                res.json(reservation);
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+        }
+    })
+    .catch(function(error) {
+        console.log(error);
+    });
 });
 
 router.use(csrfProtection);
