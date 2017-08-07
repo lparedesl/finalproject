@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 
 class Sidebar extends Component {
@@ -14,41 +14,41 @@ class Sidebar extends Component {
                             </div>
                         </li>
                         <li className="nav-item start ">
-                            <a href="/" className="nav-link nav-toggle">
+                            <Link to="/" className="nav-link nav-toggle">
                                 <i className="icon-home"></i>
                                 <span className="title">Home</span>
-                            </a>
+                            </Link>
                         </li>
                         <li className="heading">
                             <h3 className="uppercase">Navigation</h3>
                         </li>
                         <li className="nav-item  ">
-                            <a href="/locations" className="nav-link nav-toggle">
+                            <Link to="/dashboard/locations" className="nav-link nav-toggle">
                                 <i className="icon-map"></i>
                                 <span className="title">Locations</span>
                                 <span className="arrow"></span>
-                            </a>
+                            </Link>
                         </li>
                         <li className="nav-item  ">
-                            <a href="/teams" className="nav-link nav-toggle">
+                            <Link to="/dashboard/teams" className="nav-link nav-toggle">
                                 <i className="icon-organization"></i>
                                 <span className="title">Teams</span>
                                 <span className="arrow"></span>
-                            </a>
+                            </Link>
                         </li>
                         <li className="nav-item  ">
-                            <a href="/favorites" className="nav-link nav-toggle">
+                            <Link to="/dashboard/favorites" className="nav-link nav-toggle">
                                 <i className="icon-star"></i>
                                 <span className="title">Favorites</span>
                                 <span className="arrow"></span>
-                            </a>
+                            </Link>
                         </li>
                         <li className="nav-item  active">
-                            <a href="/account" className="nav-link nav-toggle">
+                            <Link to="/dashboard/profile" className="nav-link nav-toggle">
                                 <i className="icon-settings"></i>
                                 <span className="title">My Account</span>
                                 <span className="selected"></span>
-                            </a>
+                            </Link>
                         </li>
                     </ul>
                 </div>
@@ -57,4 +57,4 @@ class Sidebar extends Component {
     }
 }
 
-export default Sidebar;
+export default withRouter(Sidebar);

@@ -7,20 +7,6 @@ router.get("/logout", isLoggedIn, function(req, res, next) {
     res.redirect("/");
 });
 
- // router.get("/teams", function(req, res, next) {
- //     res.render("content", {
- //         title: "Project Title | Teams",
- //         name: "Teams"
- //     });
- // });
- //
- // router.get("/teams/*?", function(req, res, next) {
- //     res.render("content", {
- //         title: "Project Title | Teams",
- //         name: "Teams"
- //     });
- // });
-
 router.get("*", function(req, res, next) {
     res.render("index", {
         title: "Project Title | Home"
