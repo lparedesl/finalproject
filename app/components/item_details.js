@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
 import moment from 'moment';
 import {connect} from 'react-redux';
-import LocationHeader from './locations/location_header';
+import LocationHeader from './locations/header';
 import TeamHeader from './teams/header';
 import Calendar from './locations/calendar';
 import Reservation from './locations/reservation';
@@ -49,20 +49,23 @@ class ItemDetails extends Component {
     }
 
     renderHeader() {
-        const {item, titleSingular} = this.props;
+        const {item, titleSingular, userInfo} = this.props;
 
         switch(titleSingular) {
             case "location":
+                const favorite = _.filter(item.users, user => user.id === userInfo.id);
+
                 return (
                     <LocationHeader
                         title={item.name}
                         info={{
+                            locationId: item.id,
                             address: item.address,
                             city: item.city,
                             state: item.state,
                             zipCode: item.zip_code
                         }}
-                        location={this.props.location}
+                        favorite={favorite.length > 0}
                     />
                 );
 
@@ -187,7 +190,8 @@ class ItemDetails extends Component {
 
 function mapStateToProps(state) {
     return {
-        field: state.activeField
+        field: state.activeField,
+        userInfo: state.authData
     }
 }
 

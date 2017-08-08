@@ -41,6 +41,9 @@ router.get("/get-locations", function(req, res, next) {
                         }
                     }
                 }
+            },
+            {
+                model: db.User
             }
         ]
     })
@@ -249,6 +252,34 @@ router.post("/reserve-field", function(req, res, next) {
     .catch(function(error) {
         console.log(error);
     });
+});
+
+router.post("/favorite-location", function(req, res, next) {
+    if (!req.body.favorite) {
+        db.FavoriteLocation.create({
+            user_id: req.body.user_id,
+            location_id: req.body.location_id
+        })
+        .then(function() {
+            res.json({newState: true});
+        })
+        .catch(function(error) {
+            console.log(error);
+        });
+    } else {
+        db.FavoriteLocation.destroy({
+            where: {
+                user_id: req.body.user_id,
+                location_id: req.body.location_id
+            }
+        })
+        .then(function() {
+            res.json({newState: false});
+        })
+        .catch(function(error) {
+            console.log(error);
+        });
+    }
 });
 
 router.use(csrfProtection);

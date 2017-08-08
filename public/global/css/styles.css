@@ -115,3 +115,9 @@ body.login {
     border: none !important;
     color: #777;
 }
+
+.tiles .tile {
+    height: 135px !important;
+    width: 31% !important;
+    border: none !important;
+}
