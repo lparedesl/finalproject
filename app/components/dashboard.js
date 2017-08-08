@@ -6,6 +6,7 @@ import Sidebar from './sidebar';
 import Footer from './footer';
 import Profile from './user/profile';
 import Content from './page_content';
+import ReservationsContent from './reservations/content';
 
 class Dashboard extends Component {
     componentDidMount() {
@@ -48,7 +49,7 @@ class Dashboard extends Component {
                                             />
                                         }/>
                                         <Route path="/dashboard/reservations" render={() =>
-                                            <Content
+                                            <ReservationsContent
                                                 content={this.props.tab}
                                                 title="Reservations"
                                                 titleSingular="reservation"

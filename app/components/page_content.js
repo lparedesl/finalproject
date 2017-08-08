@@ -34,7 +34,6 @@ class Content extends Component {
                 <h1 className="page-title">
                     {this.props.title}
                 </h1>
-                {console.log(this.props.content)}
                 <div className="row">
                     <div className="col-md-3">
                         <ItemsList
@@ -63,6 +62,7 @@ function mapStateToProps(state) {
     return {
         locations: state.locations,
         teams: state.teams,
+        reservations: state.reservations,
         locationItem: state.activeLocation,
         team: state.activeTeam,
         userInfo: state.authData

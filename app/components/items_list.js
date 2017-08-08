@@ -5,6 +5,7 @@ import {bindActionCreators} from 'redux';
 import ListItem from './list_item';
 import {selectLocation} from '../actions';
 import {selectTeam} from '../actions';
+import {selectReservation} from '../actions';
 
 class ItemsList extends Component {
     renderList() {
@@ -46,7 +47,8 @@ class ItemsList extends Component {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         selectLocation: selectLocation,
-        selectTeam: selectTeam
+        selectTeam: selectTeam,
+        selectReservation: selectReservation,
     }, dispatch)
 }
 
