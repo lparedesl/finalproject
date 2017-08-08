@@ -25,6 +25,7 @@ class ItemDetails extends Component {
 
     getFirstField() {
         if (this.props.field) {
+            console.log("FROM ITEM_DETAILS", this.props.field);
             return this.props.field;
         }
 

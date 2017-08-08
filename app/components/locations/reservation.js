@@ -42,7 +42,7 @@ class Reservation extends Component {
             reservation_date: $("input[name='reservation_date']").val(),
             reservation_time: $("input[name='reservation_time']").val(),
             user: this.props.userId,
-            field: this.props.field
+            field: this.props.field.first_field_id
         };
 
         this.props.reserveField(data, res => {
