@@ -15,29 +15,45 @@ class Sidebar extends Component {
         const tabs = [
             {
                 name: "Locations",
+                pathname: "locations",
                 icon: "icon-map"
             },
             {
                 name: "Teams",
-                icon: "icon-organization"
+                pathname: "teams",
+                icon: "icon-trophy"
             },
             {
-                name: "Favorites",
+                name: "Favorite Locations",
+                pathname: "favorite-locations",
                 icon: "icon-star"
             },
             {
+                name: "Reservations",
+                pathname: "reservations",
+                icon: "icon-calendar"
+            },
+            {
                 name: "Profile",
+                pathname: "profile",
                 icon: "icon-settings"
             }
         ];
 
+        const {location} = this.props;
+
         return _.map(tabs, tab => {
+            const classNameLi = `/dashboard/${tab.pathname}` === location.pathname ? 'nav-item active open' : 'nav-item ';
+            const classNameSpan = `/dashboard/${tab.pathname}` === location.pathname ? 'arrow open' : 'arrow ';
+            const selected = `/dashboard/${tab.pathname}` === location.pathname ? 'selected' : null;
+
             return (
-                <li className="nav-item  " key={tab.name}>
-                    <a href={`/dashboard/${tab.name}`} className="nav-link nav-toggle" onClick={() => this.props.selectTab(tab.name)}>
+                <li className={classNameLi} key={tab.name}>
+                    <a href={`/dashboard/${tab.pathname}`} className="nav-link nav-toggle" onClick={() => this.props.selectTab(tab.name)}>
                         <i className={tab.icon}></i>
                         <span className="title">{tab.name}</span>
-                        <span className="arrow"></span>
+                        <span className={selected}></span>
+                        <span className={classNameSpan}></span>
                     </a>
                 </li>
             )

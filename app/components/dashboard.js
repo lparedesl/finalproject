@@ -18,7 +18,9 @@ class Dashboard extends Component {
                 <Header/>
                 <div className="clearfix"> </div>
                 <div className="page-container">
-                    <Sidebar/>
+                    <Sidebar
+                        location={this.props.location}
+                    />
                     <div className="page-content-wrapper">
                         <div className="page-content">
                             <Router>
@@ -43,6 +45,16 @@ class Dashboard extends Component {
                                                 fnName="selectTeam"
                                                 message="Please select a team or create a new one below"
                                                 cmd="team"
+                                            />
+                                        }/>
+                                        <Route path="/dashboard/reservations" render={() =>
+                                            <Content
+                                                content={this.props.tab}
+                                                title="Reservations"
+                                                titleSingular="reservation"
+                                                fnName="selectReservation"
+                                                message="Please select a reservation"
+                                                cmd="reservation"
                                             />
                                         }/>
                                     </Switch>
