@@ -5,6 +5,8 @@ export const SIGNIN = 'signin';
 export const SIGNUP = 'signup';
 export const GET_USER_INFO = 'get_user_info';
 export const GET_LOCATIONS = 'get_locations';
+export const GET_USER_RESERVATIONS = 'get_user_reservations';
+export const TAB_SELECTED = 'tab_selected';
 export const LOCATION_SELECTED = 'location_selected';
 export const FIELD_SELECTED = 'field_selected';
 export const RESERVE_FIELD = 'reserve_field';
@@ -12,7 +14,7 @@ export const GET_FIELD_RESERVATIONS = 'get_field_reservations';
 export const GET_TEAMS = 'get_teams';
 export const TEAM_SELECTED = 'team_selected';
 
-export function getAuthData(cb) {
+export function getAuthData() {
     const request = axios.get('/api/get-csrf-token');
 
     return {
@@ -66,6 +68,13 @@ export function selectLocation(location) {
     };
 }
 
+export function selectTab(tab) {
+    return {
+        type: TAB_SELECTED,
+        payload: tab
+    };
+}
+
 export function selectField(field) {
     return {
         type: FIELD_SELECTED,
@@ -79,6 +88,15 @@ export function reserveField(values, cb) {
 
     return {
         type: RESERVE_FIELD,
+        payload: request
+    };
+}
+
+export function getUserReservations() {
+    const request = axios.get('/api/get-user-reservations');
+
+    return {
+        type: GET_USER_RESERVATIONS,
         payload: request
     };
 }

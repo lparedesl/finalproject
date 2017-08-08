@@ -14,6 +14,7 @@ class ItemsList extends Component {
                     key={item.id}
                     data={item}
                     selectItem={(item) => this.props[this.props.fnName](item)}
+                    location={this.props.location}
                 />
             )
         })
@@ -45,7 +46,7 @@ class ItemsList extends Component {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         selectLocation: selectLocation,
-        selectTeam: selectTeam
+        selectTeam: selectTeam,
     }, dispatch)
 }
 

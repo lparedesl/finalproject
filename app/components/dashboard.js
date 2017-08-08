@@ -6,6 +6,7 @@ import Sidebar from './sidebar';
 import Footer from './footer';
 import Profile from './user/profile';
 import Content from './page_content';
+import ReservationsContent from './reservations/content';
 
 class Dashboard extends Component {
     componentDidMount() {
@@ -18,15 +19,45 @@ class Dashboard extends Component {
                 <Header/>
                 <div className="clearfix"> </div>
                 <div className="page-container">
-                    <Sidebar/>
+                    <Sidebar
+                        location={this.props.location}
+                    />
                     <div className="page-content-wrapper">
                         <div className="page-content">
                             <Router>
                                 <div>
                                     <Switch>
                                         <Route path="/dashboard/profile" component={Profile}/>
-                                        <Route path="/dashboard/locations" render={() => <Content title="Locations" titleSingular="location" fnName="selectLocation" message="Please select a location"/>}/>
-                                        <Route path="/dashboard/teams" render={() => <Content title="Teams" titleSingular="team" fnName="selectTeam" message="Please select a team or create a new one below"/>}/>
+                                        <Route path="/dashboard/locations" render={() =>
+                                            <Content
+                                                content={this.props.tab}
+                                                title="Locations"
+                                                titleSingular="location"
+                                                fnName="selectLocation"
+                                                message="Please select a location"
+                                                cmd="locationItem"
+                                            />
+                                        }/>
+                                        <Route path="/dashboard/teams" render={() =>
+                                            <Content
+                                                content={this.props.tab}
+                                                title="Teams"
+                                                titleSingular="team"
+                                                fnName="selectTeam"
+                                                message="Please select a team or create a new one below"
+                                                cmd="team"
+                                            />
+                                        }/>
+                                        <Route path="/dashboard/reservations" render={() =>
+                                            <ReservationsContent
+                                                content={this.props.tab}
+                                                title="Reservations"
+                                                titleSingular="reservation"
+                                                fnName="selectReservation"
+                                                message="Please select a reservation"
+                                                cmd="reservation"
+                                            />
+                                        }/>
                                     </Switch>
                                 </div>
                             </Router>
@@ -39,4 +70,10 @@ class Dashboard extends Component {
     }
 }
 
-export default Dashboard;
+function mapStateToProps(state) {
+    return {
+        tab: state.activeTab
+    }
+}
+
+export default connect(mapStateToProps)(Dashboard);

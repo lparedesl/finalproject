@@ -81,6 +81,49 @@ router.get("/get-teams", function(req, res, next) {
     })
 });
 
+router.get("/get-user-reservations", function(req, res, next) {
+    db.Reservation.findAll({
+        include: [
+            {
+                model: db.User
+            },
+            {
+                model: db.Field,
+                include: [
+                    {
+                        model: db.Location
+                    },
+                    {
+                        model: db.Sport
+                    }
+                ]
+            }
+        ]
+    })
+    .then(function(data) {
+        var userReservations = _.filter(data, function(reservation) {
+            return reservation.user.email === req.session.passport.user;
+        });
+
+        var reservations = [];
+        _.map(userReservations, function(reservation) {
+            var obj = {
+                location: reservation.field.location.name,
+                field: "Field " + reservation.field.field_number,
+                sport: reservation.field.sport.name,
+                resDate: moment.tz(reservation.reservation_date, "America/New_York").format("MMMM D, YYYY"),
+                resTime: moment.tz(reservation.reservation_date, "America/New_York").format("h:mm A")
+            };
+            reservations.push(obj);
+        });
+
+        res.json(reservations);
+    })
+    .catch(function(error) {
+        console.log(error);
+    });
+});
+
 router.post("/field-schedule", function(req, res, next) {
     db.Reservation.findAll({
         where: {
