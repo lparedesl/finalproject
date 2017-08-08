@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
 import moment from 'moment';
 import {connect} from 'react-redux';
-import LocationHeader from './locations/location_header';
+import LocationHeader from './locations/header';
 import TeamHeader from './teams/header';
 import Calendar from './locations/calendar';
 import Reservation from './locations/reservation';
@@ -53,6 +53,7 @@ class ItemDetails extends Component {
 
         switch(titleSingular) {
             case "location":
+                console.log(item);
                 return (
                     <LocationHeader
                         title={item.name}

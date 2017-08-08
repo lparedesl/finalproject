@@ -41,6 +41,9 @@ router.get("/get-locations", function(req, res, next) {
                         }
                     }
                 }
+            },
+            {
+                model: db.User
             }
         ]
     })
