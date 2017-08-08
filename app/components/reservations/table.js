@@ -1,70 +1,91 @@
-import _ from 'lodash';
 import React, {Component} from 'react';
-// import $ from 'jquery';
-// import DataTable from 'datatables.net';
-import {connect} from 'react-redux';
+import $ from 'jquery';
+
+$.DataTable = require('datatables.net-bs');
+
+const columns = [
+    {
+        title: 'Location',
+        width: '20%',
+        data: 'location'
+    },
+    {
+        title: 'Field',
+        width: '20%',
+        data: 'field'
+    },
+    {
+        title: 'Sport',
+        width: '20%',
+        data: 'sport'
+    },
+    {
+        title: 'Date',
+        width: '20%',
+        data: 'resDate'
+    },
+    {
+        title: 'Time',
+        width: '20%',
+        data: 'resTime'
+    }
+];
 
 class Table extends Component {
-    constructor() {
-        super();
-
-        this.renderRows = this.renderRows.bind(this);
+    componentDidMount() {
+        $("#dataTables").DataTable({
+            language: {
+                url: '//cdn.datatables.net/plug-ins/3cfcc339e89/i18n/English.json'
+            },
+            dom: '<"table-wrapper"lftip>',
+            columns: columns,
+            data: this.props.reservations,
+            bStateSave: true,
+            pagingType: "full_numbers",
+            lengthMenu: [
+                [5, 10, 20, -1],
+                [5, 10, 20, "All"]
+            ],
+            pageLength: 5,
+            // columnDefs: [{
+            //     orderable: false,
+            //     targets: [0]
+            // }],
+            order: [
+                [1, "asc"]
+            ]
+        });
     }
 
-    renderRows() {
-        const {reservations} = this.props;
+    componentWillUnmount(){
+        $('.dataTables_wrapper')
+        .find('table')
+        .DataTable()
+        .destroy(true);
+    }
 
-        return _.map(reservations, reservation => {
-            return (
-                <tr className="odd gradeX" key={reservation.id}>
-                    <td>
-                        <label className="mt-checkbox mt-checkbox-single mt-checkbox-outline">
-                            <input type="checkbox" className="checkboxes" value="1" />
-                            <span></span>
-                        </label>
-                    </td>
-                    <td> {reservation.field.location.name} </td>
-                    <td>
-                        {`Field ${reservation.field.field_number}`}
-                    </td>
-                    <td>
-                        <span className="label label-sm label-success"> {reservation.field.sport.name} </span>
-                    </td>
-                </tr>
-            )
-        });
+    shouldComponentUpdate(nextProps) {
+        if (nextProps.reservations.length !== this.props.reservations.length) {
+            reloadTableData(nextProps.reservations);
+        }
+        return false;
     }
 
     render() {
         return (
-            <table className="table table-striped table-bordered table-hover table-checkable order-column" id="sample_2">
-                <thead>
-                <tr>
-                    <th className="table-checkbox">
-                        <label className="mt-checkbox mt-checkbox-single mt-checkbox-outline">
-                            <input type="checkbox" className="group-checkable" data-set="#sample_2 .checkboxes" />
-                            <span></span>
-                        </label>
-                    </th>
-                    <th> Location </th>
-                    <th> Field Number </th>
-                    <th> Sport </th>
-                    {/*<th> Date </th>*/}
-                    {/*<th> Time </th>*/}
-                </tr>
-                </thead>
-                <tbody>
-                {this.renderRows()}
-                </tbody>
+            <table className="table table-striped table-bordered table-hover table-checkable order-column" id="dataTables">
             </table>
         )
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        reservations: state.userReservations,
-    }
+function reloadTableData(reservations) {
+    const table = $('.dataTables_wrapper')
+    .find('table')
+    .DataTable();
+    table.clear();
+    table.rows.add(reservations);
+    table.draw();
 }
 
-export default connect(mapStateToProps)(Table);
+export default Table;

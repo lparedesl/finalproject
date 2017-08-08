@@ -105,7 +105,19 @@ router.get("/get-user-reservations", function(req, res, next) {
             return reservation.user.email === req.session.passport.user;
         });
 
-        res.json(userReservations);
+        var reservations = [];
+        _.map(userReservations, function(reservation) {
+            var obj = {
+                location: reservation.field.location.name,
+                field: "Field " + reservation.field.field_number,
+                sport: reservation.field.sport.name,
+                resDate: moment.tz(reservation.reservation_date, "America/New_York").format("MMMM D, YYYY"),
+                resTime: moment.tz(reservation.reservation_date, "America/New_York").format("h:mm A")
+            };
+            reservations.push(obj);
+        });
+
+        res.json(reservations);
     })
     .catch(function(error) {
         console.log(error);
