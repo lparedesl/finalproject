@@ -1,8 +1,49 @@
+import _ from 'lodash';
 import React, {Component} from 'react';
-import {Link, withRouter} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
+import {selectTab} from '../actions';
 
 class Sidebar extends Component {
+    constructor() {
+        super();
+
+        this.renderNavItems = this.renderNavItems.bind(this);
+    }
+
+    renderNavItems(){
+        const tabs = [
+            {
+                name: "Locations",
+                icon: "icon-map"
+            },
+            {
+                name: "Teams",
+                icon: "icon-organization"
+            },
+            {
+                name: "Favorites",
+                icon: "icon-star"
+            },
+            {
+                name: "Profile",
+                icon: "icon-settings"
+            }
+        ];
+
+        return _.map(tabs, tab => {
+            return (
+                <li className="nav-item  " key={tab.name}>
+                    <a href={`/dashboard/${tab.name}`} className="nav-link nav-toggle" onClick={() => this.props.selectTab(tab.name)}>
+                        <i className={tab.icon}></i>
+                        <span className="title">{tab.name}</span>
+                        <span className="arrow"></span>
+                    </a>
+                </li>
+            )
+        })
+    }
+
     render() {
         return (
             <div className="page-sidebar-wrapper">
@@ -14,7 +55,7 @@ class Sidebar extends Component {
                             </div>
                         </li>
                         <li className="nav-item start ">
-                            <Link to="/" className="nav-link nav-toggle">
+                            <Link to="/" className="nav-link nav-toggle" onClick={() => this.props.selectTab("Home")}>
                                 <i className="icon-home"></i>
                                 <span className="title">Home</span>
                             </Link>
@@ -22,34 +63,7 @@ class Sidebar extends Component {
                         <li className="heading">
                             <h3 className="uppercase">Navigation</h3>
                         </li>
-                        <li className="nav-item  ">
-                            <Link to="/dashboard/locations" className="nav-link nav-toggle">
-                                <i className="icon-map"></i>
-                                <span className="title">Locations</span>
-                                <span className="arrow"></span>
-                            </Link>
-                        </li>
-                        <li className="nav-item  ">
-                            <Link to="/dashboard/teams" className="nav-link nav-toggle">
-                                <i className="icon-organization"></i>
-                                <span className="title">Teams</span>
-                                <span className="arrow"></span>
-                            </Link>
-                        </li>
-                        <li className="nav-item  ">
-                            <Link to="/dashboard/favorites" className="nav-link nav-toggle">
-                                <i className="icon-star"></i>
-                                <span className="title">Favorites</span>
-                                <span className="arrow"></span>
-                            </Link>
-                        </li>
-                        <li className="nav-item  active">
-                            <Link to="/dashboard/profile" className="nav-link nav-toggle">
-                                <i className="icon-settings"></i>
-                                <span className="title">My Account</span>
-                                <span className="selected"></span>
-                            </Link>
-                        </li>
+                        {this.renderNavItems()}
                     </ul>
                 </div>
             </div>
@@ -57,4 +71,4 @@ class Sidebar extends Component {
     }
 }
 
-export default withRouter(Sidebar);
+export default connect(null, {selectTab})(Sidebar);

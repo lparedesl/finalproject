@@ -156,5 +156,5 @@ export default reduxForm({
     validate,
     form: 'SignInForm'
 })(
-    connect(mapStateToProps, mapDispatchToProps)(withRouter(SignInForm))
+    connect(mapStateToProps, mapDispatchToProps)(SignInForm)
 );

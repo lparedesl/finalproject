@@ -19,12 +19,12 @@ class Calendar extends Component {
     }
 
     renderOptGroups() {
-        const {location} = this.props;
+        const {locationItem} = this.props;
 
-        return _.map(location.sports, sport => {
+        return _.map(locationItem.sports, sport => {
             return (
                 <optgroup label={sport.name} key={sport.name}>
-                    {this.renderOptions(sport, location.id)}
+                    {this.renderOptions(sport, locationItem.id)}
                 </optgroup>
             )
         })

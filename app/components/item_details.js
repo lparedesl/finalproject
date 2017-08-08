@@ -62,6 +62,7 @@ class ItemDetails extends Component {
                             state: item.state,
                             zipCode: item.zip_code
                         }}
+                        location={this.props.location}
                     />
                 );
 
@@ -69,6 +70,7 @@ class ItemDetails extends Component {
                 return (
                     <TeamHeader
                         name={item.name}
+                        location={this.props.header}
                     />
                 );
         }
@@ -95,10 +97,14 @@ class ItemDetails extends Component {
                 return (
                     <div>
                         <div className="row">
-                            <Map/>
+                            <Map
+                                location={this.props.location}
+                            />
                         </div>
                         <div className="row">
-                            <Info/>
+                            <Info
+                                location={this.props.location}
+                            />
                         </div>
                     </div>
                 );
@@ -110,6 +116,7 @@ class ItemDetails extends Component {
                             <TeamImage
                                 image={item.image}
                                 name={item.name}
+                                location={this.props.location}
                             />
                         </div>
                         <div className="row">
@@ -145,18 +152,22 @@ class ItemDetails extends Component {
                             <Switch>
                                 <Route
                                     path="/dashboard/locations/reserve-field"
-                                    render={() => <Reservation
-                                        userId={this.props.userId}
-                                        field={this.getFirstField()}
-                                    />}
+                                    render={() =>
+                                        <Reservation
+                                            userId={this.props.userId}
+                                            field={this.getFirstField()}
+                                        />
+                                    }
                                 />
                                 <Route
-                                    path="/dashboard/locations"
-                                    render={() =><Calendar
-                                        location={item}
-                                        field={this.getFirstField()}
-                                        selectField={(field) => this.props.selectField(field)}
-                                    />}
+                                    exact path="/dashboard/locations"
+                                    render={() =>
+                                        <Calendar
+                                            locationItem={item}
+                                            field={this.getFirstField()}
+                                            selectField={(field) => this.props.selectField(field)}
+                                        />
+                                    }
                                 />
                                 <Route
                                     path="/dashboard/teams"

@@ -5,6 +5,7 @@ export const SIGNIN = 'signin';
 export const SIGNUP = 'signup';
 export const GET_USER_INFO = 'get_user_info';
 export const GET_LOCATIONS = 'get_locations';
+export const TAB_SELECTED = 'tab_selected';
 export const LOCATION_SELECTED = 'location_selected';
 export const FIELD_SELECTED = 'field_selected';
 export const RESERVE_FIELD = 'reserve_field';
@@ -63,6 +64,13 @@ export function selectLocation(location) {
     return {
         type: LOCATION_SELECTED,
         payload: location
+    };
+}
+
+export function selectTab(tab) {
+    return {
+        type: TAB_SELECTED,
+        payload: tab
     };
 }
 

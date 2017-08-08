@@ -11,7 +11,9 @@ class Home extends Component {
         return (
             <div className="container">
                 <h1>Homepage</h1>
-                <Link to="/user/signin">Sign in</Link>
+                <Link to="/user/signin">Sign in </Link>
+                <Link to="/dashboard/teams">Teams </Link>
+                <Link to="/dashboard/locations">Locations</Link>
             </div>
         )
     }

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
 import {bindActionCreators} from 'redux';
 import ItemDetails from './item_details';
 import ItemsList from './items_list';
@@ -30,24 +31,26 @@ class Content extends Component {
     render() {
         return (
             <div>
-                {console.log(this.props.teams)}
                 <h1 className="page-title">
                     {this.props.title}
                 </h1>
+                {console.log(this.props.content)}
                 <div className="row">
                     <div className="col-md-3">
                         <ItemsList
                             title={this.props.title}
                             items={this.props[this.props.title.toLowerCase()]}
                             fnName={this.props.fnName}
+                            location={this.props.location}
                         />
                     </div>
                     <div className="col-md-9">
                         <ItemDetails
                             titleSingular={this.props.titleSingular}
                             userId={this.isSignedIn()}
-                            item={this.props[this.props.titleSingular]}
+                            item={this.props[this.props.cmd]}
                             message={this.props.message}
+                            location={this.props.location}
                         />
                     </div>
                 </div>
@@ -60,7 +63,7 @@ function mapStateToProps(state) {
     return {
         locations: state.locations,
         teams: state.teams,
-        location: state.activeLocation,
+        locationItem: state.activeLocation,
         team: state.activeTeam,
         userInfo: state.authData
     }

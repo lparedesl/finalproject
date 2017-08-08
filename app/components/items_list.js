@@ -14,6 +14,7 @@ class ItemsList extends Component {
                     key={item.id}
                     data={item}
                     selectItem={(item) => this.props[this.props.fnName](item)}
+                    location={this.props.location}
                 />
             )
         })
