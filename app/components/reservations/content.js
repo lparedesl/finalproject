@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {bindActionCreators} from 'redux';
+import Table from './table';
 import {getUserReservations} from '../../actions';
 import {getUserInfo} from '../../actions';
 
@@ -55,70 +56,7 @@ class Content extends Component {
                             <div className="portlet-body">
                                 <div className="row">
                                     <div className="col-md-12">
-                                        <table className="table table-striped table-bordered table-hover table-checkable order-column" id="sample_2">
-                                            <thead>
-                                                <tr>
-                                                    <th className="table-checkbox">
-                                                        <label className="mt-checkbox mt-checkbox-single mt-checkbox-outline">
-                                                            <input type="checkbox" className="group-checkable" data-set="#sample_2 .checkboxes" />
-                                                            <span></span>
-                                                        </label>
-                                                    </th>
-                                                    <th> Location </th>
-                                                    <th> Field Number </th>
-                                                    <th> Sport </th>
-                                                    {/*<th> Date </th>*/}
-                                                    {/*<th> Time </th>*/}
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr className="odd gradeX">
-                                                    <td>
-                                                        <label className="mt-checkbox mt-checkbox-single mt-checkbox-outline">
-                                                            <input type="checkbox" className="checkboxes" value="1" />
-                                                            <span></span>
-                                                        </label>
-                                                    </td>
-                                                    <td> shuxer </td>
-                                                    <td>
-                                                        <a href="mailto:shuxer@gmail.com"> shuxer@gmail.com </a>
-                                                    </td>
-                                                    <td>
-                                                        <span className="label label-sm label-success"> Approved </span>
-                                                    </td>
-                                                </tr>
-                                                <tr className="odd gradeX">
-                                                    <td>
-                                                        <label className="mt-checkbox mt-checkbox-single mt-checkbox-outline">
-                                                            <input type="checkbox" className="checkboxes" value="1" />
-                                                            <span></span>
-                                                        </label>
-                                                    </td>
-                                                    <td> shuxer </td>
-                                                    <td>
-                                                        <a href="mailto:shuxer@gmail.com"> shuxer@gmail.com </a>
-                                                    </td>
-                                                    <td>
-                                                        <span className="label label-sm label-success"> Approved </span>
-                                                    </td>
-                                                </tr>
-                                                <tr className="odd gradeX">
-                                                    <td>
-                                                        <label className="mt-checkbox mt-checkbox-single mt-checkbox-outline">
-                                                            <input type="checkbox" className="checkboxes" value="1" />
-                                                            <span></span>
-                                                        </label>
-                                                    </td>
-                                                    <td> shuxer </td>
-                                                    <td>
-                                                        <a href="mailto:shuxer@gmail.com"> shuxer@gmail.com </a>
-                                                    </td>
-                                                    <td>
-                                                        <span className="label label-sm label-success"> Approved </span>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                        <Table/>
                                     </div>
                                 </div>
                             </div>
@@ -132,7 +70,7 @@ class Content extends Component {
 
 function mapStateToProps(state) {
     return {
-        reservations: state.userReservations,
+        // reservations: state.userReservations,
         userInfo: state.authData
     }
 }

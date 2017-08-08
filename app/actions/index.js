@@ -14,7 +14,7 @@ export const GET_FIELD_RESERVATIONS = 'get_field_reservations';
 export const GET_TEAMS = 'get_teams';
 export const TEAM_SELECTED = 'team_selected';
 
-export function getAuthData(cb) {
+export function getAuthData() {
     const request = axios.get('/api/get-csrf-token');
 
     return {

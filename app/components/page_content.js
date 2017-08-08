@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {bindActionCreators} from 'redux';
-import ItemDetails from './item_details';
 import ItemsList from './items_list';
+import ItemDetails from './item_details';
 import {getLocations} from '../actions';
 import {getTeams} from '../actions';
 import {getUserInfo} from '../actions';
@@ -62,7 +62,6 @@ function mapStateToProps(state) {
     return {
         locations: state.locations,
         teams: state.teams,
-        reservations: state.reservations,
         locationItem: state.activeLocation,
         team: state.activeTeam,
         userInfo: state.authData

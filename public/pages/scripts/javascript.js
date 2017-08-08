@@ -84,6 +84,8 @@ $(document).ready(function() {
         }
     });
 
+    var n = 0;
+
     $("#app").on("DOMNodeInserted", function() {
         // if ($(".login-bg")) {
         //     $('.login-bg').backstretch([
@@ -125,7 +127,9 @@ $(document).ready(function() {
             });
         }
 
-        if ($('#sample_2')) {
+        if ($('#sample_2') && n === 0) {
+            n++;
+
             $('#sample_2').dataTable({
 
                 // Internationalisation. For more info refer to http://datatables.net/manual/i18n

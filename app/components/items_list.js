@@ -47,7 +47,6 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         selectLocation: selectLocation,
         selectTeam: selectTeam,
-        selectReservation: selectReservation,
     }, dispatch)
 }
 
