@@ -26,8 +26,8 @@ class Map extends Component {
         this.state = {
             markers: [{
                 position: {
-                    lat: props.location.lat,
-                    lng: props.location.lng,
+                    lat: props.locationItem.lat,
+                    lng: props.locationItem.lng,
                 },
                 key: props.city,
                 defaultAnimation: 2,
@@ -79,7 +79,7 @@ class Map extends Component {
             <div className="portlet light portlet-fit bordered">
                 <div className="portlet-title">
                     <div className="caption">
-                        <i className=" icon-layers font-blue"></i>
+                        <i className=" icon-map font-blue"></i>
                         <span className="caption-subject font-blue bold uppercase">Map</span>
                     </div>
                     <div className="actions">
@@ -111,14 +111,14 @@ class Map extends Component {
                                 onMapClick={this.handleMapClick}
                                 markers={[{
                                     position: {
-                                        lat: this.props.location.lat,
-                                        lng: this.props.location.lng,
+                                        lat: this.props.locationItem.lat,
+                                        lng: this.props.locationItem.lng,
                                     },
-                                    key: this.props.location.city,
+                                    key: this.props.locationItem.city,
                                     defaultAnimation: 2,
                                 }]}
                                 onMarkerRightClick={this.handleMarkerRightClick}
-                                coordinates={ {lat: this.props.location.lat, lng: this.props.location.lng} }
+                                coordinates={ {lat: this.props.locationItem.lat, lng: this.props.locationItem.lng} }
                             />
                         </div>
                     </div>
@@ -129,7 +129,7 @@ class Map extends Component {
 }
 
 function mapStateToProps(state) {
-    return {location: state.activeLocation}
+    return {locationItem: state.activeLocation}
 }
 
 export default connect(mapStateToProps)(Map);
