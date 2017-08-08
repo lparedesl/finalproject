@@ -65,7 +65,7 @@ class ItemDetails extends Component {
                             state: item.state,
                             zipCode: item.zip_code
                         }}
-                        favorite={favorite.length}
+                        favorite={favorite.length > 0}
                     />
                 );
 

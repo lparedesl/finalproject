@@ -13,6 +13,7 @@ export const RESERVE_FIELD = 'reserve_field';
 export const GET_FIELD_RESERVATIONS = 'get_field_reservations';
 export const GET_TEAMS = 'get_teams';
 export const TEAM_SELECTED = 'team_selected';
+export const FAVORITE_LOCATION = 'favorite_location';
 
 export function getAuthData() {
     const request = axios.get('/api/get-csrf-token');
@@ -122,5 +123,15 @@ export function selectTeam(team) {
     return {
         type: TEAM_SELECTED,
         payload: team
+    };
+}
+
+export function favoriteLocation(values, cb) {
+    const request = axios.post('/api/favorite-location', values)
+                         .then((data) => cb(data));
+
+    return {
+        type: FAVORITE_LOCATION,
+        payload: request
     };
 }
