@@ -5,6 +5,7 @@ export const SIGNIN = 'signin';
 export const SIGNUP = 'signup';
 export const GET_USER_INFO = 'get_user_info';
 export const GET_LOCATIONS = 'get_locations';
+export const GET_USER_RESERVATIONS = 'get_user_reservations';
 export const TAB_SELECTED = 'tab_selected';
 export const LOCATION_SELECTED = 'location_selected';
 export const FIELD_SELECTED = 'field_selected';
@@ -87,6 +88,15 @@ export function reserveField(values, cb) {
 
     return {
         type: RESERVE_FIELD,
+        payload: request
+    };
+}
+
+export function getUserReservations() {
+    const request = axios.get('/api/get-user-reservations');
+
+    return {
+        type: GET_USER_RESERVATIONS,
         payload: request
     };
 }

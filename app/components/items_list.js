@@ -5,7 +5,6 @@ import {bindActionCreators} from 'redux';
 import ListItem from './list_item';
 import {selectLocation} from '../actions';
 import {selectTeam} from '../actions';
-import {selectReservation} from '../actions';
 
 class ItemsList extends Component {
     renderList() {

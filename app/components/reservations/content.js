@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {bindActionCreators} from 'redux';
-// import {getReservations} from '../../actions';
+import {getUserReservations} from '../../actions';
 import {getUserInfo} from '../../actions';
 
 class Content extends Component {
@@ -13,7 +13,7 @@ class Content extends Component {
     }
 
     componentDidMount() {
-        // this.props[`get${this.props.title}`]();
+        this.props[`get${this.props.title}`]();
         this.props.getUserInfo();
     }
 
@@ -32,6 +32,7 @@ class Content extends Component {
                     {this.props.title}
                 </h1>
                 <div className="row">
+                    {console.log(this.props.reservations)}
                     <div className="col-md-12">
                         <div className="portlet light portlet-fit portlet-datatable bordered">
                             <div className="portlet-title">
@@ -131,14 +132,14 @@ class Content extends Component {
 
 function mapStateToProps(state) {
     return {
-        // reservation: state.activeReservation,
+        reservations: state.userReservations,
         userInfo: state.authData
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        // getReservations: getReservations,
+        getReservations: getUserReservations,
         getUserInfo: getUserInfo
     }, dispatch)
 }

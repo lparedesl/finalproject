@@ -81,6 +81,37 @@ router.get("/get-teams", function(req, res, next) {
     })
 });
 
+router.get("/get-user-reservations", function(req, res, next) {
+    db.Reservation.findAll({
+        include: [
+            {
+                model: db.User
+            },
+            {
+                model: db.Field,
+                include: [
+                    {
+                        model: db.Location
+                    },
+                    {
+                        model: db.Sport
+                    }
+                ]
+            }
+        ]
+    })
+    .then(function(data) {
+        var userReservations = _.filter(data, function(reservation) {
+            return reservation.user.email === req.session.passport.user;
+        });
+
+        res.json(userReservations);
+    })
+    .catch(function(error) {
+        console.log(error);
+    });
+});
+
 router.post("/field-schedule", function(req, res, next) {
     db.Reservation.findAll({
         where: {
