@@ -194,6 +194,9 @@ router.post("/field-schedule", function(req, res, next) {
 });
 
 router.post("/reserve-field", function(req, res, next) {
+    console.log("===========================");
+    console.log("RECEIVED", req.body);
+    console.log("===========================");
     db.Field.findOne({
         where: {
             id: req.body.field
@@ -211,6 +214,10 @@ router.post("/reserve-field", function(req, res, next) {
         ]
     })
     .then(function(field) {
+        console.log("===========================");
+        console.log("RECEIVED", field);
+        console.log("===========================");
+
         var error = false;
         var body = {
             reservation_date: moment(req.body.reservation_date + " " + req.body.reservation_time, "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm:ss"),

@@ -7,7 +7,6 @@ class Header extends Component {
     return (
       <div className="m-heading-1 border-green m-bordered">
         <h1>{name}</h1>
-        <p> Brief Bio </p>
       </div>
     );
   }

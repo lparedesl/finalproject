@@ -26,6 +26,20 @@ class SignUpForm extends Component {
         );
     }
 
+    renderTelField(field) {
+        const {meta: {touched, error}} = field;
+        const className = `col-xs-6 ${touched && error ? 'has-error' : ''}`;
+
+        return (
+            <div className={className}>
+                <input className="form-control form-control-solid placeholder-no-fix form-group" id="mask_phone" type="text" autoComplete="off" name={field.bodyName} placeholder={field.placeholder} required {...field.input}/>
+                <div className="text-help">
+                    {touched ? error : ''}
+                </div>
+            </div>
+        );
+    }
+
     renderSelectField(field) {
         const {options} = field;
 
@@ -137,8 +151,8 @@ class SignUpForm extends Component {
                                 placeholder="Phone Number"
                                 bodyName="phone"
                                 name="phone"
-                                type="tel"
-                                component={this.renderTextField}
+                                // type="tel"
+                                component={this.renderTelField}
                             />
                         </div>
                         <div className="row">

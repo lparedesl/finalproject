@@ -9,7 +9,7 @@ import Calendar from './locations/calendar';
 import Reservation from './locations/reservation';
 import Map from './locations/map';
 import Info from './locations/info';
-import Banner from './teams/banner';
+import Banner from './teams/team_list';
 import TeamImage from './teams/team_image';
 import {selectField} from '../actions';
 
@@ -85,7 +85,7 @@ class ItemDetails extends Component {
         switch(titleSingular) {
             case "team":
                 return (
-                    <button className="btn btn-circle blue btn-block btn-lg m-icon-big">Create New Team
+                    <button className="btn blue btn-block btn-lg m-icon-big">Create New Team
                         <i className="m-icon-big-swapright m-icon-white"></i>
                     </button>
                 );
@@ -123,7 +123,7 @@ class ItemDetails extends Component {
                             />
                         </div>
                         <div className="row">
-                            <button className="btn btn-circle blue btn-block btn-lg m-icon-big">Add Members
+                            <button className="btn blue btn-block btn-lg m-icon-big">Add Members
                                 <i className="m-icon-big-swapright m-icon-white"></i>
                             </button>
                         </div>
@@ -174,7 +174,9 @@ class ItemDetails extends Component {
                                 />
                                 <Route
                                     path="/dashboard/teams"
-                                    component={Banner}
+                                    render={() =><Banner
+                                      users={item.users}
+                                    />}
                                 />
                             </Switch>
                         </div>
