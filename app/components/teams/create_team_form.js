@@ -59,6 +59,7 @@ class CreateTeam extends Component {
 
         return (
             <form role="form" className="form-horizontal" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+                <div id="errors"></div>
                 <div className="form-body">
                     <Field
                         label="Team Name"

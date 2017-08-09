@@ -131,6 +131,25 @@ router.get("/get-teams", function(req, res, next) {
     })
 });
 
+router.post("/get-team", function(req, res, next) {
+    db.Team.findOne({
+        where: {
+            id: req.body.id
+        },
+        include: [
+            {
+                model: db.User
+            }
+        ]
+    })
+    .then(function(data) {
+        res.json(data);
+    })
+    .catch(function(error) {
+        console.log(error);
+    })
+});
+
 router.get("/get-user-reservations", function(req, res, next) {
     db.Reservation.findAll({
         include: [
@@ -363,6 +382,54 @@ router.post("/create-team", function(req, res, next) {
             .catch(function(error) {
                 console.log(error);
             });
+        }
+    })
+    .catch(function(error) {
+        console.log(error);
+    });
+});
+
+router.post("/add-team-member", function(req, res, next) {
+    db.User.findOne({
+        where: {
+            email: req.body.email
+        }
+    })
+    .then(function(user) {
+        var error = false;
+
+        if (!user) {
+          error = true;
+          res.json({error: "We couldn't find a user with that email. Try another one."});
+        } else {
+            db.UserTeam.findOne({
+                where: {
+                    user_id: user.dataValues.id,
+                    team_id: req.body.teamId
+                }
+            })
+            .then(function(member) {
+                if (member) {
+                    error = true;
+                    res.json({error: "This user is already on this team."});
+                }
+
+                if (!error) {
+                    db.UserTeam.create({
+                        user_id: user.dataValues.id,
+                        team_id: req.body.teamId
+                    })
+                    .then(function() {
+                        res.json(user);
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+                }
+            })
+            .catch(function(error) {
+                console.log(error);
+            })
         }
     })
     .catch(function(error) {

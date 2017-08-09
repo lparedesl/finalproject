@@ -12,23 +12,22 @@ import Reservation from './locations/reservation';
 import Map from './locations/map';
 import Info from './locations/info';
 import Banner from './teams/team_list';
+import TeamMemberForm from './teams/add_member_form';
 import TeamImage from './teams/team_image';
 import {selectField} from '../actions';
 import {getFieldReservations} from '../actions';
-import StartHeader from "./teams/start_header";
 
 class ItemDetails extends Component {
     constructor() {
         super();
 
-        this.getFirstField = this.getFirstField.bind(this);
+        this.getField = this.getField.bind(this);
         this.renderHeader = this.renderHeader.bind(this);
         this.renderStartHeader = this.renderStartHeader.bind(this);
-        // this.renderCreateTeamForm = this.renderCreateTeamForm.bind(this);
         this.renderRightCol = this.renderRightCol.bind(this);
     }
 
-    getFirstField() {
+    getField() {
         if (this.props.field) {
             return this.props.field;
         }
@@ -128,19 +127,12 @@ class ItemDetails extends Component {
 
             case "team":
                 return (
-                    <div>
-                        <div className="row">
-                            <TeamImage
-                                image={this.props[item].image}
-                                name={this.props[item].name}
-                                location={this.props.location}
-                            />
-                        </div>
-                        <div className="row">
-                            <button className="btn blue btn-block btn-lg m-icon-big">Add Members
-                                <i className="m-icon-big-swapright m-icon-white"></i>
-                            </button>
-                        </div>
+                    <div className="row">
+                        <TeamImage
+                            image={this.props[item].image}
+                            name={this.props[item].name}
+                            location={this.props.location}
+                        />
                     </div>
                 );
         }
@@ -175,7 +167,7 @@ class ItemDetails extends Component {
                                     render={() =>
                                         <Reservation
                                             userId={this.props.userId}
-                                            field={this.getFirstField()}
+                                            field={this.getField()}
                                         />
                                     }
                                 />
@@ -184,7 +176,7 @@ class ItemDetails extends Component {
                                     render={() =>
                                         <Calendar
                                             locationItem={this.props[item]}
-                                            field={this.getFirstField()}
+                                            field={this.getField()}
                                             selectField={(field) => this.props.selectField(field)}
                                         />
                                     }
@@ -194,7 +186,7 @@ class ItemDetails extends Component {
                                     render={() =>
                                         <Reservation
                                             userId={this.props.userId}
-                                            field={this.getFirstField()}
+                                            field={this.getField()}
                                         />
                                     }
                                 />
@@ -203,19 +195,13 @@ class ItemDetails extends Component {
                                     render={() =>
                                         <Calendar
                                             locationItem={this.props[item]}
-                                            field={this.getFirstField()}
+                                            field={this.getField()}
                                             selectField={(field) => this.props.selectField(field)}
                                         />
                                     }
                                 />
-                                <Route
-                                    path="/dashboard/teams"
-                                    render={() =>
-                                        <Banner
-                                            users={this.props[item].users}
-                                        />
-                                    }
-                                />
+                                <Route path="/dashboard/teams/add-team-member" component={TeamMemberForm}/>
+                                <Route path="/dashboard/teams" component={Banner}/>
                             </Switch>
                         </div>
                     </Router>

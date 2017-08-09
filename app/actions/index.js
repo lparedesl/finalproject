@@ -15,9 +15,11 @@ export const RESERVE_FIELD = 'reserve_field';
 export const GET_FIELD_RESERVATIONS = 'get_field_reservations';
 export const GET_TEAMS = 'get_teams';
 export const TEAM_SELECTED = 'team_selected';
+export const TEAM_UPDATED = 'team_updated';
 export const FAVORITE_LOCATION = 'favorite_location';
 export const RESET_ACTIVE_ITEMS = 'reset_active_items';
 export const CREATE_TEAM = 'create_team';
+export const ADD_TEAM_MEMBER = 'add_team_member';
 
 export function getAuthData() {
     const request = axios.get('/api/get-csrf-token');
@@ -145,6 +147,15 @@ export function getTeams() {
     };
 }
 
+export function getTeam(id) {
+    const request = axios.post('/api/get-team', {id: id});
+
+    return {
+        type: TEAM_UPDATED,
+        payload: request
+    };
+}
+
 export function selectTeam(team) {
     return {
         type: TEAM_SELECTED,
@@ -168,6 +179,16 @@ export function createTeam(values, cb) {
 
     return {
         type: CREATE_TEAM,
+        payload: request
+    };
+}
+
+export function addTeamMember(values, cb) {
+    const request = axios.post('/api/add-team-member', values)
+                         .then((data) => cb(data));
+
+    return {
+        type: ADD_TEAM_MEMBER,
         payload: request
     };
 }
