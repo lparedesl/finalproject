@@ -49,7 +49,7 @@ class SignInForm extends Component {
                 <div className="login-content">
                     <h1>Sign in</h1>
                     {/*<form className="login-form" onSubmit={handleSubmit(this.onSubmit.bind(this))}>*/}
-                    <form className="login-form" action="/signin" method="POST">
+                    <form className="login-form" action="/authentication/signin" method="POST">
                         {this.renderErrors()}
                         <div className="row">
                             <Field

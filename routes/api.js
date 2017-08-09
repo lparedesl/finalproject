@@ -3,8 +3,6 @@ var router = express.Router();
 var _ = require("lodash");
 var env = require("../config/env");
 var moment = require('moment');
-var csrf = require("csurf");
-var csrfProtection = csrf();
 var db = require("../models");
 var googleMapsClient = require('@google/maps').createClient({
     key: env.GEOCODING_KEY
@@ -435,18 +433,6 @@ router.post("/add-team-member", function(req, res, next) {
     .catch(function(error) {
         console.log(error);
     });
-});
-
-router.use(csrfProtection);
-
-router.get("/get-csrf-token", function (req, res, next) {
-    var messages = req.flash("error");
-    var data = {
-        messages: messages,
-        hasErrors: messages.length > 0,
-        csrfToken: req.csrfToken()
-    };
-    res.json(data);
 });
 
 module.exports = router;

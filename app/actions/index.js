@@ -22,7 +22,7 @@ export const CREATE_TEAM = 'create_team';
 export const ADD_TEAM_MEMBER = 'add_team_member';
 
 export function getAuthData() {
-    const request = axios.get('/api/get-csrf-token');
+    const request = axios.get('/authentication/get-csrf-token');
 
     return {
         type: GET_AUTH_DATA,
@@ -31,7 +31,7 @@ export function getAuthData() {
 }
 
 export function signin(values, cb) {
-    const request = axios.post('/signin', values)
+    const request = axios.post('/authentication/signin', values)
                          .then(() => cb());
 
     return {
@@ -41,7 +41,7 @@ export function signin(values, cb) {
 }
 
 export function signup(values) {
-    const request = axios.post('/signup', values);
+    const request = axios.post('/authentication/signup', values);
 
     return {
         type: SIGNUP,

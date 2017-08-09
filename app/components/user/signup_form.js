@@ -100,7 +100,7 @@ class SignUpForm extends Component {
                 <div className="login-content signup-content">
                     <h1>Sign up</h1>
                     <form className="login-form" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-                    {/*<form className="login-form" action="/signup" method="POST">*/}
+                    {/*<form className="login-form" action="/authentication/signup" method="POST">*/}
                         {this.renderErrors()}
                         <div className="row">
                             <Field

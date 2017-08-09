@@ -16,6 +16,7 @@ require("./associations")(db);
 require("./config/passport");
 
 var index = require('./routes/index');
+var authentication = require('./routes/authentication');
 var api = require('./routes/api');
 
 var app = express();
@@ -65,6 +66,7 @@ app.use(function(req, res, next) {
 });
 
 app.use('/api', api);
+app.use('/authentication', authentication);
 app.use('/', index);
 
 // catch 404 and forward to error handler
