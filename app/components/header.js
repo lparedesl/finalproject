@@ -1,13 +1,7 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {getUserInfo} from '../actions';
 
 class Header extends Component {
-    componentDidMount() {
-        this.props.getUserInfo();
-    }
-
     render() {
         return (
             <div className="page-header navbar navbar-fixed-top">
@@ -31,8 +25,9 @@ class Header extends Component {
                                 </a>
                                 <ul className="dropdown-menu dropdown-menu-default">
                                     <li>
-                                        <a href="logout">
-                                            <i className="icon-logout"></i> Log Out </a>
+                                        <a href="/authentication/logout">
+                                            <i className="icon-logout"></i> Log Out
+                                        </a>
                                     </li>
                                 </ul>
                             </li>
@@ -48,4 +43,4 @@ function mapStateToProps(state) {
     return {userInfo: state.authData}
 }
 
-export default connect(mapStateToProps, {getUserInfo})(Header);
+export default connect(mapStateToProps)(Header);

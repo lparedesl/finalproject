@@ -8,41 +8,12 @@ $(document).ready(function() {
         }
     });
 
-    var FormInputMask = function () {
-        var handleInputMasks = function () {
+    $("#app").on("DOMNodeInserted", function() {
+        if ($("#mask_phone")) {
             $("#mask_phone").inputmask("mask", {
                 "mask": "(999) 999-9999"
-            }); //specifying fn & options
-    }
-
-    return {
-        //main function to initiate the module
-        init: function () {
-            handleInputMasks();
+            });
         }
-    };
-
-}();
-
-if (App.isAngularJsApp() === false) { 
-    jQuery(document).ready(function() {
-        FormInputMask.init(); // init metronic core componets
-    });
-}
-
-    $("#app").on("DOMNodeInserted", function() {
-        // if ($(".login-bg")) {
-        //     $('.login-bg').backstretch([
-        //             "/pages/img/bg01.jpg",
-        //             "/pages/img/bg02.jpg",
-        //             "/pages/img/bg03.jpg",
-        //             "/pages/img/bg04.jpg"
-        //         ], {
-        //             fade: 1000,
-        //             duration: 8000
-        //         }
-        //     );
-        // }
 
         if ($("#signup-dob")) {
             $("#signup-dob").datepicker({
