@@ -9,8 +9,7 @@ import reducers from './reducers';
 import Home from './components/home';
 import Authentication from './components/authentication';
 import Profile from './components/user/profile';
-import LocationsContent from './components/locations/content';
-import TeamsContent from './components/teams/content';
+import Content from './components/page_content';
 import ReservationsContent from './components/reservations/content';
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
@@ -22,7 +21,7 @@ ReactDOM.render(
                 <Switch>
                     <Route path="/dashboard/profile" component={Profile}/>
                     <Route path="/dashboard/locations" render={() =>
-                        <LocationsContent
+                        <Content
                             title="Locations"
                             titleSingular="location"
                             fnName="selectLocation"
@@ -31,7 +30,7 @@ ReactDOM.render(
                         />
                     }/>
                     <Route path="/dashboard/teams" render={() =>
-                        <TeamsContent
+                        <Content
                             title="Teams"
                             titleSingular="team"
                             fnName="selectTeam"
