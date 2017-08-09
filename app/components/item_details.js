@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
 import moment from 'moment';
 import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import LocationHeader from './locations/header';
 import TeamHeader from './teams/header';
 import Calendar from './locations/calendar';
@@ -12,6 +13,7 @@ import Info from './locations/info';
 import Banner from './teams/banner';
 import TeamImage from './teams/team_image';
 import {selectField} from '../actions';
+import {getFieldReservations} from '../actions';
 
 class ItemDetails extends Component {
     constructor() {
@@ -25,12 +27,11 @@ class ItemDetails extends Component {
 
     getFirstField() {
         if (this.props.field) {
-            console.log("FROM ITEM_DETAILS", this.props.field);
             return this.props.field;
         }
 
         const {item} = this.props;
-        let fields = _.filter(item.sports[0].fields, data => { return data.location_id === item.id; });
+        let fields = _.filter(this.props[item].sports[0].fields, data => { return data.location_id === this.props[item].id; });
         let info = {};
         info.reservations = [];
         _.map(fields[0].reservations, function(reservation) {
@@ -44,28 +45,32 @@ class ItemDetails extends Component {
             info.reservations.push(obj);
         });
         info.first_field_id = fields[0].id;
-        info.open_time = item.open_time;
-        info.close_time = item.close_time;
+        info.open_time = this.props[item].open_time;
+        info.close_time = this.props[item].close_time;
+
+        this.props.getFieldReservations(fields[0].id);
+
+
         return info;
     }
 
     renderHeader() {
-        const {item, titleSingular, userInfo} = this.props;
+        const {item, userInfo} = this.props;
 
-        switch(titleSingular) {
-            case "location":
-                const favorite = _.filter(item.users, user => user.id === userInfo.id);
-                console.log();
+        switch(item) {
+            case "locationItem":
+            case "favoriteLocation":
+                const favorite = _.filter(this.props[item].users, user => user.id === userInfo.id);
 
                 return (
                     <LocationHeader
-                        title={item.name}
+                        title={this.props[item].name}
                         info={{
-                            locationId: item.id,
-                            address: item.address,
-                            city: item.city,
-                            state: item.state,
-                            zipCode: item.zip_code
+                            locationId: this.props[item].id,
+                            address: this.props[item].address,
+                            city: this.props[item].city,
+                            state: this.props[item].state,
+                            zipCode: this.props[item].zip_code
                         }}
                         favorite={favorite.length > 0}
                     />
@@ -74,7 +79,7 @@ class ItemDetails extends Component {
             case "team":
                 return (
                     <TeamHeader
-                        name={item.name}
+                        name={this.props[item].name}
                         location={this.props.header}
                     />
                 );
@@ -82,9 +87,9 @@ class ItemDetails extends Component {
     }
 
     renderAddButton() {
-        const {titleSingular} = this.props;
+        const {item} = this.props;
 
-        switch(titleSingular) {
+        switch(item) {
             case "team":
                 return (
                     <button className="btn btn-circle blue btn-block btn-lg m-icon-big">Create New Team
@@ -95,20 +100,23 @@ class ItemDetails extends Component {
     }
 
     renderRightCol() {
-        const {item, titleSingular} = this.props;
+        const {item} = this.props;
 
-        switch(titleSingular) {
-            case "location":
+        switch(item) {
+            case "locationItem":
+            case "favoriteLocation":
                 return (
                     <div>
                         <div className="row">
                             <Map
                                 location={this.props.location}
+                                item={item}
                             />
                         </div>
                         <div className="row">
                             <Info
                                 location={this.props.location}
+                                item={item}
                             />
                         </div>
                     </div>
@@ -119,8 +127,8 @@ class ItemDetails extends Component {
                     <div>
                         <div className="row">
                             <TeamImage
-                                image={item.image}
-                                name={item.name}
+                                image={this.props[item].image}
+                                name={this.props[item].name}
                                 location={this.props.location}
                             />
                         </div>
@@ -137,7 +145,7 @@ class ItemDetails extends Component {
     render() {
         const {item, message} = this.props;
 
-        if (!item) {
+        if (!this.props[item]) {
             return (
                 <div className="portlet light portlet-fit bordered">
                     <div className="portlet-body">
@@ -168,7 +176,26 @@ class ItemDetails extends Component {
                                     exact path="/dashboard/locations"
                                     render={() =>
                                         <Calendar
-                                            locationItem={item}
+                                            locationItem={this.props[item]}
+                                            field={this.getFirstField()}
+                                            selectField={(field) => this.props.selectField(field)}
+                                        />
+                                    }
+                                />
+                                <Route
+                                    path="/dashboard/favorite-locations/reserve-field"
+                                    render={() =>
+                                        <Reservation
+                                            userId={this.props.userId}
+                                            field={this.getFirstField()}
+                                        />
+                                    }
+                                />
+                                <Route
+                                    exact path="/dashboard/favorite-locations"
+                                    render={() =>
+                                        <Calendar
+                                            locationItem={this.props[item]}
                                             field={this.getFirstField()}
                                             selectField={(field) => this.props.selectField(field)}
                                         />
@@ -192,9 +219,19 @@ class ItemDetails extends Component {
 
 function mapStateToProps(state) {
     return {
+        locationItem: state.activeLocation,
+        favoriteLocation: state.activeFavoriteLocation,
+        team: state.activeTeam,
         field: state.activeField,
         userInfo: state.authData
     }
 }
 
-export default connect(mapStateToProps, {selectField})(ItemDetails);
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        selectField: selectField,
+        getFieldReservations: getFieldReservations
+    }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ItemDetails);

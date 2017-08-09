@@ -9,8 +9,7 @@ import reducers from './reducers';
 import Home from './components/home';
 import Authentication from './components/authentication';
 import Profile from './components/user/profile';
-import LocationsContent from './components/locations/content';
-import TeamsContent from './components/teams/content';
+import Content from './components/page_content';
 import ReservationsContent from './components/reservations/content';
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
@@ -22,27 +21,32 @@ ReactDOM.render(
                 <Switch>
                     <Route path="/dashboard/profile" component={Profile}/>
                     <Route path="/dashboard/locations" render={() =>
-                        <LocationsContent
+                        <Content
                             title="Locations"
-                            titleSingular="location"
                             fnName="selectLocation"
                             message="Please select a location"
                             cmd="locationItem"
                         />
                     }/>
                     <Route path="/dashboard/teams" render={() =>
-                        <TeamsContent
+                        <Content
                             title="Teams"
-                            titleSingular="team"
                             fnName="selectTeam"
                             message="Please select a team or create a new one below"
                             cmd="team"
                         />
                     }/>
+                    <Route path="/dashboard/favorite-locations" render={() =>
+                        <Content
+                            title="Favorite Locations"
+                            fnName="selectFavoriteLocation"
+                            message="Please select a location"
+                            cmd="favoriteLocation"
+                        />
+                    }/>
                     <Route path="/dashboard/reservations" render={() =>
                         <ReservationsContent
                             title="Reservations"
-                            titleSingular="reservation"
                             fnName="selectReservation"
                             message="Please select a reservation"
                             cmd="reservation"
