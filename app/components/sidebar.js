@@ -1,8 +1,6 @@
 import _ from 'lodash';
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-import {connect} from 'react-redux';
-import {selectTab} from '../actions';
 
 class Sidebar extends Component {
     constructor() {
@@ -43,13 +41,13 @@ class Sidebar extends Component {
         const {location} = this.props;
 
         return _.map(tabs, tab => {
-            const classNameLi = `/dashboard/${tab.pathname}` === location.replace(' ', '-') ? 'nav-item active open' : 'nav-item ';
-            const classNameSpan = `/dashboard/${tab.pathname}` === location.replace(' ', '-') ? 'arrow open' : 'arrow ';
+            const classNameLi = `nav-item ${`/dashboard/${tab.pathname}` === location.replace(' ', '-') ? 'active open' : ''}`;
+            const classNameSpan = `arrow ${`/dashboard/${tab.pathname}` === location.replace(' ', '-') ? 'open' : ''}`;
             const selected = `/dashboard/${tab.pathname}` === location.replace(' ', '-') ? 'selected' : null;
 
             return (
                 <li className={classNameLi} key={tab.name}>
-                    <Link to={`/dashboard/${tab.pathname}`} className="nav-link nav-toggle" onClick={() => this.props.selectTab(tab.name)}>
+                    <Link to={`/dashboard/${tab.pathname}`} className="nav-link nav-toggle">
                         <i className={tab.icon}></i>
                         <span className="title">{tab.name}</span>
                         <span className={selected}></span>
@@ -71,7 +69,7 @@ class Sidebar extends Component {
                             </div>
                         </li>
                         <li className="nav-item start ">
-                            <Link to="/" className="nav-link nav-toggle" onClick={() => this.props.selectTab("Home")}>
+                            <Link to="/" className="nav-link nav-toggle">
                                 <i className="icon-home"></i>
                                 <span className="title">Home</span>
                             </Link>
@@ -87,4 +85,4 @@ class Sidebar extends Component {
     }
 }
 
-export default connect(null, {selectTab})(Sidebar);
+export default Sidebar;

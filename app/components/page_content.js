@@ -83,7 +83,6 @@ class Content extends Component {
 
 function mapStateToProps(state) {
     return {
-        tab: state.activeTab,
         userInfo: state.authData
     }
 }

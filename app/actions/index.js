@@ -7,7 +7,6 @@ export const GET_USER_INFO = 'get_user_info';
 export const GET_LOCATIONS = 'get_locations';
 export const GET_FAVORITE_LOCATIONS = 'get_favorite_locations';
 export const GET_USER_RESERVATIONS = 'get_user_reservations';
-export const TAB_SELECTED = 'tab_selected';
 export const LOCATION_SELECTED = 'location_selected';
 export const FAVORITE_LOCATION_SELECTED = 'favorite_location_selected';
 export const FIELD_SELECTED = 'field_selected';
@@ -87,13 +86,6 @@ export function selectFavoriteLocation(location) {
     return {
         type: FAVORITE_LOCATION_SELECTED,
         payload: location
-    };
-}
-
-export function selectTab(tab) {
-    return {
-        type: TAB_SELECTED,
-        payload: tab
     };
 }
 
