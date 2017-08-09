@@ -40,9 +40,9 @@ class Calendar extends Component {
     }
 
     renderCalendar() {
-        const {field} = this.props;
+        const {fieldReservations} = this.props;
 
-        if (!field) {
+        if (!fieldReservations) {
             return <div>Loading...</div>;
         }
 
@@ -55,10 +55,10 @@ class Calendar extends Component {
             editable: true,
             businessHours: {
                 dow: [ 1, 2, 3, 4, 5 ],
-                start: field.open_time,
-                end: field.close_time,
+                start: fieldReservations.open_time,
+                end: fieldReservations.close_time,
             },
-            events: field.reservations
+            events: fieldReservations.reservations
         });
     }
 

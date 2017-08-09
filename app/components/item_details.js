@@ -25,6 +25,7 @@ class ItemDetails extends Component {
 
     getFirstField() {
         if (this.props.field) {
+            console.log("FROM ITEM_DETAILS", this.props.field);
             return this.props.field;
         }
 
@@ -54,6 +55,7 @@ class ItemDetails extends Component {
         switch(titleSingular) {
             case "location":
                 const favorite = _.filter(item.users, user => user.id === userInfo.id);
+                console.log();
 
                 return (
                     <LocationHeader

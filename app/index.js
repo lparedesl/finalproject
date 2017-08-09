@@ -16,11 +16,11 @@ ReactDOM.render(
     <Provider store={createStoreWithMiddleware(reducers)}>
         <Router>
             <div>
-                <Switch>
+                {/*<Switch>*/}
                     <Route path="/dashboard" component={Dashboard}/>
                     <Route path="/user" component={Authentication}/>
                     <Route exact path="/" component={Home}/>
-                </Switch>
+                {/*</Switch>*/}
             </div>
         </Router>
     </Provider>

@@ -35,6 +35,7 @@ class Content extends Component {
                     {this.props.title}
                 </h1>
                 <div className="row">
+                    {console.log("FROM PAGE_CONTENT:", this.props.locations)}
                     <div className="col-md-3">
                         <ItemsList
                             title={this.props.title}
