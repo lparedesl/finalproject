@@ -59,8 +59,8 @@ class ItemDetails extends Component {
 
         switch(item) {
             case "locationItem":
+            case "favoriteLocation":
                 const favorite = _.filter(this.props[item].users, user => user.id === userInfo.id);
-                console.log();
 
                 return (
                     <LocationHeader
@@ -104,16 +104,19 @@ class ItemDetails extends Component {
 
         switch(item) {
             case "locationItem":
+            case "favoriteLocation":
                 return (
                     <div>
                         <div className="row">
                             <Map
                                 location={this.props.location}
+                                item={item}
                             />
                         </div>
                         <div className="row">
                             <Info
                                 location={this.props.location}
+                                item={item}
                             />
                         </div>
                     </div>
@@ -171,6 +174,25 @@ class ItemDetails extends Component {
                                 />
                                 <Route
                                     exact path="/dashboard/locations"
+                                    render={() =>
+                                        <Calendar
+                                            locationItem={this.props[item]}
+                                            field={this.getFirstField()}
+                                            selectField={(field) => this.props.selectField(field)}
+                                        />
+                                    }
+                                />
+                                <Route
+                                    path="/dashboard/favorite-locations/reserve-field"
+                                    render={() =>
+                                        <Reservation
+                                            userId={this.props.userId}
+                                            field={this.getFirstField()}
+                                        />
+                                    }
+                                />
+                                <Route
+                                    exact path="/dashboard/favorite-locations"
                                     render={() =>
                                         <Calendar
                                             locationItem={this.props[item]}

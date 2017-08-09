@@ -11,9 +11,9 @@ class Info extends Component {
     }
 
     renderSportsTiles() {
-        const {locationItem} = this.props;
+        const {item} = this.props;
 
-        return _.map(locationItem.sports, sport => {
+        return _.map(this.props[item].sports, sport => {
             return (
                 <div className="tile" key={sport.id}>
                     <div className="tile-body" style={{backgroundImage: `url(${sport.img})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat' }}>
@@ -27,7 +27,7 @@ class Info extends Component {
     }
 
     render() {
-        const {locationItem} = this.props;
+        const {item} = this.props;
 
         return (
             <div className="portlet light portlet-fit bordered">
@@ -43,10 +43,10 @@ class Info extends Component {
                             <a href="javascript:;">Schedule</a>
                         </h3>
                         <p>
-                            Open {locationItem.location_schedule.days_long}
+                            Open {this.props[item].location_schedule.days_long}
                         </p>
                         <p>
-                            From {moment(locationItem.open_time, "HH:mm:ss").format("h:mm A")} to {moment(locationItem.close_time, "HH:mm:ss").format("h:mm A")}
+                            From {moment(this.props[item].open_time, "HH:mm:ss").format("h:mm A")} to {moment(this.props[item].close_time, "HH:mm:ss").format("h:mm A")}
                         </p>
                     </div>
                     <div className="list-item-content">
@@ -64,7 +64,10 @@ class Info extends Component {
 }
 
 function mapStateToProps(state) {
-    return {locationItem: state.activeLocation}
+    return {
+        locationItem: state.activeLocation,
+        favoriteLocation: state.activeFavoriteLocation,
+    }
 }
 
 export default connect(mapStateToProps)(Info);

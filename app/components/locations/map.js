@@ -26,8 +26,8 @@ class Map extends Component {
         this.state = {
             markers: [{
                 position: {
-                    lat: props.locationItem.lat,
-                    lng: props.locationItem.lng,
+                    lat: props[props.item].lat,
+                    lng: props[props.item].lng,
                 },
                 key: props.city,
                 defaultAnimation: 2,
@@ -111,14 +111,14 @@ class Map extends Component {
                                 onMapClick={this.handleMapClick}
                                 markers={[{
                                     position: {
-                                        lat: this.props.locationItem.lat,
-                                        lng: this.props.locationItem.lng,
+                                        lat: this.props[this.props.item].lat,
+                                        lng: this.props[this.props.item].lng,
                                     },
-                                    key: this.props.locationItem.city,
+                                    key: this.props[this.props.item].city,
                                     defaultAnimation: 2,
                                 }]}
                                 onMarkerRightClick={this.handleMarkerRightClick}
-                                coordinates={ {lat: this.props.locationItem.lat, lng: this.props.locationItem.lng} }
+                                coordinates={ {lat: this.props[this.props.item].lat, lng: this.props[this.props.item].lng} }
                             />
                         </div>
                     </div>
@@ -129,7 +129,10 @@ class Map extends Component {
 }
 
 function mapStateToProps(state) {
-    return {locationItem: state.activeLocation}
+    return {
+        locationItem: state.activeLocation,
+        favoriteLocation: state.activeFavoriteLocation,
+    }
 }
 
 export default connect(mapStateToProps)(Map);
