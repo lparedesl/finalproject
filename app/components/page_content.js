@@ -8,8 +8,10 @@ import Footer from './footer';
 import ItemsList from './items_list';
 import ItemDetails from './item_details';
 import {getLocations} from './../actions/index';
+import {getFavoriteLocations} from './../actions/index';
 import {getTeams} from './../actions/index';
 import {getUserInfo} from './../actions/index';
+import {resetActiveItems} from './../actions/index';
 
 class Content extends Component {
     constructor() {
@@ -21,8 +23,20 @@ class Content extends Component {
     componentDidMount() {
         document.body.classList.add("page-header-fixed", "page-sidebar-closed-hide-logo", "page-content-white", "page-md", "page-container-bg-solid", "page-sidebar-closed");
         this.props.getLocations();
+        this.props.getFavoriteLocations();
         this.props.getTeams();
         this.props.getUserInfo();
+    }
+
+    shouldComponentUpdate(nextProps) {
+        if (this.props.title !== nextProps.title) {
+            console.log("HAVE TO RESET ACTIVE LOCATION");
+            // this.props.resetActiveItems();
+        } else {
+            console.log("CONTINUE");
+        }
+        console.log("=====================================");
+        return true;
     }
 
     isSignedIn() {
@@ -44,6 +58,7 @@ class Content extends Component {
                     />
                     <div className="page-content-wrapper">
                         <div className="page-content">
+                            {/*{console.log("FROM PAGE_CONTENT:", this.props.locationItem)}*/}
                             <h1 className="page-title">
                                 {this.props.title}
                             </h1>
@@ -59,6 +74,7 @@ class Content extends Component {
                                         titleSingular={this.props.titleSingular}
                                         userId={this.isSignedIn()}
                                         item={this.props[this.props.cmd]}
+                                        // item={this.props.cmd}
                                         message={this.props.message}
                                     />
                                 </div>
@@ -75,6 +91,7 @@ class Content extends Component {
 function mapStateToProps(state) {
     return {
         locationItem: state.activeLocation,
+        favoriteLocation: state.activeFavoriteLocation,
         team: state.activeTeam,
         tab: state.activeTab,
         userInfo: state.authData
@@ -84,8 +101,10 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         getLocations: getLocations,
+        getFavoriteLocations: getFavoriteLocations,
         getTeams: getTeams,
-        getUserInfo: getUserInfo
+        getUserInfo: getUserInfo,
+        resetActiveItems: resetActiveItems
     }, dispatch)
 }
 

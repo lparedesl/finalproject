@@ -192,6 +192,9 @@ class ItemDetails extends Component {
 
 function mapStateToProps(state) {
     return {
+        locationItem: state.activeLocation,
+        favoriteLocation: state.activeFavoriteLocation,
+        team: state.activeTeam,
         field: state.activeField,
         userInfo: state.authData
     }

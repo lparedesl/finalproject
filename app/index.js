@@ -41,10 +41,10 @@ ReactDOM.render(
                     <Route path="/dashboard/favorite-locations" render={() =>
                         <Content
                             title="Favorite Locations"
-                            titleSingular="favorite location"
+                            titleSingular="favoriteLocation"
                             fnName="selectFavoriteLocation"
                             message="Please select a location"
-                            cmd="locationItem"
+                            cmd="favoriteLocation"
                         />
                     }/>
                     <Route path="/dashboard/reservations" render={() =>

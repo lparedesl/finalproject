@@ -15,6 +15,7 @@ class Calendar extends Component {
     }
 
     componentDidMount() {
+        // console.log("FROM CALENDAR:", this.props.locationItem);
         this.props.getFieldReservations(this.props.field.first_field_id);
     }
 

@@ -4,13 +4,26 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import ListItem from './list_item';
 import {selectLocation} from '../actions';
+import {selectFavoriteLocation} from '../actions';
 import {selectTeam} from '../actions';
 
 class ItemsList extends Component {
-    renderList() {
-        const {title} = this.props;
+    handleSelectItem(item) {
+        this.props[this.props.fnName](item);
+    }
 
-        return _.map(this.props[title.toLowerCase()], item => {
+    renderList() {
+        const {title, locations, userInfo} = this.props;
+        // const items = title === "Favorite Locations" ? _.filter(locations, item => {
+        //     const usersTemp = _.filter(item.users, user => user.id === userInfo.id);
+        //     if (usersTemp[0]) {
+        //         return true
+        //     }
+        // }) : this.props[title.toLowerCase()];
+
+        const items = title === "Favorite Locations" ? this.props.favoriteLocations : this.props[title.toLowerCase()];
+
+        return _.map(items, item => {
             return (
                 <ListItem
                     key={item.id}
@@ -48,13 +61,16 @@ class ItemsList extends Component {
 function mapStateToProps(state) {
     return {
         locations: state.locations,
+        favoriteLocations: state.favoriteLocations,
         teams: state.teams,
+        userInfo: state.authData
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         selectLocation: selectLocation,
+        selectFavoriteLocation: selectFavoriteLocation,
         selectTeam: selectTeam,
     }, dispatch)
 }
