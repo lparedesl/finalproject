@@ -55,6 +55,7 @@ class ItemDetails extends Component {
         switch(titleSingular) {
             case "location":
                 const favorite = _.filter(item.users, user => user.id === userInfo.id);
+                console.log();
 
                 return (
                     <LocationHeader
