@@ -8,6 +8,28 @@ $(document).ready(function() {
         }
     });
 
+    var FormInputMask = function () {
+        var handleInputMasks = function () {
+            $("#mask_phone").inputmask("mask", {
+                "mask": "(999) 999-9999"
+            }); //specifying fn & options
+    }
+
+    return {
+        //main function to initiate the module
+        init: function () {
+            handleInputMasks();
+        }
+    };
+
+}();
+
+if (App.isAngularJsApp() === false) { 
+    jQuery(document).ready(function() {
+        FormInputMask.init(); // init metronic core componets
+    });
+}
+
     $("#app").on("DOMNodeInserted", function() {
         // if ($(".login-bg")) {
         //     $('.login-bg').backstretch([

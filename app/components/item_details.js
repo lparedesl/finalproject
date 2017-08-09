@@ -5,12 +5,14 @@ import moment from 'moment';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import LocationHeader from './locations/header';
+import TeamStartHeader from './teams/start_header';
 import TeamHeader from './teams/header';
 import Calendar from './locations/calendar';
 import Reservation from './locations/reservation';
 import Map from './locations/map';
 import Info from './locations/info';
-import Banner from './teams/banner';
+import Banner from './teams/team_list';
+import TeamMemberForm from './teams/add_member_form';
 import TeamImage from './teams/team_image';
 import {selectField} from '../actions';
 import {getFieldReservations} from '../actions';
@@ -19,13 +21,13 @@ class ItemDetails extends Component {
     constructor() {
         super();
 
-        this.getFirstField = this.getFirstField.bind(this);
+        this.getField = this.getField.bind(this);
         this.renderHeader = this.renderHeader.bind(this);
-        this.renderAddButton = this.renderAddButton.bind(this);
+        this.renderStartHeader = this.renderStartHeader.bind(this);
         this.renderRightCol = this.renderRightCol.bind(this);
     }
 
-    getFirstField() {
+    getField() {
         if (this.props.field) {
             return this.props.field;
         }
@@ -86,16 +88,17 @@ class ItemDetails extends Component {
         }
     }
 
-    renderAddButton() {
-        const {item} = this.props;
+    renderStartHeader() {
+        const {item, message} = this.props;
 
         switch(item) {
             case "team":
                 return (
-                    <button className="btn btn-circle blue btn-block btn-lg m-icon-big">Create New Team
-                        <i className="m-icon-big-swapright m-icon-white"></i>
-                    </button>
+                    <TeamStartHeader message={message}/>
                 );
+
+                default:
+                    return <h3>{message}</h3>
         }
     }
 
@@ -124,33 +127,29 @@ class ItemDetails extends Component {
 
             case "team":
                 return (
-                    <div>
-                        <div className="row">
-                            <TeamImage
-                                image={this.props[item].image}
-                                name={this.props[item].name}
-                                location={this.props.location}
-                            />
-                        </div>
-                        <div className="row">
-                            <button className="btn btn-circle blue btn-block btn-lg m-icon-big">Add Members
-                                <i className="m-icon-big-swapright m-icon-white"></i>
-                            </button>
-                        </div>
+                    <div className="row">
+                        <TeamImage
+                            image={this.props[item].image}
+                            name={this.props[item].name}
+                            location={this.props.location}
+                        />
                     </div>
                 );
         }
     }
 
     render() {
-        const {item, message} = this.props;
+        const {item} = this.props;
 
         if (!this.props[item]) {
             return (
-                <div className="portlet light portlet-fit bordered">
-                    <div className="portlet-body">
-                        <h3>{message}</h3>
-                        {this.renderAddButton()}
+                <div className="row">
+                    <div className="col-md-12">
+                        <div className="portlet light portlet-fit bordered">
+                            <div className="portlet-body">
+                                {this.renderStartHeader()}
+                            </div>
+                        </div>
                     </div>
                 </div>
             )
@@ -168,7 +167,7 @@ class ItemDetails extends Component {
                                     render={() =>
                                         <Reservation
                                             userId={this.props.userId}
-                                            field={this.getFirstField()}
+                                            field={this.getField()}
                                         />
                                     }
                                 />
@@ -177,7 +176,7 @@ class ItemDetails extends Component {
                                     render={() =>
                                         <Calendar
                                             locationItem={this.props[item]}
-                                            field={this.getFirstField()}
+                                            field={this.getField()}
                                             selectField={(field) => this.props.selectField(field)}
                                         />
                                     }
@@ -187,7 +186,7 @@ class ItemDetails extends Component {
                                     render={() =>
                                         <Reservation
                                             userId={this.props.userId}
-                                            field={this.getFirstField()}
+                                            field={this.getField()}
                                         />
                                     }
                                 />
@@ -196,15 +195,13 @@ class ItemDetails extends Component {
                                     render={() =>
                                         <Calendar
                                             locationItem={this.props[item]}
-                                            field={this.getFirstField()}
+                                            field={this.getField()}
                                             selectField={(field) => this.props.selectField(field)}
                                         />
                                     }
                                 />
-                                <Route
-                                    path="/dashboard/teams"
-                                    component={Banner}
-                                />
+                                <Route path="/dashboard/teams/add-team-member" component={TeamMemberForm}/>
+                                <Route path="/dashboard/teams" component={Banner}/>
                             </Switch>
                         </div>
                     </Router>

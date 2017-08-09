@@ -8,7 +8,7 @@ import promise from 'redux-promise';
 import reducers from './reducers';
 import Home from './components/home';
 import Authentication from './components/authentication';
-import Profile from './components/user/profile';
+import ProfileContent from './components/user/profile';
 import Content from './components/page_content';
 import ReservationsContent from './components/reservations/content';
 
@@ -19,7 +19,11 @@ ReactDOM.render(
         <Router>
             <div>
                 <Switch>
-                    <Route path="/dashboard/profile" component={Profile}/>
+                    <Route path="/dashboard/profile" render={() =>
+                        <ProfileContent
+                            title="Profile"
+                        />
+                    }/>
                     <Route path="/dashboard/locations" render={() =>
                         <Content
                             title="Locations"

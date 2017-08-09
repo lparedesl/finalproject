@@ -45,6 +45,8 @@ class Reservation extends Component {
             field: this.props.field.first_field_id
         };
 
+        console.log(data);
+
         this.props.reserveField(data, res => {
             console.log(res.data);
             if (res.data.error) {
