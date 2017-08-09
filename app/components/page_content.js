@@ -30,12 +30,8 @@ class Content extends Component {
 
     shouldComponentUpdate(nextProps) {
         if (this.props.title !== nextProps.title) {
-            console.log("HAVE TO RESET ACTIVE LOCATION");
             this.props.resetActiveItems();
-        } else {
-            console.log("CONTINUE");
         }
-        console.log("=====================================");
         return true;
     }
 
@@ -58,7 +54,6 @@ class Content extends Component {
                     />
                     <div className="page-content-wrapper">
                         <div className="page-content">
-                            {/*{console.log("FROM PAGE_CONTENT:", this.props.locationItem)}*/}
                             <h1 className="page-title">
                                 {this.props.title}
                             </h1>
@@ -71,9 +66,7 @@ class Content extends Component {
                                 </div>
                                 <div className="col-md-9">
                                     <ItemDetails
-                                        titleSingular={this.props.titleSingular}
                                         userId={this.isSignedIn()}
-                                        // item={this.props[this.props.cmd]}
                                         item={this.props.cmd}
                                         message={this.props.message}
                                     />
@@ -90,9 +83,6 @@ class Content extends Component {
 
 function mapStateToProps(state) {
     return {
-        // locationItem: state.activeLocation,
-        // favoriteLocation: state.activeFavoriteLocation,
-        // team: state.activeTeam,
         tab: state.activeTab,
         userInfo: state.authData
     }

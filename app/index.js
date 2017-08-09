@@ -23,7 +23,6 @@ ReactDOM.render(
                     <Route path="/dashboard/locations" render={() =>
                         <Content
                             title="Locations"
-                            titleSingular="location"
                             fnName="selectLocation"
                             message="Please select a location"
                             cmd="locationItem"
@@ -32,7 +31,6 @@ ReactDOM.render(
                     <Route path="/dashboard/teams" render={() =>
                         <Content
                             title="Teams"
-                            titleSingular="team"
                             fnName="selectTeam"
                             message="Please select a team or create a new one below"
                             cmd="team"
@@ -41,7 +39,6 @@ ReactDOM.render(
                     <Route path="/dashboard/favorite-locations" render={() =>
                         <Content
                             title="Favorite Locations"
-                            titleSingular="favoriteLocation"
                             fnName="selectFavoriteLocation"
                             message="Please select a location"
                             cmd="favoriteLocation"
@@ -50,7 +47,6 @@ ReactDOM.render(
                     <Route path="/dashboard/reservations" render={() =>
                         <ReservationsContent
                             title="Reservations"
-                            titleSingular="reservation"
                             fnName="selectReservation"
                             message="Please select a reservation"
                             cmd="reservation"

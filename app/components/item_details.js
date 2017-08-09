@@ -27,7 +27,6 @@ class ItemDetails extends Component {
 
     getFirstField() {
         if (this.props.field) {
-            console.log("FROM ITEM_DETAILS", this.props.field);
             return this.props.field;
         }
 
@@ -56,10 +55,10 @@ class ItemDetails extends Component {
     }
 
     renderHeader() {
-        const {item, titleSingular, userInfo} = this.props;
+        const {item, userInfo} = this.props;
 
-        switch(titleSingular) {
-            case "location":
+        switch(item) {
+            case "locationItem":
                 const favorite = _.filter(this.props[item].users, user => user.id === userInfo.id);
                 console.log();
 
@@ -88,9 +87,9 @@ class ItemDetails extends Component {
     }
 
     renderAddButton() {
-        const {titleSingular} = this.props;
+        const {item} = this.props;
 
-        switch(titleSingular) {
+        switch(item) {
             case "team":
                 return (
                     <button className="btn btn-circle blue btn-block btn-lg m-icon-big">Create New Team
@@ -101,10 +100,10 @@ class ItemDetails extends Component {
     }
 
     renderRightCol() {
-        const {item, titleSingular} = this.props;
+        const {item} = this.props;
 
-        switch(titleSingular) {
-            case "location":
+        switch(item) {
+            case "locationItem":
                 return (
                     <div>
                         <div className="row">
