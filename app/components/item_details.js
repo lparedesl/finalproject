@@ -32,7 +32,7 @@ class ItemDetails extends Component {
         }
 
         const {item} = this.props;
-        let fields = _.filter(item.sports[0].fields, data => { return data.location_id === item.id; });
+        let fields = _.filter(this.props[item].sports[0].fields, data => { return data.location_id === this.props[item].id; });
         let info = {};
         info.reservations = [];
         _.map(fields[0].reservations, function(reservation) {
@@ -46,8 +46,8 @@ class ItemDetails extends Component {
             info.reservations.push(obj);
         });
         info.first_field_id = fields[0].id;
-        info.open_time = item.open_time;
-        info.close_time = item.close_time;
+        info.open_time = this.props[item].open_time;
+        info.close_time = this.props[item].close_time;
 
         this.props.getFieldReservations(fields[0].id);
 
@@ -60,18 +60,18 @@ class ItemDetails extends Component {
 
         switch(titleSingular) {
             case "location":
-                const favorite = _.filter(item.users, user => user.id === userInfo.id);
+                const favorite = _.filter(this.props[item].users, user => user.id === userInfo.id);
                 console.log();
 
                 return (
                     <LocationHeader
-                        title={item.name}
+                        title={this.props[item].name}
                         info={{
-                            locationId: item.id,
-                            address: item.address,
-                            city: item.city,
-                            state: item.state,
-                            zipCode: item.zip_code
+                            locationId: this.props[item].id,
+                            address: this.props[item].address,
+                            city: this.props[item].city,
+                            state: this.props[item].state,
+                            zipCode: this.props[item].zip_code
                         }}
                         favorite={favorite.length > 0}
                     />
@@ -80,7 +80,7 @@ class ItemDetails extends Component {
             case "team":
                 return (
                     <TeamHeader
-                        name={item.name}
+                        name={this.props[item].name}
                         location={this.props.header}
                     />
                 );
@@ -125,8 +125,8 @@ class ItemDetails extends Component {
                     <div>
                         <div className="row">
                             <TeamImage
-                                image={item.image}
-                                name={item.name}
+                                image={this.props[item].image}
+                                name={this.props[item].name}
                                 location={this.props.location}
                             />
                         </div>
@@ -143,7 +143,7 @@ class ItemDetails extends Component {
     render() {
         const {item, message} = this.props;
 
-        if (!item) {
+        if (!this.props[item]) {
             return (
                 <div className="portlet light portlet-fit bordered">
                     <div className="portlet-body">
@@ -174,7 +174,7 @@ class ItemDetails extends Component {
                                     exact path="/dashboard/locations"
                                     render={() =>
                                         <Calendar
-                                            locationItem={item}
+                                            locationItem={this.props[item]}
                                             field={this.getFirstField()}
                                             selectField={(field) => this.props.selectField(field)}
                                         />
