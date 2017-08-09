@@ -43,18 +43,18 @@ class Sidebar extends Component {
         const {location} = this.props;
 
         return _.map(tabs, tab => {
-            const classNameLi = `/dashboard/${tab.pathname}` === location.pathname ? 'nav-item active open' : 'nav-item ';
-            const classNameSpan = `/dashboard/${tab.pathname}` === location.pathname ? 'arrow open' : 'arrow ';
-            const selected = `/dashboard/${tab.pathname}` === location.pathname ? 'selected' : null;
+            const classNameLi = `/dashboard/${tab.pathname}` === location.replace(' ', '-') ? 'nav-item active open' : 'nav-item ';
+            const classNameSpan = `/dashboard/${tab.pathname}` === location.replace(' ', '-') ? 'arrow open' : 'arrow ';
+            const selected = `/dashboard/${tab.pathname}` === location.replace(' ', '-') ? 'selected' : null;
 
             return (
                 <li className={classNameLi} key={tab.name}>
-                    <a href={`/dashboard/${tab.pathname}`} className="nav-link nav-toggle" onClick={() => this.props.selectTab(tab.name)}>
+                    <Link to={`/dashboard/${tab.pathname}`} className="nav-link nav-toggle" onClick={() => this.props.selectTab(tab.name)}>
                         <i className={tab.icon}></i>
                         <span className="title">{tab.name}</span>
                         <span className={selected}></span>
                         <span className={classNameSpan}></span>
-                    </a>
+                    </Link>
                 </li>
             )
         })

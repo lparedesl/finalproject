@@ -15,6 +15,7 @@ class Calendar extends Component {
     }
 
     componentDidMount() {
+        // console.log("FROM CALENDAR:", this.props.locationItem);
         this.props.getFieldReservations(this.props.field.first_field_id);
     }
 
@@ -40,9 +41,9 @@ class Calendar extends Component {
     }
 
     renderCalendar() {
-        const {field} = this.props;
+        const {fieldReservations} = this.props;
 
-        if (!field) {
+        if (!fieldReservations) {
             return <div>Loading...</div>;
         }
 
@@ -55,10 +56,10 @@ class Calendar extends Component {
             editable: true,
             businessHours: {
                 dow: [ 1, 2, 3, 4, 5 ],
-                start: field.open_time,
-                end: field.close_time,
+                start: fieldReservations.openTime,
+                end: fieldReservations.closeTime,
             },
-            events: field.reservations
+            events: fieldReservations.reservations
         });
     }
 

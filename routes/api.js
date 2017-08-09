@@ -68,6 +68,53 @@ router.get("/get-locations", function(req, res, next) {
     })
 });
 
+router.get("/get-favorite-locations", function(req, res, next) {
+    db.Location.findAll({
+        include: [
+            {
+                model: db.LocationSchedule
+            },
+            {
+                model: db.Sport,
+                include: {
+                    model: db.Field,
+                    include: {
+                        model: db.Reservation,
+                        include: {
+                            model: db.User
+                        }
+                    }
+                }
+            },
+            {
+                model: db.User,
+                where: {
+                    email: req.session.passport.user
+                }
+            }
+        ]
+    })
+    .then(function(data) {
+        _.map(data, function(location, i) {
+            googleMapsClient.geocode({
+                address: location.address + ', ' + location.city + ', ' + location.state + ' ' + location.zip_code
+            }, function(err, response) {
+                if (!err) {
+                    data[i].dataValues.lat = response.json.results[0].geometry.location.lat;
+                    data[i].dataValues.lng = response.json.results[0].geometry.location.lng;
+
+                    if (data.length === i + 1) {
+                        res.json(data);
+                    }
+                }
+            });
+        });
+    })
+    .catch(function(error) {
+        console.log(error);
+    })
+});
+
 router.get("/get-teams", function(req, res, next) {
     db.Team.findAll({
         include: [
@@ -194,9 +241,6 @@ router.post("/field-schedule", function(req, res, next) {
 });
 
 router.post("/reserve-field", function(req, res, next) {
-    console.log("===========================");
-    console.log("RECEIVED", req.body);
-    console.log("===========================");
     db.Field.findOne({
         where: {
             id: req.body.field
@@ -214,10 +258,6 @@ router.post("/reserve-field", function(req, res, next) {
         ]
     })
     .then(function(field) {
-        console.log("===========================");
-        console.log("RECEIVED", field);
-        console.log("===========================");
-
         var error = false;
         var body = {
             reservation_date: moment(req.body.reservation_date + " " + req.body.reservation_time, "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm:ss"),

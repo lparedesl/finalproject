@@ -91,9 +91,7 @@ class SignUpForm extends Component {
 
     onSubmit(values) {
         values.dob = moment(new Date(document.getElementById("signup-dob").value)).format();
-        this.props.signup(values, () => {
-            this.props.getAuthData();
-        });
+        this.props.signup(values);
     }
 
     render() {
@@ -104,6 +102,7 @@ class SignUpForm extends Component {
                 <div className="login-content signup-content">
                     <h1>Sign up</h1>
                     <form className="login-form" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+                    {/*<form className="login-form" action="/signup" method="POST">*/}
                         {this.renderErrors()}
                         <div className="row">
                             <Field
