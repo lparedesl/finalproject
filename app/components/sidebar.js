@@ -49,12 +49,12 @@ class Sidebar extends Component {
 
             return (
                 <li className={classNameLi} key={tab.name}>
-                    <Link to={`/dashboard/${tab.pathname}`} className="nav-link nav-toggle" onClick={() => this.props.selectTab(tab.name)}>
+                    <a href={`/dashboard/${tab.pathname}`} className="nav-link nav-toggle" onClick={() => this.props.selectTab(tab.name)}>
                         <i className={tab.icon}></i>
                         <span className="title">{tab.name}</span>
                         <span className={selected}></span>
                         <span className={classNameSpan}></span>
-                    </Link>
+                    </a>
                 </li>
             )
         })
