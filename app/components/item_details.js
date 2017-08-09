@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
 import moment from 'moment';
 import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import LocationHeader from './locations/header';
 import TeamHeader from './teams/header';
 import Calendar from './locations/calendar';
@@ -12,6 +13,7 @@ import Info from './locations/info';
 import Banner from './teams/banner';
 import TeamImage from './teams/team_image';
 import {selectField} from '../actions';
+import {getFieldReservations} from '../actions';
 
 class ItemDetails extends Component {
     constructor() {
@@ -46,6 +48,10 @@ class ItemDetails extends Component {
         info.first_field_id = fields[0].id;
         info.open_time = item.open_time;
         info.close_time = item.close_time;
+
+        this.props.getFieldReservations(fields[0].id);
+
+
         return info;
     }
 
@@ -200,4 +206,11 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, {selectField})(ItemDetails);
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        selectField: selectField,
+        getFieldReservations: getFieldReservations
+    }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ItemDetails);

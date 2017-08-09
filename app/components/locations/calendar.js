@@ -56,8 +56,8 @@ class Calendar extends Component {
             editable: true,
             businessHours: {
                 dow: [ 1, 2, 3, 4, 5 ],
-                start: fieldReservations.open_time,
-                end: fieldReservations.close_time,
+                start: fieldReservations.openTime,
+                end: fieldReservations.closeTime,
             },
             events: fieldReservations.reservations
         });
