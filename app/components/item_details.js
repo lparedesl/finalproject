@@ -5,6 +5,7 @@ import moment from 'moment';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import LocationHeader from './locations/header';
+import TeamStartHeader from './teams/start_header';
 import TeamHeader from './teams/header';
 import Calendar from './locations/calendar';
 import Reservation from './locations/reservation';
@@ -14,6 +15,7 @@ import Banner from './teams/team_list';
 import TeamImage from './teams/team_image';
 import {selectField} from '../actions';
 import {getFieldReservations} from '../actions';
+import StartHeader from "./teams/start_header";
 
 class ItemDetails extends Component {
     constructor() {
@@ -21,7 +23,8 @@ class ItemDetails extends Component {
 
         this.getFirstField = this.getFirstField.bind(this);
         this.renderHeader = this.renderHeader.bind(this);
-        this.renderAddButton = this.renderAddButton.bind(this);
+        this.renderStartHeader = this.renderStartHeader.bind(this);
+        // this.renderCreateTeamForm = this.renderCreateTeamForm.bind(this);
         this.renderRightCol = this.renderRightCol.bind(this);
     }
 
@@ -86,16 +89,17 @@ class ItemDetails extends Component {
         }
     }
 
-    renderAddButton() {
-        const {item} = this.props;
+    renderStartHeader() {
+        const {item, message} = this.props;
 
         switch(item) {
             case "team":
                 return (
-                    <button className="btn blue btn-block btn-lg m-icon-big">Create New Team
-                        <i className="m-icon-big-swapright m-icon-white"></i>
-                    </button>
+                    <TeamStartHeader message={message}/>
                 );
+
+                default:
+                    return <h3>{message}</h3>
         }
     }
 
@@ -143,14 +147,17 @@ class ItemDetails extends Component {
     }
 
     render() {
-        const {item, message} = this.props;
+        const {item} = this.props;
 
         if (!this.props[item]) {
             return (
-                <div className="portlet light portlet-fit bordered">
-                    <div className="portlet-body">
-                        <h3>{message}</h3>
-                        {this.renderAddButton()}
+                <div className="row">
+                    <div className="col-md-12">
+                        <div className="portlet light portlet-fit bordered">
+                            <div className="portlet-body">
+                                {this.renderStartHeader()}
+                            </div>
+                        </div>
                     </div>
                 </div>
             )

@@ -17,6 +17,7 @@ export const GET_TEAMS = 'get_teams';
 export const TEAM_SELECTED = 'team_selected';
 export const FAVORITE_LOCATION = 'favorite_location';
 export const RESET_ACTIVE_ITEMS = 'reset_active_items';
+export const CREATE_TEAM = 'create_team';
 
 export function getAuthData() {
     const request = axios.get('/api/get-csrf-token');
@@ -157,6 +158,16 @@ export function favoriteLocation(values, cb) {
 
     return {
         type: FAVORITE_LOCATION,
+        payload: request
+    };
+}
+
+export function createTeam(values, cb) {
+    const request = axios.post('/api/create-team', values)
+                         .then((data) => cb(data));
+
+    return {
+        type: CREATE_TEAM,
         payload: request
     };
 }

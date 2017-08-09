@@ -14,14 +14,12 @@ class SignUpForm extends Component {
 
     renderTextField(field) {
         const {meta: {touched, error}} = field;
-        const className = `col-xs-6 ${touched && error ? 'has-error' : ''}`;
+        const className = `form-control form-control-solid placeholder-no-fix form-group ${touched && error ? 'has-error' : ''}`;
 
         return (
-            <div className={className}>
-                <input className="form-control form-control-solid placeholder-no-fix form-group" type={field.type} autoComplete="off" placeholder={field.placeholder} name={field.bodyName} required {...field.input}/>
-                <div className="text-help">
-                    {touched ? error : ''}
-                </div>
+            <div className="col-xs-6">
+                <input className={className} type={field.type} autoComplete="off" placeholder={field.placeholder} name={field.bodyName} required {...field.input}/>
+                <span className="help-block">{touched ? error : ''}</span>
             </div>
         );
     }

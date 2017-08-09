@@ -10,6 +10,12 @@ body.login {
     padding-bottom: 0 !important;
 }
 
+.help-block {
+    color: #e73d4a;
+    position: relative;
+    top: -28px;
+}
+
 .portlet.calendar .caption {
     width: 100%;
 }

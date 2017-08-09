@@ -6,10 +6,8 @@ const BannerItem = (props) => {
   return (
     <li className="mt-list-item">
         <div className="list-icon-container done">
-            <i className="icon-check"></i>
+            <i className="icon-user"></i>
         </div>
-        {console.log("===========")}
-        {console.log(data)}
         <div className="list-datetime"> {data.phone} </div>
         <div className="list-item-content">
             <h3 className="uppercase">

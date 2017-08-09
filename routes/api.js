@@ -329,6 +329,47 @@ router.post("/favorite-location", function(req, res, next) {
     }
 });
 
+router.post("/create-team", function(req, res, next) {
+    db.Team.findOne({
+        where: {
+            name: req.body.teamName
+        }
+    })
+    .then(function(team) {
+        var error = false;
+
+        if (team) {
+            error = true;
+            res.json({error: "A team with this name already exists. Choose a different name."});
+        }
+
+        if (!error) {
+            db.Team.create({
+                name: req.body.teamName,
+                image: req.body.imgLink
+            })
+            .then(function(newTeam) {
+                db.UserTeam.create({
+                    user_id: req.body.userId,
+                    team_id: newTeam.dataValues.id
+                })
+                .then(function() {
+                    res.json(newTeam);
+                })
+                .catch(function(error) {
+                    console.log(error);
+                })
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+        }
+    })
+    .catch(function(error) {
+        console.log(error);
+    });
+});
+
 router.use(csrfProtection);
 
 router.get("/get-csrf-token", function (req, res, next) {
