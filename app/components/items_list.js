@@ -8,7 +8,9 @@ import {selectTeam} from '../actions';
 
 class ItemsList extends Component {
     renderList() {
-        return _.map(this.props.items, item => {
+        const {title} = this.props;
+
+        return _.map(this.props[title.toLowerCase()], item => {
             return (
                 <ListItem
                     key={item.id}
@@ -43,6 +45,13 @@ class ItemsList extends Component {
     }
 }
 
+function mapStateToProps(state) {
+    return {
+        locations: state.locations,
+        teams: state.teams,
+    }
+}
+
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         selectLocation: selectLocation,
@@ -50,4 +59,4 @@ function mapDispatchToProps(dispatch) {
     }, dispatch)
 }
 
-export default connect(null, mapDispatchToProps)(ItemsList);
+export default connect(mapStateToProps, mapDispatchToProps)(ItemsList);

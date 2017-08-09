@@ -38,6 +38,15 @@ ReactDOM.render(
                             cmd="team"
                         />
                     }/>
+                    <Route path="/dashboard/favorite-locations" render={() =>
+                        <Content
+                            title="Favorite Locations"
+                            titleSingular="favorite location"
+                            fnName="selectFavoriteLocation"
+                            message="Please select a location"
+                            cmd="locationItem"
+                        />
+                    }/>
                     <Route path="/dashboard/reservations" render={() =>
                         <ReservationsContent
                             title="Reservations"

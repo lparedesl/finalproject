@@ -51,9 +51,7 @@ class Content extends Component {
                                 <div className="col-md-3">
                                     <ItemsList
                                         title={this.props.title}
-                                        items={this.props[this.props.title.toLowerCase()]}
                                         fnName={this.props.fnName}
-                                        location={this.props.location}
                                     />
                                 </div>
                                 <div className="col-md-9">
@@ -62,7 +60,6 @@ class Content extends Component {
                                         userId={this.isSignedIn()}
                                         item={this.props[this.props.cmd]}
                                         message={this.props.message}
-                                        location={this.props.location}
                                     />
                                 </div>
                             </div>
@@ -77,8 +74,6 @@ class Content extends Component {
 
 function mapStateToProps(state) {
     return {
-        locations: state.locations,
-        teams: state.teams,
         locationItem: state.activeLocation,
         team: state.activeTeam,
         tab: state.activeTab,
