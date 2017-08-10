@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
+import _ from 'lodash';
 import $ from 'jquery';
 import fullcalendar from 'fullcalendar';
 import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {selectField} from '../../actions';
 import {getFieldReservations} from '../../actions';
 
 class Calendar extends Component {
@@ -12,11 +15,6 @@ class Calendar extends Component {
         this.onFieldSelect = this.onFieldSelect.bind(this);
         this.renderOptGroups = this.renderOptGroups.bind(this);
         this.renderOptions = this.renderOptions.bind(this);
-    }
-
-    componentDidMount() {
-        // console.log("FROM CALENDAR:", this.props.locationItem);
-        this.props.getFieldReservations(this.props.field.first_field_id);
     }
 
     renderOptGroups() {
@@ -35,7 +33,7 @@ class Calendar extends Component {
         let fields = _.filter(sport.fields, data => { return data.location_id === id; });
 
         return _.map(fields, field => {
-            let selected = parseInt(this.props.field.first_field_id) === field.id;
+            let selected = this.props.field ? parseInt(this.props.field.id) === field.id : false;
             return <option value={field.id} key={field.id} selected={selected}>Field {field.field_number}</option>
         })
     }
@@ -79,7 +77,6 @@ class Calendar extends Component {
                     <div className="caption">
                         <div className="form-group form-md-line-input has-info">
                             <select className="form-control" id="form_control_1" onChange={event => this.onFieldSelect(event.target.value)}>
-                                <option value=""></option>
                                 {this.renderOptGroups()}
                             </select>
                             <label htmlFor="form_control_1">SelectField</label>
@@ -102,7 +99,17 @@ class Calendar extends Component {
 }
 
 function mapStateToProps(state) {
-    return {fieldReservations: state.fieldReservations}
+    return {
+        fieldReservations: state.fieldReservations,
+        field: state.activeField,
+    }
 }
 
-export default connect(mapStateToProps, {getFieldReservations})(Calendar);
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        selectField: selectField,
+        getFieldReservations: getFieldReservations
+    }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Calendar);

@@ -52,15 +52,17 @@ router.get("/get-locations", function(req, res, next) {
             }
         ]
     })
-    .then(function(data) {
-        _.map(data, function(location, i) {
+    .then(function(locations) {
+        _.map(locations, function(location, i) {
+            let fields = _.filter(location.sports[0].fields, data => { return data.location_id === location.id; });
+            location.dataValues.first_field = fields[0];
             geocoder.geocode(location.address + ', ' + location.city + ', ' + location.state + ' ' + location.zip_code)
                     .then(function(response) {
-                        data[i].dataValues.lat = response[0].latitude;
-                        data[i].dataValues.lng = response[0].longitude;
+                        location.dataValues.lat = response[0].latitude;
+                        location.dataValues.lng = response[0].longitude;
 
-                        if (data.length === i + 1) {
-                            res.json(data);
+                        if (locations.length === i + 1) {
+                            res.json(locations);
                         }
                     })
                     .catch(function(err) {
@@ -99,15 +101,16 @@ router.get("/get-favorite-locations", function(req, res, next) {
             }
         ]
     })
-    .then(function(data) {
-        _.map(data, function(location, i) {
+    .then(function(locations) {
+        _.map(locations, function(location, i) {
+            location.dataValues.first_field = location.sports[0].fields[0];
             geocoder.geocode(location.address + ', ' + location.city + ', ' + location.state + ' ' + location.zip_code)
                     .then(function(response) {
-                        data[i].dataValues.lat = response[0].latitude;
-                        data[i].dataValues.lng = response[0].longitude;
+                        location.dataValues.lat = response[0].latitude;
+                        location.dataValues.lng = response[0].longitude;
 
-                        if (data.length === i + 1) {
-                            res.json(data);
+                        if (locations.length === i + 1) {
+                            res.json(locations);
                         }
                     })
                     .catch(function(err) {
@@ -149,6 +152,26 @@ router.post("/get-team", function(req, res, next) {
     })
     .then(function(data) {
         res.json(data);
+    })
+    .catch(function(error) {
+        console.log(error);
+    })
+});
+
+router.post("/get-field", function(req, res, next) {
+    db.Field.findOne({
+        where: {
+            id: req.body.id
+        },
+        include: {
+            model: db.Reservation,
+            include: {
+                model: db.User
+            }
+        }
+    })
+    .then(function(field) {
+        res.json(field);
     })
     .catch(function(error) {
         console.log(error);

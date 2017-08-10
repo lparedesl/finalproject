@@ -96,10 +96,12 @@ export function resetActiveItems() {
     };
 }
 
-export function selectField(field) {
+export function selectField(id) {
+    const request = axios.post('/api/get-field', {id: id});
+
     return {
         type: FIELD_SELECTED,
-        payload: field
+        payload: request
     };
 }
 

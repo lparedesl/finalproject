@@ -42,13 +42,10 @@ class Reservation extends Component {
             reservation_date: $("input[name='reservation_date']").val(),
             reservation_time: $("input[name='reservation_time']").val(),
             user: this.props.userInfo.id,
-            field: this.props.field.first_field_id
+            field: this.props.field.id
         };
 
-        console.log(data);
-
         this.props.reserveField(data, res => {
-            console.log(res.data);
             if (res.data.error) {
                 return $("#errors").html(`<div class="alert alert-danger"><button class="close" data-close="alert"></button><span>${res.data.error}</span></div>`);
             }
@@ -125,7 +122,10 @@ class Reservation extends Component {
 }
 
 function mapStateToProps(state) {
-    return {userInfo: state.authData}
+    return {
+        field: state.activeField,
+        userInfo: state.authData
+    }
 }
 
 export default reduxForm({
