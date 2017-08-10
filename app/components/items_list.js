@@ -6,7 +6,7 @@ import ListItem from './list_item';
 class ItemsList extends Component {
     renderList() {
         const {title, fnName} = this.props;
-        const items = title === "Favorite Locations" ? this.props.favoriteLocations : this.props[title.toLowerCase()];
+        const items = title === "Favorite Locations" ? _.filter(this.props.locations, location => location.favorite) : this.props[title.toLowerCase()];
 
         return _.map(items, item => {
             return (
@@ -46,7 +46,6 @@ class ItemsList extends Component {
 function mapStateToProps(state) {
     return {
         locations: state.locations,
-        favoriteLocations: state.favoriteLocations,
         teams: state.teams
     }
 }

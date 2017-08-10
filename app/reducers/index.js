@@ -2,7 +2,6 @@ import {combineReducers} from 'redux';
 import {reducer as formReducer} from 'redux-form';
 import AuthDataReducer from './auth_data';
 import LocationsReducer from './locations';
-import FavoriteLocationsReducer from './favorite_locations';
 import TeamsReducer from './teams';
 import ReservationsReducer from './reservations';
 import ActiveLocation from './active_location';
@@ -14,7 +13,6 @@ import FieldReservationsReducer from './field_reservations';
 const rootReducer = combineReducers({
     authData: AuthDataReducer,
     locations: LocationsReducer,
-    favoriteLocations: FavoriteLocationsReducer,
     teams: TeamsReducer,
     userReservations: ReservationsReducer,
     activeLocation: ActiveLocation,

@@ -66,7 +66,9 @@ class ItemDetails extends Component {
             case "locationItem":
             case "favoriteLocation":
                 return (
-                    <LocationHeader/>
+                    <LocationHeader
+                        item={item}
+                    />
                 );
 
             case "team":
@@ -131,6 +133,7 @@ class ItemDetails extends Component {
 
     render() {
         const {item} = this.props;
+        console.log("LOCATION FROM ITEM_DETAILS:", this.props[item]);
 
         if (!this.props[item]) {
             return (

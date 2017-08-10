@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import _ from 'lodash';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {favoriteLocation} from '../../actions';
 import {getLocation} from '../../actions';
+import {getLocations} from '../../actions';
+import {resetActiveItems} from '../../actions';
 
 class Header extends Component {
     constructor() {
@@ -13,19 +14,22 @@ class Header extends Component {
     }
 
     handleClick(values) {
-        this.props.favoriteLocation(values, () => {
+        this.props.favoriteThisLocation(values, () => {
             this.props.getLocation(values.location_id);
+            this.props.getLocations();
+            if (this.props.item === "favoriteLocation") {
+                this.props.resetActiveItems();
+            }
         });
     }
 
     render() {
-        const {locationItem, userInfo} = this.props;
-        const favorites = _.filter(locationItem.users, user => user.id === userInfo.id);
-        const className = favorites.length > 0 ? "btn btn-icon-only yellow" : "btn btn-outline btn-icon-only yellow";
+        const {item, userInfo} = this.props;
+        const className = this.props[item].favorite ? "btn btn-icon-only yellow" : "btn btn-outline btn-icon-only yellow";
         const favoriteObj = {
-            favorite: favorites.length > 0,
+            favorite: this.props[item].favorite,
             user_id: userInfo.id,
-            location_id: locationItem.id
+            location_id: this.props[item].id
         };
 
         return (
@@ -33,10 +37,10 @@ class Header extends Component {
                 <a className={className} onClick={() => this.handleClick(favoriteObj)}>
                     <i className="icon-star"></i>
                 </a>
-                <h1>{locationItem.name}</h1>
-                <p> {locationItem.address} </p>
+                <h1>{this.props[item].name}</h1>
+                <p> {this.props[item].address} </p>
                 <p>
-                    {locationItem.city}, {locationItem.state} {locationItem.zip_code}
+                    {this.props[item].city}, {this.props[item].state} {this.props[item].zip_code}
                 </p>
             </div>
         );
@@ -46,14 +50,17 @@ class Header extends Component {
 function mapStateToProps(state) {
     return {
         locationItem: state.activeLocation,
+        favoriteLocation: state.activeFavoriteLocation,
         userInfo: state.authData
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        favoriteLocation: favoriteLocation,
+        favoriteThisLocation: favoriteLocation,
         getLocation: getLocation,
+        getLocations: getLocations,
+        resetActiveItems: resetActiveItems
     }, dispatch)
 }
 

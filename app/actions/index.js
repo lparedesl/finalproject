@@ -5,7 +5,6 @@ export const SIGNIN = 'signin';
 export const SIGNUP = 'signup';
 export const GET_USER_INFO = 'get_user_info';
 export const GET_LOCATIONS = 'get_locations';
-export const GET_FAVORITE_LOCATIONS = 'get_favorite_locations';
 export const GET_USER_RESERVATIONS = 'get_user_reservations';
 export const LOCATION_SELECTED = 'location_selected';
 export const LOCATION_UPDATED = 'location_updated';
@@ -72,15 +71,6 @@ export function getLocation(id) {
 
     return {
         type: LOCATION_UPDATED,
-        payload: request
-    };
-}
-
-export function getFavoriteLocations() {
-    const request = axios.get('/api/get-favorite-locations');
-
-    return {
-        type: GET_FAVORITE_LOCATIONS,
         payload: request
     };
 }

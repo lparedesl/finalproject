@@ -54,7 +54,9 @@ router.get("/get-locations", function(req, res, next) {
     })
     .then(function(locations) {
         _.map(locations, function(location, i) {
-            let fields = _.filter(location.sports[0].fields, data => { return data.location_id === location.id; });
+            var favorites = _.filter(location.dataValues.users, user => user.email === req.session.passport.user);
+            location.dataValues.favorite = favorites.length > 0;
+            var fields = _.filter(location.sports[0].fields, data => { return data.location_id === location.id; });
             location.dataValues.first_field = fields[0];
             geocoder.geocode(location.address + ', ' + location.city + ', ' + location.state + ' ' + location.zip_code)
                     .then(function(response) {
@@ -102,7 +104,9 @@ router.post("/get-location", function(req, res, next) {
         ]
     })
     .then(function(location) {
-        let fields = _.filter(location.dataValues.sports[0].fields, data => { return data.location_id === location.dataValues.id; });
+        var favorites = _.filter(location.dataValues.users, user => user.email === req.session.passport.user);
+        location.dataValues.favorite = favorites.length > 0;
+        var fields = _.filter(location.dataValues.sports[0].fields, data => { return data.location_id === location.dataValues.id; });
         location.dataValues.first_field = fields[0];
         geocoder.geocode(location.dataValues.address + ', ' + location.dataValues.city + ', ' + location.dataValues.state + ' ' + location.dataValues.zip_code)
               .then(function(response) {
@@ -117,54 +121,6 @@ router.post("/get-location", function(req, res, next) {
     })
     .catch(function(error) {
       console.log(error);
-    })
-});
-
-router.get("/get-favorite-locations", function(req, res, next) {
-    db.Location.findAll({
-        include: [
-            {
-                model: db.LocationSchedule
-            },
-            {
-                model: db.Sport,
-                include: {
-                    model: db.Field,
-                    include: {
-                        model: db.Reservation,
-                        include: {
-                            model: db.User
-                        }
-                    }
-                }
-            },
-            {
-                model: db.User,
-                where: {
-                    email: req.session.passport.user
-                }
-            }
-        ]
-    })
-    .then(function(locations) {
-        _.map(locations, function(location, i) {
-            location.dataValues.first_field = location.sports[0].fields[0];
-            geocoder.geocode(location.address + ', ' + location.city + ', ' + location.state + ' ' + location.zip_code)
-                    .then(function(response) {
-                        location.dataValues.lat = response[0].latitude;
-                        location.dataValues.lng = response[0].longitude;
-
-                        if (locations.length === i + 1) {
-                            res.json(locations);
-                        }
-                    })
-                    .catch(function(err) {
-                        console.log(err);
-                    });
-        });
-    })
-    .catch(function(error) {
-        console.log(error);
     })
 });
 

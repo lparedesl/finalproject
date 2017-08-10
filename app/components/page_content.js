@@ -7,17 +7,15 @@ import Sidebar from './sidebar';
 import Footer from './footer';
 import ItemsList from './items_list';
 import ItemDetails from './item_details';
-import {getLocations} from './../actions/index';
-import {getFavoriteLocations} from './../actions/index';
-import {getTeams} from './../actions/index';
-import {getUserInfo} from './../actions/index';
-import {resetActiveItems} from './../actions/index';
+import {getLocations} from './../actions';
+import {getTeams} from './../actions';
+import {getUserInfo} from './../actions';
+import {resetActiveItems} from './../actions';
 
 class Content extends Component {
     componentDidMount() {
         document.body.classList.add("page-header-fixed", "page-sidebar-closed-hide-logo", "page-content-white", "page-md", "page-container-bg-solid", "page-sidebar-closed");
         this.props.getLocations();
-        this.props.getFavoriteLocations();
         this.props.getTeams();
         this.props.getUserInfo();
     }
@@ -77,7 +75,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         getLocations: getLocations,
-        getFavoriteLocations: getFavoriteLocations,
         getTeams: getTeams,
         getUserInfo: getUserInfo,
         resetActiveItems: resetActiveItems
