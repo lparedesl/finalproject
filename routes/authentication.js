@@ -22,9 +22,10 @@ router.get("/logout", isLoggedIn, function(req, res, next) {
 });
 
 router.post("/signup", passport.authenticate("local.signup", {
-    successRedirect: "/dashboard/profile",
+    successRedirect: "/user/signin",
     failureRedirect: "/user/signup",
-    failureFlash: true
+    failureFlash: true,
+    session: false
 }));
 
 router.post("/signin", passport.authenticate("local.signin", {

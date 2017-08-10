@@ -39,8 +39,9 @@ export function signin(values, cb) {
     };
 }
 
-export function signup(values) {
-    const request = axios.post('/authentication/signup', values);
+export function signup(values, cb) {
+    const request = axios.post('/authentication/signup', values)
+                         .then(() => cb());
 
     return {
         type: SIGNUP,

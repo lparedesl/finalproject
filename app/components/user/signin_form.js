@@ -40,7 +40,6 @@ class SignInForm extends Component {
             <div className="col-md-6 login-container bs-reset mt-login-5-bsfix">
                 <div className="login-content">
                     <h1>Sign in</h1>
-                    {/*<form className="login-form" onSubmit={handleSubmit(this.onSubmit.bind(this))}>*/}
                     <form className="login-form" action="/authentication/signin" method="POST">
                         {this.renderErrors()}
                         <div className="row">
