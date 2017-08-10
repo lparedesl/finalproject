@@ -20,6 +20,7 @@ class Home extends Component {
 
     renderOptions() {
         if (!this.props.userInfo || !this.props.userInfo.id) {
+            console.log(this.props.userInfo.id);
             return (
                 <span className="border">
                     <Link to="/user/signin">Sign in</Link>
