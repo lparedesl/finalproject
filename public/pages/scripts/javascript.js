@@ -36,7 +36,16 @@ $(document).ready(function() {
                 minuteStep: 60
             })
             .on('changeTime.timepicker', function(e) {
-                var hr = e.time.meridian === "AM" ? e.time.hours < 10 ? "0" + e.time.hours : e.time.hours : parseInt(e.time.hours) + 12;
+                var hr = "";
+                if (e.time.meridian === "AM" && e.time.hours < 10) {
+                    hr = "0" + e.time.hours;
+                } else if (e.time.meridian === "AM" && e.time.hours === 12) {
+                    hr = "00";
+                } else if ((e.time.meridian === "AM" && e.time.hours >= 10) || (e.time.meridian === "PM" && e.time.hours === 12)) {
+                    hr = String(e.time.hours);
+                } else if (e.time.meridian === "PM") {
+                    hr = String(parseInt(e.time.hours) + 12)
+                }
                 var time = hr + ":00:00";
                 $("input[name='reservation_time']").val(time);
             });

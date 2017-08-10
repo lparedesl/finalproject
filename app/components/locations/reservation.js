@@ -42,7 +42,8 @@ class Reservation extends Component {
             reservation_date: $("input[name='reservation_date']").val(),
             reservation_time: $("input[name='reservation_time']").val(),
             user: this.props.userInfo.id,
-            field: this.props.field.id
+            field: this.props.field.id,
+            field_number: this.props.field.field_number
         };
 
         this.props.reserveField(data, res => {
@@ -64,7 +65,7 @@ class Reservation extends Component {
                     showMethod     : "fadeIn",
                     hideMethod     : "fadeOut"
                 };
-                toastr['success'](`"Field ${res.data.field_id}" was successfully reserved on ${moment(res.data.reservation_date).format("dddd MMMM D, YYYY")} from ${moment(res.data.reservation_date).format("hh:mm A")} to ${moment(res.data.reservation_date).add(1, "hours").format("hh:mm A")}.`, 'Field Reserved');
+                toastr['success'](`"Field ${data.field_number}" was successfully reserved on ${moment(res.data.reservation_date).format("dddd MMMM D, YYYY")} from ${moment(res.data.reservation_date).format("hh:mm A")} to ${moment(res.data.reservation_date).add(1, "hours").format("hh:mm A")}.`, 'Field Reserved');
                 this.props.history.push('/dashboard/locations');
             }
         });
@@ -80,7 +81,7 @@ class Reservation extends Component {
                         <div className="portlet-title">
                             <div className="caption">
                                 <i className=" icon-layers font-green"></i>
-                                <span className="caption-subject font-green bold uppercase">Reservation</span>
+                                <span className="caption-subject font-green bold uppercase">Reservation for Field {this.props.field.field_number}</span>
                             </div>
                         </div>
                         <div className="portlet-body">
