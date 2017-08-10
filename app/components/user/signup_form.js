@@ -26,14 +26,12 @@ class SignUpForm extends Component {
 
     renderTelField(field) {
         const {meta: {touched, error}} = field;
-        const className = `col-xs-6 ${touched && error ? 'has-error' : ''}`;
+        const className = `form-control form-control-solid placeholder-no-fix form-group ${touched && error ? 'has-error' : ''}`;
 
         return (
-            <div className={className}>
-                <input className="form-control form-control-solid placeholder-no-fix form-group" id="mask_phone" type="text" autoComplete="off" name={field.bodyName} placeholder={field.placeholder} required {...field.input}/>
-                <div className="text-help">
-                    {touched ? error : ''}
-                </div>
+            <div className="col-xs-6">
+                <input className={className} id="mask_phone" type="text" autoComplete="off" name={field.bodyName} placeholder={field.placeholder} required {...field.input}/>
+                <span className="help-block">{touched ? error : ''}</span>
             </div>
         );
     }
@@ -46,31 +44,27 @@ class SignUpForm extends Component {
         }
 
         const {meta: {touched, error}} = field;
-        const className = `col-xs-6 ${touched && error ? 'has-error' : ''}`;
+        const className = `form-control ${touched && error ? 'has-error' : ''}`;
 
         return (
-            <div className={className}>
-                <select className="form-control" name={field.bodyName} required {...field.input}>
+            <div className="col-xs-6">
+                <select className={className} name={field.bodyName} required {...field.input}>
                     <option value="" disabled selected={true}>{field.title}</option>
                     {options.map(data => <option key={data.value} value={data.value}>{data.name}</option>)}
                 </select>
-                <div className="text-help">
-                    {touched ? error : ''}
-                </div>
+                <span className="help-block">{touched ? error : ''}</span>
             </div>
         );
     }
 
     renderDateField(field) {
         const {meta: {touched, error}} = field;
-        const className = `col-xs-6 ${touched && error ? 'has-error' : ''}`;
+        const className = `form-control form-control-inline input-medium date-picker ${touched && error ? 'has-error' : ''}`;
 
         return (
-            <div className={className}>
-                <input className="form-control form-control-inline input-medium date-picker" id="signup-dob" size="16" type={field.type} name={field.bodyName} placeholder={field.placeholder} value="" {...field.input}/>
-                <div className="text-help">
-                    {touched ? error : ''}
-                </div>
+            <div className="col-xs-6">
+                <input className={className} id="signup-dob" size="16" type={field.type} name={field.bodyName} placeholder={field.placeholder} value="" {...field.input}/>
+                <span className="help-block">{touched ? error : ''}</span>
             </div>
         );
     }
@@ -89,7 +83,10 @@ class SignUpForm extends Component {
 
     onSubmit(values) {
         values.dob = moment(new Date(document.getElementById("signup-dob").value)).format();
-        this.props.signup(values);
+        values._csrf = this.props.authData.csrfToken;
+        this.props.signup(values, () => {
+            this.props.history.push('/user/signin')
+        });
     }
 
     render() {
@@ -100,7 +97,6 @@ class SignUpForm extends Component {
                 <div className="login-content signup-content">
                     <h1>Sign up</h1>
                     <form className="login-form" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-                    {/*<form className="login-form" action="/signup" method="POST">*/}
                         {this.renderErrors()}
                         <div className="row">
                             <Field
@@ -235,11 +231,20 @@ class SignUpForm extends Component {
 
 function validate(values) {
     const errors = {};
+    const re = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/igm;
+    const hasNumber = /\d/;
 
-    // if (!values.topic) errors.topic = 'Enter a topic';
-    // if (!values.start_year) errors.start_year = 'Enter a start year';
-    // if (!values.end_year) errors.end_year = 'Enter an end year';
-    // if (values.end_year < values.start_year) errors.end_year = 'Enter a valid end year';
+    if (!values.first_name) errors.first_name = 'Enter a First Name';
+    if (!values.last_name) errors.last_name = 'Enter a Last Name';
+    if (!values.gender) errors.gender = 'Select a Gender';
+    if (!hasNumber.test(values.phone)) errors.phone = 'Enter a phone number';
+    if (!values.email) errors.email = 'Enter an email';
+    if (!re.test(values.email)) errors.email = 'Enter a valid email';
+    if (!values.password) errors.password = 'Enter a password';
+    if (values.password && values.password.length < 6) errors.password = 'Enter a password longer than 6 characters';
+    if (!values.is_admin) errors.is_admin = 'Select an Admin option';
+    if (!values.confirm_password) errors.confirm_password = 'Enter a confirmation password';
+    if (values.password !== values.confirm_password) errors.confirm_password = "Passwords don't match";
 
     return errors;
 }

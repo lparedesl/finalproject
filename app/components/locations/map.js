@@ -82,17 +82,6 @@ class Map extends Component {
                         <i className=" icon-map font-blue"></i>
                         <span className="caption-subject font-blue bold uppercase">Map</span>
                     </div>
-                    <div className="actions">
-                        <a className="btn btn-circle btn-icon-only btn-default" href="javascript:;">
-                            <i className="icon-cloud-upload"></i>
-                        </a>
-                        <a className="btn btn-circle btn-icon-only btn-default" href="javascript:;">
-                            <i className="icon-wrench"></i>
-                        </a>
-                        <a className="btn btn-circle btn-icon-only btn-default" href="javascript:;">
-                            <i className="icon-trash"></i>
-                        </a>
-                    </div>
                 </div>
                 <div className="portlet-body">
                     <div id="gmap_marker" className="gmaps" style={{position: 'relative', overflow: 'hidden'}}>

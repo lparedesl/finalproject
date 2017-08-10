@@ -7,26 +7,16 @@ import Footer from '../footer';
 import {getUserInfo} from '../../actions';
 
 class Profile extends Component {
-    constructor() {
-        super();
-
-        this.isSignedIn = this.isSignedIn.bind(this);
-    }
-
     componentDidMount() {
         document.body.classList.add("page-header-fixed", "page-sidebar-closed-hide-logo", "page-content-white", "page-md", "page-container-bg-solid", "page-sidebar-closed");
         this.props.getUserInfo();
     }
 
-    isSignedIn() {
-        if (this.props.userInfo) {
-            return this.props.userInfo.id
+    render() {
+        if (!this.props.userInfo) {
+            return this.props.history.push('/');
         }
 
-        return 99999
-    }
-
-    render() {
         return (
             <div className="page-wrapper">
                 <Header/>

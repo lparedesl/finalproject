@@ -1,45 +1,35 @@
 import React, { Component } from "react";
-import $ from 'jquery';
 import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import {favoriteLocation} from '../../actions';
+import {getLocation} from '../../actions';
+import {getLocations} from '../../actions';
+import {resetActiveItems} from '../../actions';
 
 class Header extends Component {
-    constructor(props) {
-        super(props);
-
-        // this.state = {
-        //     active: props.favorite
-        // };
+    constructor() {
+        super();
 
         this.handleClick = this.handleClick.bind(this);
     }
 
     handleClick(values) {
-        // console.log("STATE BEFORE:", this.state.active);
-        // console.log("PROPS BEFORE:", this.props.favorite);
-        // values.favorite = this.state.active;
-
-        this.props.favoriteLocation(values, ({data}) => {
-            if (!data.newState) {
-                // this.setState({active: false});
-                $(".btn-icon-only").addClass("btn-outline");
-            } else {
-                // this.setState({active: true});
-                $(".btn-icon-only").removeClass("btn-outline");
+        this.props.favoriteThisLocation(values, () => {
+            this.props.getLocation(values.location_id);
+            this.props.getLocations();
+            if (this.props.item === "favoriteLocation") {
+                this.props.resetActiveItems();
             }
-
-            // console.log("STATE AFTER:", this.state.active);
-            // console.log("PROPS AFTER:", this.props.favorite);
         });
     }
 
     render() {
-        const {title, info, favorite, userInfo} = this.props;
-        const className = favorite ? "btn btn-icon-only yellow" : "btn btn-outline btn-icon-only yellow";
+        const {item, userInfo} = this.props;
+        const className = this.props[item].favorite ? "btn btn-icon-only yellow" : "btn btn-outline btn-icon-only yellow";
         const favoriteObj = {
-            favorite: favorite,
+            favorite: this.props[item].favorite,
             user_id: userInfo.id,
-            location_id: info.locationId
+            location_id: this.props[item].id
         };
 
         return (
@@ -47,10 +37,10 @@ class Header extends Component {
                 <a className={className} onClick={() => this.handleClick(favoriteObj)}>
                     <i className="icon-star"></i>
                 </a>
-                <h1>{title}</h1>
-                <p> {info.address} </p>
+                <h1>{this.props[item].name}</h1>
+                <p> {this.props[item].address} </p>
                 <p>
-                    {info.city}, {info.state} {info.zipCode}
+                    {this.props[item].city}, {this.props[item].state} {this.props[item].zip_code}
                 </p>
             </div>
         );
@@ -59,8 +49,19 @@ class Header extends Component {
 
 function mapStateToProps(state) {
     return {
+        locationItem: state.activeLocation,
+        favoriteLocation: state.activeFavoriteLocation,
         userInfo: state.authData
     }
 }
 
-export default connect(mapStateToProps, {favoriteLocation})(Header);
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        favoriteThisLocation: favoriteLocation,
+        getLocation: getLocation,
+        getLocations: getLocations,
+        resetActiveItems: resetActiveItems
+    }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

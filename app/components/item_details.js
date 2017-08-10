@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import moment from 'moment';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -11,7 +11,7 @@ import Calendar from './locations/calendar';
 import Reservation from './locations/reservation';
 import Map from './locations/map';
 import Info from './locations/info';
-import Banner from './teams/team_list';
+import TeamList from './teams/team_list';
 import TeamMemberForm from './teams/add_member_form';
 import TeamImage from './teams/team_image';
 import {selectField} from '../actions';
@@ -28,15 +28,17 @@ class ItemDetails extends Component {
     }
 
     getField() {
-        if (this.props.field) {
-            return this.props.field;
-        }
+        // if (this.props.field) {
+        //     console.log("FROM ITEM_DETAILS:", this.props.field);
+        //     this.props.getFieldReservations(this.props.field.id);
+        //     return this.props.field;
+        // }
 
         const {item} = this.props;
-        let fields = _.filter(this.props[item].sports[0].fields, data => { return data.location_id === this.props[item].id; });
         let info = {};
         info.reservations = [];
-        _.map(fields[0].reservations, function(reservation) {
+
+        _.map(this.props[item].first_field.reservations, function(reservation) {
             let obj = {
                 title: reservation.user.first_name + " " + reservation.user.last_name,
                 start: moment(reservation.reservation_date).format(),
@@ -46,44 +48,32 @@ class ItemDetails extends Component {
             };
             info.reservations.push(obj);
         });
-        info.first_field_id = fields[0].id;
-        info.open_time = this.props[item].open_time;
-        info.close_time = this.props[item].close_time;
 
-        this.props.getFieldReservations(fields[0].id);
+        info.first_field_id = this.props[item].first_field.id;
+        info.openTime = this.props[item].open_time;
+        info.closeTime = this.props[item].close_time;
 
+        this.props.selectField(this.props[item].first_field.id);
+        this.props.getFieldReservations(this.props[item].first_field.id);
 
         return info;
     }
 
     renderHeader() {
-        const {item, userInfo} = this.props;
+        const {item} = this.props;
 
         switch(item) {
             case "locationItem":
             case "favoriteLocation":
-                const favorite = _.filter(this.props[item].users, user => user.id === userInfo.id);
-
                 return (
                     <LocationHeader
-                        title={this.props[item].name}
-                        info={{
-                            locationId: this.props[item].id,
-                            address: this.props[item].address,
-                            city: this.props[item].city,
-                            state: this.props[item].state,
-                            zipCode: this.props[item].zip_code
-                        }}
-                        favorite={favorite.length > 0}
+                        item={item}
                     />
                 );
 
             case "team":
                 return (
-                    <TeamHeader
-                        name={this.props[item].name}
-                        location={this.props.header}
-                    />
+                    <TeamHeader/>
                 );
         }
     }
@@ -112,13 +102,11 @@ class ItemDetails extends Component {
                     <div>
                         <div className="row">
                             <Map
-                                location={this.props.location}
                                 item={item}
                             />
                         </div>
                         <div className="row">
                             <Info
-                                location={this.props.location}
                                 item={item}
                             />
                         </div>
@@ -128,11 +116,7 @@ class ItemDetails extends Component {
             case "team":
                 return (
                     <div className="row">
-                        <TeamImage
-                            image={this.props[item].image}
-                            name={this.props[item].name}
-                            location={this.props.location}
-                        />
+                        <TeamImage/>
                     </div>
                 );
         }
@@ -140,6 +124,7 @@ class ItemDetails extends Component {
 
     render() {
         const {item} = this.props;
+        console.log("LOCATION FROM ITEM_DETAILS:", this.props[item]);
 
         if (!this.props[item]) {
             return (
@@ -162,46 +147,28 @@ class ItemDetails extends Component {
                     <Router>
                         <div>
                             <Switch>
-                                <Route
-                                    path="/dashboard/locations/reserve-field"
-                                    render={() =>
-                                        <Reservation
-                                            userId={this.props.userId}
-                                            field={this.getField()}
-                                        />
-                                    }
-                                />
+                                <Route path="/dashboard/locations/reserve-field" component={Reservation}/>
                                 <Route
                                     exact path="/dashboard/locations"
                                     render={() =>
                                         <Calendar
                                             locationItem={this.props[item]}
-                                            field={this.getField()}
-                                            selectField={(field) => this.props.selectField(field)}
+                                            firstField={this.getField()}
                                         />
                                     }
                                 />
-                                <Route
-                                    path="/dashboard/favorite-locations/reserve-field"
-                                    render={() =>
-                                        <Reservation
-                                            userId={this.props.userId}
-                                            field={this.getField()}
-                                        />
-                                    }
-                                />
+                                <Route path="/dashboard/favorite-locations/reserve-field" component={Reservation}/>
                                 <Route
                                     exact path="/dashboard/favorite-locations"
                                     render={() =>
                                         <Calendar
                                             locationItem={this.props[item]}
-                                            field={this.getField()}
-                                            selectField={(field) => this.props.selectField(field)}
+                                            firstField={this.getField()}
                                         />
                                     }
                                 />
                                 <Route path="/dashboard/teams/add-team-member" component={TeamMemberForm}/>
-                                <Route path="/dashboard/teams" component={Banner}/>
+                                <Route path="/dashboard/teams" component={TeamList}/>
                             </Switch>
                         </div>
                     </Router>
@@ -219,7 +186,7 @@ function mapStateToProps(state) {
         locationItem: state.activeLocation,
         favoriteLocation: state.activeFavoriteLocation,
         team: state.activeTeam,
-        field: state.activeField,
+        // field: state.activeField,
         userInfo: state.authData
     }
 }

@@ -5,10 +5,9 @@ export const SIGNIN = 'signin';
 export const SIGNUP = 'signup';
 export const GET_USER_INFO = 'get_user_info';
 export const GET_LOCATIONS = 'get_locations';
-export const GET_FAVORITE_LOCATIONS = 'get_favorite_locations';
 export const GET_USER_RESERVATIONS = 'get_user_reservations';
-export const TAB_SELECTED = 'tab_selected';
 export const LOCATION_SELECTED = 'location_selected';
+export const LOCATION_UPDATED = 'location_updated';
 export const FAVORITE_LOCATION_SELECTED = 'favorite_location_selected';
 export const FIELD_SELECTED = 'field_selected';
 export const RESERVE_FIELD = 'reserve_field';
@@ -22,7 +21,7 @@ export const CREATE_TEAM = 'create_team';
 export const ADD_TEAM_MEMBER = 'add_team_member';
 
 export function getAuthData() {
-    const request = axios.get('/api/get-csrf-token');
+    const request = axios.get('/authentication/get-csrf-token');
 
     return {
         type: GET_AUTH_DATA,
@@ -31,7 +30,7 @@ export function getAuthData() {
 }
 
 export function signin(values, cb) {
-    const request = axios.post('/signin', values)
+    const request = axios.post('/authentication/signin', values)
                          .then(() => cb());
 
     return {
@@ -40,8 +39,9 @@ export function signin(values, cb) {
     };
 }
 
-export function signup(values) {
-    const request = axios.post('/signup', values);
+export function signup(values, cb) {
+    const request = axios.post('/authentication/signup', values)
+                         .then(() => cb());
 
     return {
         type: SIGNUP,
@@ -67,11 +67,11 @@ export function getLocations() {
     };
 }
 
-export function getFavoriteLocations() {
-    const request = axios.get('/api/get-favorite-locations');
+export function getLocation(id) {
+    const request = axios.post('/api/get-location', {id: id});
 
     return {
-        type: GET_FAVORITE_LOCATIONS,
+        type: LOCATION_UPDATED,
         payload: request
     };
 }
@@ -90,13 +90,6 @@ export function selectFavoriteLocation(location) {
     };
 }
 
-export function selectTab(tab) {
-    return {
-        type: TAB_SELECTED,
-        payload: tab
-    };
-}
-
 export function resetActiveItems() {
     return {
         type: RESET_ACTIVE_ITEMS,
@@ -104,10 +97,12 @@ export function resetActiveItems() {
     };
 }
 
-export function selectField(field) {
+export function selectField(id) {
+    const request = axios.post('/api/get-field', {id: id});
+
     return {
         type: FIELD_SELECTED,
-        payload: field
+        payload: request
     };
 }
 

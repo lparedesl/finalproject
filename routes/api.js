@@ -3,12 +3,17 @@ var router = express.Router();
 var _ = require("lodash");
 var env = require("../config/env");
 var moment = require('moment');
-var csrf = require("csurf");
-var csrfProtection = csrf();
 var db = require("../models");
-var googleMapsClient = require('@google/maps').createClient({
-    key: env.GEOCODING_KEY
-});
+var NodeGeocoder = require('node-geocoder');
+
+var options = {
+    provider: 'google',
+    httpAdapter: 'https',
+    apiKey: env.GOOGLE_API_KEY,
+    formatter: null
+};
+
+var geocoder = NodeGeocoder(options);
 
 router.get("/get-user-info", function(req, res, next) {
     db.User.findOne({
@@ -47,20 +52,24 @@ router.get("/get-locations", function(req, res, next) {
             }
         ]
     })
-    .then(function(data) {
-        _.map(data, function(location, i) {
-            googleMapsClient.geocode({
-                address: location.address + ', ' + location.city + ', ' + location.state + ' ' + location.zip_code
-            }, function(err, response) {
-                if (!err) {
-                    data[i].dataValues.lat = response.json.results[0].geometry.location.lat;
-                    data[i].dataValues.lng = response.json.results[0].geometry.location.lng;
+    .then(function(locations) {
+        _.map(locations, function(location, i) {
+            var favorites = _.filter(location.dataValues.users, user => user.email === req.session.passport.user);
+            location.dataValues.favorite = favorites.length > 0;
+            var fields = _.filter(location.sports[0].fields, data => { return data.location_id === location.id; });
+            location.dataValues.first_field = fields[0];
+            geocoder.geocode(location.address + ', ' + location.city + ', ' + location.state + ' ' + location.zip_code)
+                    .then(function(response) {
+                        location.dataValues.lat = response[0].latitude;
+                        location.dataValues.lng = response[0].longitude;
 
-                    if (data.length === i + 1) {
-                        res.json(data);
-                    }
-                }
-            });
+                        if (locations.length === i + 1) {
+                            res.json(locations);
+                        }
+                    })
+                    .catch(function(err) {
+                        console.log(err);
+                    });
         });
     })
     .catch(function(error) {
@@ -68,8 +77,11 @@ router.get("/get-locations", function(req, res, next) {
     })
 });
 
-router.get("/get-favorite-locations", function(req, res, next) {
-    db.Location.findAll({
+router.post("/get-location", function(req, res, next) {
+    db.Location.findOne({
+        where: {
+            id: req.body.id
+        },
         include: [
             {
                 model: db.LocationSchedule
@@ -87,31 +99,28 @@ router.get("/get-favorite-locations", function(req, res, next) {
                 }
             },
             {
-                model: db.User,
-                where: {
-                    email: req.session.passport.user
-                }
+                model: db.User
             }
         ]
     })
-    .then(function(data) {
-        _.map(data, function(location, i) {
-            googleMapsClient.geocode({
-                address: location.address + ', ' + location.city + ', ' + location.state + ' ' + location.zip_code
-            }, function(err, response) {
-                if (!err) {
-                    data[i].dataValues.lat = response.json.results[0].geometry.location.lat;
-                    data[i].dataValues.lng = response.json.results[0].geometry.location.lng;
+    .then(function(location) {
+        var favorites = _.filter(location.dataValues.users, user => user.email === req.session.passport.user);
+        location.dataValues.favorite = favorites.length > 0;
+        var fields = _.filter(location.dataValues.sports[0].fields, data => { return data.location_id === location.dataValues.id; });
+        location.dataValues.first_field = fields[0];
+        geocoder.geocode(location.dataValues.address + ', ' + location.dataValues.city + ', ' + location.dataValues.state + ' ' + location.dataValues.zip_code)
+              .then(function(response) {
+                  location.dataValues.lat = response[0].latitude;
+                  location.dataValues.lng = response[0].longitude;
 
-                    if (data.length === i + 1) {
-                        res.json(data);
-                    }
-                }
-            });
-        });
+                  res.json(location);
+              })
+              .catch(function(err) {
+                  console.log(err);
+              });
     })
     .catch(function(error) {
-        console.log(error);
+      console.log(error);
     })
 });
 
@@ -144,6 +153,26 @@ router.post("/get-team", function(req, res, next) {
     })
     .then(function(data) {
         res.json(data);
+    })
+    .catch(function(error) {
+        console.log(error);
+    })
+});
+
+router.post("/get-field", function(req, res, next) {
+    db.Field.findOne({
+        where: {
+            id: req.body.id
+        },
+        include: {
+            model: db.Reservation,
+            include: {
+                model: db.User
+            }
+        }
+    })
+    .then(function(field) {
+        res.json(field);
     })
     .catch(function(error) {
         console.log(error);
@@ -435,18 +464,6 @@ router.post("/add-team-member", function(req, res, next) {
     .catch(function(error) {
         console.log(error);
     });
-});
-
-router.use(csrfProtection);
-
-router.get("/get-csrf-token", function (req, res, next) {
-    var messages = req.flash("error");
-    var data = {
-        messages: messages,
-        hasErrors: messages.length > 0,
-        csrfToken: req.csrfToken()
-    };
-    res.json(data);
 });
 
 module.exports = router;

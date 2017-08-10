@@ -4,5 +4,5 @@ module.exports = {
     DATABASE_PASSWORD:              "b761fb10",
     DATABASE_HOST:                  "us-cdbr-iron-east-03.cleardb.net",
     DATABASE_DIALECT:               "mysql",
-    GEOCODING_KEY:                  "AIzaSyCfBFHpV5XvLc9BLKTLrmMlAMD3CupljKA"
+    GOOGLE_API_KEY:                 "AIzaSyD37huSjqpA_YlhVzpGL1vSErKafXhTMks"
 };
