@@ -75,6 +75,51 @@ router.get("/get-locations", function(req, res, next) {
     })
 });
 
+router.post("/get-location", function(req, res, next) {
+    db.Location.findOne({
+        where: {
+            id: req.body.id
+        },
+        include: [
+            {
+                model: db.LocationSchedule
+            },
+            {
+                model: db.Sport,
+                include: {
+                    model: db.Field,
+                    include: {
+                        model: db.Reservation,
+                        include: {
+                            model: db.User
+                        }
+                    }
+                }
+            },
+            {
+                model: db.User
+            }
+        ]
+    })
+    .then(function(location) {
+        let fields = _.filter(location.dataValues.sports[0].fields, data => { return data.location_id === location.dataValues.id; });
+        location.dataValues.first_field = fields[0];
+        geocoder.geocode(location.dataValues.address + ', ' + location.dataValues.city + ', ' + location.dataValues.state + ' ' + location.dataValues.zip_code)
+              .then(function(response) {
+                  location.dataValues.lat = response[0].latitude;
+                  location.dataValues.lng = response[0].longitude;
+
+                  res.json(location);
+              })
+              .catch(function(err) {
+                  console.log(err);
+              });
+    })
+    .catch(function(error) {
+      console.log(error);
+    })
+});
+
 router.get("/get-favorite-locations", function(req, res, next) {
     db.Location.findAll({
         include: [

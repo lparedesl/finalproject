@@ -60,25 +60,13 @@ class ItemDetails extends Component {
     }
 
     renderHeader() {
-        const {item, userInfo} = this.props;
+        const {item} = this.props;
 
         switch(item) {
             case "locationItem":
             case "favoriteLocation":
-                const favorite = _.filter(this.props[item].users, user => user.id === userInfo.id);
-
                 return (
-                    <LocationHeader
-                        title={this.props[item].name}
-                        info={{
-                            locationId: this.props[item].id,
-                            address: this.props[item].address,
-                            city: this.props[item].city,
-                            state: this.props[item].state,
-                            zipCode: this.props[item].zip_code
-                        }}
-                        favorite={favorite.length > 0}
-                    />
+                    <LocationHeader/>
                 );
 
             case "team":

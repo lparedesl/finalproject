@@ -8,6 +8,7 @@ export const GET_LOCATIONS = 'get_locations';
 export const GET_FAVORITE_LOCATIONS = 'get_favorite_locations';
 export const GET_USER_RESERVATIONS = 'get_user_reservations';
 export const LOCATION_SELECTED = 'location_selected';
+export const LOCATION_UPDATED = 'location_updated';
 export const FAVORITE_LOCATION_SELECTED = 'favorite_location_selected';
 export const FIELD_SELECTED = 'field_selected';
 export const RESERVE_FIELD = 'reserve_field';
@@ -62,6 +63,15 @@ export function getLocations() {
 
     return {
         type: GET_LOCATIONS,
+        payload: request
+    };
+}
+
+export function getLocation(id) {
+    const request = axios.post('/api/get-location', {id: id});
+
+    return {
+        type: LOCATION_UPDATED,
         payload: request
     };
 }
