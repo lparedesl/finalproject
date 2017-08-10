@@ -1,3 +1,13 @@
+body.home, html{
+    height:100%;
+    margin:0;
+    font-size:24px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight:400;
+    line-height:1.8em;
+    color:#666;
+}
+
 body.login {
     background-color: #fff !important;
 }
@@ -126,4 +136,86 @@ body.login {
     height: 135px !important;
     width: 31% !important;
     border: none !important;
+}
+
+.pimg1, .pimg2, .pimg3{
+    position:relative;
+    background-position:center;
+    background-size:cover;
+    background-repeat:no-repeat;
+
+    /*
+      fixed = parallax
+      scroll = normal
+    */
+    background-attachment:fixed;
+}
+
+.pimg1{
+    background-image:url('/pages/img/park.jpeg');
+    min-height:100vh;
+}
+
+.pimg2{
+    background-image:url('/pages/img/image2.jpg');
+    min-height:400px;
+}
+
+.pimg3{
+    background-image:url('/pages/img/image3.jpeg');
+    min-height:400px;
+}
+
+.section{
+    text-align:center;
+    padding:50px 80px;
+}
+
+.section-light{
+    background-color:#f4f4f4;
+    color:#666;
+}
+
+.section-dark{
+    background-color:#251;
+    color:#ddd;
+}
+
+.ptext{
+    position:absolute;
+    top:50%;
+    width:100%;
+    text-align:center;
+    color:#000;
+    font-size:27px;
+    letter-spacing:8px;
+    text-transform:uppercase;
+}
+
+.ptext .border{
+    border-radius: 25px;
+    background-color:#251;
+    color:#fff;
+    padding:20px;
+    border: none !important;
+}
+
+.ptext .border.trans{
+    background-color:#251;
+    border: none !important;
+}
+
+.ptext a {
+    color: #d0d0d0;
+    text-decoration: none;
+}
+
+.ptext a:hover {
+    color: #fff;
+}
+
+@media(max-width:568px){
+    .pimg1, .pimg2, .pimg3{
+        background-attachment:scroll;
+    }
 }
