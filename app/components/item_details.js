@@ -166,7 +166,6 @@ class ItemDetails extends Component {
                                     path="/dashboard/locations/reserve-field"
                                     render={() =>
                                         <Reservation
-                                            userId={this.props.userId}
                                             field={this.getField()}
                                         />
                                     }
@@ -185,7 +184,6 @@ class ItemDetails extends Component {
                                     path="/dashboard/favorite-locations/reserve-field"
                                     render={() =>
                                         <Reservation
-                                            userId={this.props.userId}
                                             field={this.getField()}
                                         />
                                     }

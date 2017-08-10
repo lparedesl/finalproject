@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import {bindActionCreators} from 'redux';
 import Header from './header';
 import Sidebar from './sidebar';
@@ -14,12 +14,6 @@ import {getUserInfo} from './../actions/index';
 import {resetActiveItems} from './../actions/index';
 
 class Content extends Component {
-    constructor() {
-        super();
-
-        this.isSignedIn = this.isSignedIn.bind(this);
-    }
-
     componentDidMount() {
         document.body.classList.add("page-header-fixed", "page-sidebar-closed-hide-logo", "page-content-white", "page-md", "page-container-bg-solid", "page-sidebar-closed");
         this.props.getLocations();
@@ -35,15 +29,11 @@ class Content extends Component {
         return true;
     }
 
-    isSignedIn() {
-        if (this.props.userInfo) {
-            return this.props.userInfo.id
+    render() {
+        if (!this.props.userInfo) {
+            return this.props.history.push('/');
         }
 
-        return 99999
-    }
-
-    render() {
         return (
             <div className="page-wrapper">
                 <Header/>
@@ -66,7 +56,6 @@ class Content extends Component {
                                 </div>
                                 <div className="col-md-9">
                                     <ItemDetails
-                                        userId={this.isSignedIn()}
                                         item={this.props.cmd}
                                         message={this.props.message}
                                     />
@@ -82,9 +71,7 @@ class Content extends Component {
 }
 
 function mapStateToProps(state) {
-    return {
-        userInfo: state.authData
-    }
+    return {userInfo: state.authData}
 }
 
 function mapDispatchToProps(dispatch) {
@@ -97,4 +84,4 @@ function mapDispatchToProps(dispatch) {
     }, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Content);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Content));

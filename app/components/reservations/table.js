@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import $ from 'jquery';
+import {connect} from 'react-redux';
 
 $.DataTable = require('datatables.net-bs');
 
@@ -88,4 +89,8 @@ function reloadTableData(reservations) {
     table.draw();
 }
 
-export default Table;
+function mapStateToProps(state) {
+    return {reservations: state.userReservations}
+}
+
+export default connect(mapStateToProps)(Table);
