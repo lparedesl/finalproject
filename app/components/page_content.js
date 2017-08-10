@@ -14,6 +14,7 @@ import {resetActiveItems} from './../actions';
 
 class Content extends Component {
     componentDidMount() {
+        document.body.classList.remove("home");
         document.body.classList.add("page-header-fixed", "page-sidebar-closed-hide-logo", "page-content-white", "page-md", "page-container-bg-solid", "page-sidebar-closed");
         this.props.getLocations();
         this.props.getTeams();

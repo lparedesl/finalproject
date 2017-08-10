@@ -7,7 +7,7 @@ import {getAuthData} from '../../actions';
 import {signin} from '../../actions';
 
 class SignInForm extends Component {
-    componentDidMount() {
+    componentWillMount() {
         this.props.getAuthData();
     }
 
@@ -24,14 +24,16 @@ class SignInForm extends Component {
     }
 
     renderErrors() {
-        const {hasErrors, messages} = this.props.authData;
-        if (hasErrors) {
-            return (
-                <div className="alert alert-danger">
-                    <button className="close" data-close="alert"></button>
-                    {messages.map(message => <span key={message}> {message} </span>)}
-                </div>
-            )
+        if (this.props.authData) {
+            const {hasErrors, messages} = this.props.authData;
+            if (hasErrors) {
+                return (
+                    <div className="alert alert-danger">
+                        <button className="close" data-close="alert"></button>
+                        {messages.map(message => <span key={message}> {message} </span>)}
+                    </div>
+                )
+            }
         }
     }
 
@@ -71,7 +73,7 @@ class SignInForm extends Component {
                                 <div className="forgot-password">
                                     <Link className="forget-password" id="forget-password" to="/user/forgot-password">Forgot Password ?</Link>
                                 </div>
-                                <input type="hidden" name="_csrf" value={this.props.authData.csrfToken} />
+                                <input type="hidden" name="_csrf" value={this.props.authData ? this.props.authData.csrfToken : ''} />
                                 <button className="btn green" type="submit">Sign In</button>
                             </div>
                         </div>
