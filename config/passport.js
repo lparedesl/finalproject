@@ -7,41 +7,13 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(email, done) {
-	db.Admin.findOne({
+	db.User.findOne({
 		where: {
 			email: email
 		}
 	})
-	.then(function(admin){
-		if (!admin) {
-            db.Professor.findOne({
-                where: {
-                    email: email
-                }
-            })
-			.then(function(professor){
-				if (!professor) {
-					db.Student.findOne({
-						where: {
-							email: email
-						}
-					})
-					.then(function(student){
-  						done(null, student);
-					})
-					.catch(function(error){
-  						done(error, null);
-					});
-				} else {
-                    done(null, professor);
-				}
-			})
-			.catch(function(error){
-				done(error, null);
-			});
-		} else {
-            done(null, admin);
-		}
+	.then(function(user){
+		done(null, user);
 	})
 	.catch(function(error){
 		done(error, null);
@@ -49,10 +21,10 @@ passport.deserializeUser(function(email, done) {
 });
 
 passport.use('local.signup', new LocalStrategy({
-	usernameField: "username",
+	usernameField: "email",
 	passwordField: "password",
 	passReqToCallback: true
-}, function(req, username, password, done) {
+}, function(req, email, password, done) {
 	req.checkBody("email", "Invalid email")
 	.notEmpty()
 	.isEmail();
@@ -71,43 +43,33 @@ passport.use('local.signup', new LocalStrategy({
 	}
 	db.User.findOne({
 		where: {
-			username: username
+			email: email
 		}
 	})
 	.then(function (user){
 		if (user) {
 			return done(null, false, {
-				message: "This username is taken"
-			});
-		}
-		return db.User.findOne({
-			where: {
-				email: req.body.email
-			}
-		});
-	})
-	.then(function (user){
-		if (user) {
-			return done(null, false, {
-				message: "A user with this email already exists"
+				message: "This email already exists"
 			});
 		}
 
-		if (password !== req.body.rpassword) {
+		if (password !== req.body.confirm_password) {
 			return done(null, false, {
 				message: "Passwords don't match"
 			});
 		}
 
 		var newUser = db.User.build({
-			username: username,
-			password: password,
-			first_name: req.body.firstname,
-			last_name: req.body.lastname,
-			email: req.body.email,
-			city: req.body.city,
-			state: req.body.state
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
+            date_of_birth: req.body.dob,
+            gender: req.body.gender,
+            phone: req.body.phone,
+            email: email,
+            password: password,
+			is_admin: req.body.is_admin
 		});
+
 		db.User.encryptPassword(password, function(hash) {
             newUser.password = hash;
             newUser.save().then(function(user) {
@@ -116,20 +78,20 @@ passport.use('local.signup', new LocalStrategy({
         });
 	})
 	.catch(function(error) {
-	  console.log(error);
+	    console.log(error);
 	});
 }));
 
 passport.use("local.signin", new LocalStrategy({
 	usernameField: "email",
-	passwordField: "userPassword",
+	passwordField: "password",
 	passReqToCallback: true
 }, function(req, email, password, done) {
     req.session.userType = req.body.userType;
 	req.checkBody("email", "Invalid email")
 	.notEmpty()
 	.isEmail();
-	req.checkBody("userPassword", "Invalid password")
+	req.checkBody("password", "Invalid password")
 	.notEmpty();
 	var errors = req.validationErrors();
 	if (errors) {
@@ -139,7 +101,7 @@ passport.use("local.signin", new LocalStrategy({
 		});
 		return done(null, false, req.flash("error", messages));
 	}
-	db[req.body.userType].findOne({
+	db.User.findOne({
 		where: {
             email: email
 		}
@@ -147,10 +109,11 @@ passport.use("local.signin", new LocalStrategy({
 	.then(function(user){
 		if (!user) {
 			return done(null, false, {
-				message: req.body.userType + " not found"
+				message: "Email not found"
 			});
 		}
-		db.Person.validPassword(password, user.password, function(isMatch) {
+
+		db.User.validPassword(password, user.password, function(isMatch) {
             if (isMatch) {
                 return done(null, user);
             } else {

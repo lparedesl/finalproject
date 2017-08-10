@@ -1,0 +1,221 @@
+body.home, html{
+    height:100%;
+    margin:0;
+    font-size:24px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight:400;
+    line-height:1.8em;
+    color:#666;
+}
+
+body.login {
+    background-color: #fff !important;
+}
+
+.signup-content {
+    margin-top: 25% !important;
+}
+
+.signup-content select {
+    padding-bottom: 0 !important;
+}
+
+.help-block {
+    color: #e73d4a;
+    position: relative;
+    top: -28px;
+}
+
+.portlet.calendar .caption {
+    width: 100%;
+}
+
+.location-header {
+    margin-bottom: 20px;
+}
+
+.reserve-btn {
+    font-size: 14px !important;
+    height: 40px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.fc-nonbusiness {
+    background: #000;
+}
+
+.fc-business {
+    background: transparent;
+}
+
+.fc-bgevent {
+    opacity: .02;
+    filter: alpha(opacity=2);
+}
+
+.reservation-form .row:not(:last-child) {
+    margin-bottom: 20px;
+}
+
+#map {
+    width: 400px;
+    height: 400px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 0.25em 0.5em !important;
+    color: transparent !important;
+
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    transition: box-shadow .28s cubic-bezier(.4,0,.2,1) !important;
+    border-radius: 2px !important;
+    overflow: hidden !important;
+    position: relative !important;
+    user-select: none !important;
+    outline: 0!important;
+    line-height: 1.5 !important;
+    display: inline-block !important;
+    margin-bottom: 0 !important;
+    margin-right: 10px !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    touch-action: manipulation !important;
+    white-space: nowrap !important;
+    box-sizing: border-box !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    color: white !important;
+    border: 1px solid transparent !important;
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.first,
+.dataTables_wrapper .dataTables_paginate .paginate_button.previous,
+.dataTables_wrapper .dataTables_paginate .paginate_button.next,
+.dataTables_wrapper .dataTables_paginate .paginate_button.last {
+    text-transform: uppercase !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,.1), 0 1px 2px rgba(0,0,0,.18) !important;
+    color: #666 !important;
+    background-color: #e1e5ec !important;
+    border-color: #e1e5ec !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.first:hover,
+.dataTables_wrapper .dataTables_paginate .paginate_button.previous:hover,
+.dataTables_wrapper .dataTables_paginate .paginate_button.next:hover,
+.dataTables_wrapper .dataTables_paginate .paginate_button.last:hover {
+    box-shadow: 0 3px 6px rgba(0,0,0,.2), 0 3px 6px rgba(0,0,0,.26) !important;
+    text-decoration: none !important;
+    background-color: #c2cad8 !important;
+    border-color: #bcc5d4 !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+    pointer-events: none !important;
+    cursor: not-allowed !important;
+    opacity: .65 !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.first a,
+.dataTables_wrapper .dataTables_paginate .paginate_button.previous a,
+.dataTables_wrapper .dataTables_paginate .paginate_button.next a,
+.dataTables_wrapper .dataTables_paginate .paginate_button.last a {
+    text-shadow: none !important;
+    text-decoration: none !important;
+    box-sizing: border-box !important;
+    background-color: transparent !important;
+    border: none !important;
+    color: #777;
+}
+
+.tiles .tile {
+    height: 135px !important;
+    width: 31% !important;
+    border: none !important;
+}
+
+.pimg1, .pimg2, .pimg3{
+    position:relative;
+    background-position:center;
+    background-size:cover;
+    background-repeat:no-repeat;
+
+    /*
+      fixed = parallax
+      scroll = normal
+    */
+    background-attachment:fixed;
+}
+
+.pimg1{
+    background-image:url('/pages/img/park.jpeg');
+    min-height:100vh;
+}
+
+.pimg2{
+    background-image:url('/pages/img/image2.jpg');
+    min-height:400px;
+}
+
+.pimg3{
+    background-image:url('/pages/img/image3.jpeg');
+    min-height:400px;
+}
+
+.section{
+    text-align:center;
+    padding:50px 80px;
+}
+
+.section-light{
+    background-color:#f4f4f4;
+    color:#666;
+}
+
+.section-dark{
+    background-color:#251;
+    color:#ddd;
+}
+
+.ptext{
+    position:absolute;
+    top:50%;
+    width:100%;
+    text-align:center;
+    color:#000;
+    font-size:27px;
+    letter-spacing:8px;
+    text-transform:uppercase;
+}
+
+.ptext .border{
+    border-radius: 25px;
+    background-color:#251;
+    color:#fff;
+    padding:20px;
+    border: none !important;
+}
+
+.ptext .border.trans{
+    background-color:#251;
+    border: none !important;
+}
+
+.ptext a {
+    color: #d0d0d0;
+    text-decoration: none;
+}
+
+.ptext a:hover {
+    color: #fff;
+}
+
+@media(max-width:568px){
+    .pimg1, .pimg2, .pimg3{
+        background-attachment:scroll;
+    }
+}

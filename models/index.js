@@ -1,5 +1,6 @@
+'use strict';
 var env       = require("../config/env");
-var Sequelize = require('sequelize');
+var Sequelize = require("sequelize");
 var db        = {};
 
 var sequelize = new Sequelize (
@@ -9,21 +10,23 @@ env.DATABASE_PASSWORD, {
     host: env.DATABASE_HOST,
     dialect: env.DATABASE_DIALECT,
     define: {
-        underscored: true
+        underscored: true,
+        freezeTableName: true
     }
 });
 
-db.Admin          = require("./admin")(sequelize, Sequelize);
-db.User          = require("./admin")(sequelize, Sequelize);
-db.Person         = require("./person")(sequelize, Sequelize);
-db.Schedule       = require("./schedule")(sequelize, Sequelize);
-db.Reservation       = require("./schedule")(sequelize, Sequelize);
+db.Field = require("./field")(sequelize, Sequelize);
+db.Location = require("./location")(sequelize, Sequelize);
+db.Reservation = require("./reservation")(sequelize, Sequelize);
+db.LocationSchedule = require("./location_schedule")(sequelize, Sequelize);
+db.Sport = require("./sport")(sequelize, Sequelize);
+db.Team = require("./team")(sequelize, Sequelize);
+db.User = require("./user")(sequelize, Sequelize);
 
 // Join Tables
-// db.ClassStudent      = require("./class_student")(sequelize, Sequelize);
-// db.AttendanceStudent = require("./attendance_student")(sequelize, Sequelize);
-// db.AssignmentStudent = require("./assignment_student")(sequelize, Sequelize);
-// db.OrderBook         = require("./order_book")(sequelize, Sequelize);
+db.FavoriteLocation = require("./favorite_location")(sequelize, Sequelize);
+db.LocationSport = require("./location_sport")(sequelize, Sequelize);
+db.UserTeam = require("./user_team")(sequelize, Sequelize);
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
