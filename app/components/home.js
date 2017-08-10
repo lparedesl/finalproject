@@ -20,7 +20,6 @@ class Home extends Component {
 
     renderOptions() {
         if (!this.props.userInfo || !this.props.userInfo.id) {
-            console.log(this.props.userInfo.id);
             return (
                 <span className="border">
                     <Link to="/user/signin">Sign in</Link>
@@ -79,10 +78,7 @@ class Home extends Component {
 
                 <div className="pimg1">
                     <div className="ptext">
-                        {/*<span className="border">*/}
                         {this.renderOptions()}
-                        {/*<a href="/signin">Sign in</a> | <a href="/teams">Teams</a> | <a href="/locations">Locations</a>*/}
-                        {/*</span>*/}
                     </div>
                 </div>
             </div>
