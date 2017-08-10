@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
-import {getAuthData} from '../../actions/index';
+import {getAuthData} from '../../actions';
 
 class ForgotPassForm extends Component {
     componentDidMount() {
@@ -16,9 +16,7 @@ class ForgotPassForm extends Component {
         return (
             <div className={className}>
                 <input className="form-control placeholder-no-fix form-group" type={field.type} autoComplete="off" placeholder={field.placeholder} name={field.bodyName} />
-                <div className="text-help">
-                    {touched ? error : ''}
-                </div>
+                <span className="help-block">{touched ? error : ''}</span>
             </div>
         );
     }
@@ -41,6 +39,7 @@ class ForgotPassForm extends Component {
                         </div>
                         <div className="form-actions">
                             <Link className="btn green btn-outline" to="/user/signin">Back</Link>
+                            <input type="hidden" name="_csrf" value={this.props.authData.csrfToken} />
                             <button type="submit" className="btn btn-success uppercase pull-right">Submit</button>
                         </div>
                     </form>
@@ -87,7 +86,7 @@ function validate(values) {
 }
 
 function mapStateToProps(state) {
-    return {csrfToken: state.csrfToken}
+    return {authData: state.authData}
 }
 
 export default reduxForm({

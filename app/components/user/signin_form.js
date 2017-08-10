@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link, withRouter} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -35,15 +35,7 @@ class SignInForm extends Component {
         }
     }
 
-    // onSubmit(values) {
-    //     this.props.signin(values, () => {
-    //         this.props.getAuthData();
-    //     });
-    // }
-
     render() {
-        // const {handleSubmit} = this.props;
-
         return (
             <div className="col-md-6 login-container bs-reset mt-login-5-bsfix">
                 <div className="login-content">
@@ -133,8 +125,6 @@ function validate(values) {
 
     if (!values.email) errors.email = 'Enter an email';
     if (!values.password) errors.password = 'Enter a password';
-    // if (!values.end_year) errors.end_year = 'Enter an end year';
-    // if (values.end_year < values.start_year) errors.end_year = 'Enter a valid end year';
 
     return errors;
 }
