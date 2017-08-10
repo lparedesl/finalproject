@@ -1,4 +1,9 @@
 import React from "react";
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {selectLocation} from '../actions';
+import {selectFavoriteLocation} from '../actions';
+import {selectTeam} from '../actions';
 
 const ListItem = (props) => {
     const {data} = props;
@@ -6,7 +11,7 @@ const ListItem = (props) => {
     return (
         <li className="mt-list-item">
             <div className="list-icon-container">
-                <a onClick={() => props.selectItem(data)}>
+                <a onClick={() => props[props.fnName](data)}>
                     <i className="fa fa-angle-right"></i>
                 </a>
             </div>
@@ -19,4 +24,12 @@ const ListItem = (props) => {
     );
 };
 
-export default ListItem;
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        selectLocation: selectLocation,
+        selectFavoriteLocation: selectFavoriteLocation,
+        selectTeam: selectTeam,
+    }, dispatch)
+}
+
+export default connect(null, mapDispatchToProps)(ListItem);

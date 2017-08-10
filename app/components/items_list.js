@@ -1,26 +1,11 @@
 import _ from 'lodash';
 import React, {Component} from "react";
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
 import ListItem from './list_item';
-import {selectLocation} from '../actions';
-import {selectFavoriteLocation} from '../actions';
-import {selectTeam} from '../actions';
 
 class ItemsList extends Component {
-    handleSelectItem(item) {
-        this.props[this.props.fnName](item);
-    }
-
     renderList() {
-        const {title, locations, userInfo} = this.props;
-        // const items = title === "Favorite Locations" ? _.filter(locations, item => {
-        //     const usersTemp = _.filter(item.users, user => user.id === userInfo.id);
-        //     if (usersTemp[0]) {
-        //         return true
-        //     }
-        // }) : this.props[title.toLowerCase()];
-
+        const {title, fnName} = this.props;
         const items = title === "Favorite Locations" ? this.props.favoriteLocations : this.props[title.toLowerCase()];
 
         return _.map(items, item => {
@@ -28,7 +13,7 @@ class ItemsList extends Component {
                 <ListItem
                     key={item.id}
                     data={item}
-                    selectItem={(item) => this.props[this.props.fnName](item)}
+                    fnName={fnName}
                     location={this.props.location}
                 />
             )
@@ -62,17 +47,8 @@ function mapStateToProps(state) {
     return {
         locations: state.locations,
         favoriteLocations: state.favoriteLocations,
-        teams: state.teams,
-        userInfo: state.authData
+        teams: state.teams
     }
 }
 
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators({
-        selectLocation: selectLocation,
-        selectFavoriteLocation: selectFavoriteLocation,
-        selectTeam: selectTeam,
-    }, dispatch)
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ItemsList);
+export default connect(mapStateToProps)(ItemsList);
