@@ -73,10 +73,7 @@ class ItemDetails extends Component {
 
             case "team":
                 return (
-                    <TeamHeader
-                        name={this.props[item].name}
-                        location={this.props.header}
-                    />
+                    <TeamHeader/>
                 );
         }
     }
