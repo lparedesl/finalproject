@@ -1,17 +1,24 @@
-import React from "react";
+import React, {Component} from "react";
+import {connect} from 'react-redux';
 
-const TeamImage = (props) => {
-  const {image, name} = props;
+class TeamImage extends Component {
+    render() {
+        const {team} = this.props;
 
-  return (
-    <div className="row">
-        <div className="col-sm-12">
-            <div className="thumbnail">
-                <img src={image} alt={name} />
+        return (
+            <div className="row">
+                <div className="col-sm-12">
+                    <div className="thumbnail">
+                        <img src={team.image} alt={team.name} />
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-  )
-};
+        )
+    }
+}
 
-export default TeamImage;
+function mapStateToProps(state) {
+    return {team: state.activeTeam,}
+}
+
+export default connect(mapStateToProps)(TeamImage);

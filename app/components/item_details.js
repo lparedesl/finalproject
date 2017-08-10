@@ -102,13 +102,11 @@ class ItemDetails extends Component {
                     <div>
                         <div className="row">
                             <Map
-                                location={this.props.location}
                                 item={item}
                             />
                         </div>
                         <div className="row">
                             <Info
-                                location={this.props.location}
                                 item={item}
                             />
                         </div>
@@ -118,11 +116,7 @@ class ItemDetails extends Component {
             case "team":
                 return (
                     <div className="row">
-                        <TeamImage
-                            image={this.props[item].image}
-                            name={this.props[item].name}
-                            location={this.props.location}
-                        />
+                        <TeamImage/>
                     </div>
                 );
         }
