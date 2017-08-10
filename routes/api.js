@@ -4,9 +4,16 @@ var _ = require("lodash");
 var env = require("../config/env");
 var moment = require('moment');
 var db = require("../models");
-var googleMapsClient = require('@google/maps').createClient({
-    key: env.GEOCODING_KEY
-});
+var NodeGeocoder = require('node-geocoder');
+
+var options = {
+    provider: 'google',
+    httpAdapter: 'https',
+    apiKey: env.GOOGLE_API_KEY,
+    formatter: null
+};
+
+var geocoder = NodeGeocoder(options);
 
 router.get("/get-user-info", function(req, res, next) {
     db.User.findOne({
@@ -47,18 +54,18 @@ router.get("/get-locations", function(req, res, next) {
     })
     .then(function(data) {
         _.map(data, function(location, i) {
-            googleMapsClient.geocode({
-                address: location.address + ', ' + location.city + ', ' + location.state + ' ' + location.zip_code
-            }, function(err, response) {
-                if (!err) {
-                    data[i].dataValues.lat = response.json.results[0].geometry.location.lat;
-                    data[i].dataValues.lng = response.json.results[0].geometry.location.lng;
+            geocoder.geocode(location.address + ', ' + location.city + ', ' + location.state + ' ' + location.zip_code)
+                    .then(function(response) {
+                        data[i].dataValues.lat = response[0].latitude;
+                        data[i].dataValues.lng = response[0].longitude;
 
-                    if (data.length === i + 1) {
-                        res.json(data);
-                    }
-                }
-            });
+                        if (data.length === i + 1) {
+                            res.json(data);
+                        }
+                    })
+                    .catch(function(err) {
+                        console.log(err);
+                    });
         });
     })
     .catch(function(error) {
@@ -94,18 +101,18 @@ router.get("/get-favorite-locations", function(req, res, next) {
     })
     .then(function(data) {
         _.map(data, function(location, i) {
-            googleMapsClient.geocode({
-                address: location.address + ', ' + location.city + ', ' + location.state + ' ' + location.zip_code
-            }, function(err, response) {
-                if (!err) {
-                    data[i].dataValues.lat = response.json.results[0].geometry.location.lat;
-                    data[i].dataValues.lng = response.json.results[0].geometry.location.lng;
+            geocoder.geocode(location.address + ', ' + location.city + ', ' + location.state + ' ' + location.zip_code)
+                    .then(function(response) {
+                        data[i].dataValues.lat = response[0].latitude;
+                        data[i].dataValues.lng = response[0].longitude;
 
-                    if (data.length === i + 1) {
-                        res.json(data);
-                    }
-                }
-            });
+                        if (data.length === i + 1) {
+                            res.json(data);
+                        }
+                    })
+                    .catch(function(err) {
+                        console.log(err);
+                    });
         });
     })
     .catch(function(error) {
