@@ -13,7 +13,7 @@ class Header extends Component {
     }
 
     handleClick(values) {
-        this.props.favoriteLocation(values, ({data}) => {
+        this.props.favoriteLocation(values, () => {
             this.props.getLocation(values.location_id);
         });
     }
