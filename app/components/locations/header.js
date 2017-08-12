@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {connect} from 'react-redux';
+import $ from 'jquery';
 import {bindActionCreators} from 'redux';
 import {favoriteLocation} from '../../actions';
 import {getLocation} from '../../actions';
@@ -15,6 +16,7 @@ class Header extends Component {
 
     handleClick(values) {
         this.props.favoriteThisLocation(values, () => {
+            $(".btn-icon-only").toggleClass("btn-outline");
             this.props.getLocation(values.location_id);
             this.props.getLocations();
             if (this.props.item === "favoriteLocation") {
