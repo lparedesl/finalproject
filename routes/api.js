@@ -132,8 +132,16 @@ router.get("/get-teams", function(req, res, next) {
             }
         ]
     })
-    .then(function(data) {
-        res.json(data);
+    .then(function(teams) {
+        var userTeams = _.filter(teams, function(team) {
+            var teamUser = _.filter(team.dataValues.users, function(user) {
+                return user.email === req.session.passport.user;
+            });
+            if (teamUser.length > 0) {
+                return true;
+            }
+        });
+        res.json(userTeams);
     })
     .catch(function(error) {
         console.log(error);
