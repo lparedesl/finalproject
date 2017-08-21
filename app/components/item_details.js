@@ -1,7 +1,5 @@
-import _ from 'lodash';
 import React, {Component} from 'react';
 import {Route} from 'react-router-dom';
-import moment from 'moment';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import LocationHeader from './locations/header';
@@ -28,12 +26,6 @@ class ItemDetails extends Component {
     }
 
     shouldComponentUpdate(nextProps) {
-        // console.log("======================");
-        // console.log(this.props);
-        // console.log("======================");
-        // console.log(nextProps);
-        // console.log("======================");
-
         if (nextProps.item !== "team") {
             const {item, setFirstField, getFieldReservations} = nextProps;
 

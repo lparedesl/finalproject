@@ -125,14 +125,23 @@ export function selectField(id) {
     };
 }
 
-export function reserveField(values, cb) {
-    const request = axios.post('/api/reserve-field', values)
-                         .then((data) => cb(data));
-
+export function fieldReserved() {
     return {
-        type: RESERVE_FIELD,
-        payload: request
+        type: RESERVE_FIELD
     };
+}
+
+export function reserveField(values, cb) {
+    return function (dispatch) {
+        return axios.post('/api/reserve-field', values)
+                    .then(res => {
+                        if (!res.data.error) {
+                            dispatch(getUserReservations(values.field));
+                        }
+                        dispatch(fieldReserved());
+                        cb(res);
+                    });
+    }
 }
 
 export function getUserReservations() {

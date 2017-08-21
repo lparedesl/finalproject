@@ -1,22 +1,14 @@
 import React, {Component} from 'react';
-import $ from 'jquery';
 import {Link, withRouter} from 'react-router-dom';
-import toastr from 'toastr';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import $ from 'jquery';
+import toastr from 'toastr';
 import {getTeam} from '../../actions';
 import {addTeamMember} from '../../actions';
 
 class AddMemberForm extends Component {
-    // shouldComponentUpdate(nextProps) {
-    //     console.log("======================");
-    //     console.log(this.props);
-    //     console.log("======================");
-    //     console.log(nextProps);
-    //     console.log("======================");
-    // }
-
     renderTextField(field) {
         const {meta: {touched, error}} = field;
         const className = `form-control ${touched && error ? 'has-error' : ''}`;
