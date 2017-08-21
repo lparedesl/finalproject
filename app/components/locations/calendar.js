@@ -18,12 +18,12 @@ class Calendar extends Component {
     }
 
     renderOptGroups() {
-        const {locationItem} = this.props;
+        const {item} = this.props;
 
-        return _.map(locationItem.sports, sport => {
+        return _.map(this.props[item].sports, sport => {
             return (
                 <optgroup label={sport.name} key={sport.name}>
-                    {this.renderOptions(sport, locationItem.id)}
+                    {this.renderOptions(sport, this.props[item].id)}
                 </optgroup>
             )
         })
@@ -33,8 +33,7 @@ class Calendar extends Component {
         let fields = _.filter(sport.fields, data => { return data.location_id === id; });
 
         return _.map(fields, field => {
-            let selected = this.props.field ? parseInt(this.props.field.id) === field.id : false;
-            return <option value={field.id} key={field.id} selected={selected}>Field {field.field_number}</option>
+            return <option value={field.id} key={field.id}>Field {field.field_number}</option>
         })
     }
 
@@ -70,29 +69,30 @@ class Calendar extends Component {
     render() {
         return (
             <div className="row">
-              <div className="col-md-12">
-                <Link className="btn blue btn-outline reserve-btn" to="/dashboard/locations/reserve-field">Reserve Field</Link>
-                <div className="portlet light portlet-fit bordered calendar">
-                  <div className="portlet-title">
-                    <div className="caption">
-                        <div className="form-group form-md-line-input has-info">
-                            <select className="form-control" id="form_control_1" onChange={event => this.onFieldSelect(event.target.value)}>
-                                {this.renderOptGroups()}
-                            </select>
-                            <label htmlFor="form_control_1">SelectField</label>
+                <div className="col-md-12">
+                    <Link className="btn blue btn-outline reserve-btn" to="/dashboard/locations/reserve-field">Reserve Field</Link>
+                    <div className="portlet light portlet-fit bordered calendar">
+                        <div className="portlet-title">
+                            <div className="caption">
+                                <div className="form-group form-md-line-input has-info">
+                                    {/*<select className="form-control" id="form_control_1" onChange={event => this.onFieldSelect(event.target.value)}>*/}
+                                    <select className="form-control" id="form_control_1" value={this.props.field.id} onChange={event => this.onFieldSelect(event.target.value)}>
+                                        {this.renderOptGroups()}
+                                    </select>
+                                    <label htmlFor="form_control_1">SelectField</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="portlet-body">
+                            <div className="row">
+                                <div className="col-sm-12">
+                                    <div id="field-schedule" className="has-toolbar"> </div>
+                                    {this.renderCalendar()}
+                                </div>
+                            </div>
                         </div>
                     </div>
-                  </div>
-                  <div className="portlet-body">
-                    <div className="row">
-                      <div className="col-sm-12">
-                        <div id="field-schedule" className="has-toolbar"> </div>
-                          {this.renderCalendar()}
-                      </div>
-                    </div>
-                  </div>
                 </div>
-              </div>
             </div>
         )
     }
@@ -100,6 +100,8 @@ class Calendar extends Component {
 
 function mapStateToProps(state) {
     return {
+        locationItem: state.activeLocation,
+        favoriteLocation: state.activeFavoriteLocation,
         fieldReservations: state.fieldReservations,
         field: state.activeField,
     }

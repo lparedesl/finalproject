@@ -9,6 +9,7 @@ export const GET_USER_RESERVATIONS = 'get_user_reservations';
 export const LOCATION_SELECTED = 'location_selected';
 export const LOCATION_UPDATED = 'location_updated';
 export const FAVORITE_LOCATION_SELECTED = 'favorite_location_selected';
+export const SET_FIRST_FIELD = 'set_first_field';
 export const FIELD_SELECTED = 'field_selected';
 export const RESERVE_FIELD = 'reserve_field';
 export const GET_FIELD_RESERVATIONS = 'get_field_reservations';
@@ -105,6 +106,13 @@ export function resetActiveItems() {
     return {
         type: RESET_ACTIVE_ITEMS,
         payload: location
+    };
+}
+
+export function setFirstField(field) {
+    return {
+        type: SET_FIRST_FIELD,
+        payload: field
     };
 }
 

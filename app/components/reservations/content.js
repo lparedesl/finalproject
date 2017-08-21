@@ -7,7 +7,7 @@ class Content extends Component {
         return (
             <div className="page-content">
                 <h1 className="page-title">
-                    {this.props.title}
+                    Reservations
                 </h1>
                 <div className="row">
                     <div className="col-md-12">

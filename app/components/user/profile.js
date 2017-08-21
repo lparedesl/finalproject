@@ -7,7 +7,7 @@ class Profile extends Component {
         return (
             <div className="page-content">
                 <h1 className="page-title">
-                    {this.props.title}
+                    Profile
                 </h1>
                 <div className="container">
                     <div className="row">

@@ -43,17 +43,14 @@ class Dashboard extends Component {
                         location={this.props.location.pathname}
                     />
                     <div className="page-content-wrapper">
-                        <Route path="/dashboard/profile" render={() =>
-                            <ProfileContent
-                                title="Profile"
-                            />
-                        }/>
+                        <Route path="/dashboard/profile" component={ProfileContent}/>
                         <Route path="/dashboard/locations" render={() =>
                             <Content
                                 title="Locations"
                                 fnName="selectLocation"
                                 message="Please select a location"
                                 cmd="locationItem"
+                                location={this.props.location.pathname}
                             />
                         }/>
                         <Route path="/dashboard/teams" render={() =>
@@ -70,16 +67,10 @@ class Dashboard extends Component {
                                 fnName="selectFavoriteLocation"
                                 message="Please select a location"
                                 cmd="favoriteLocation"
+                                location={this.props.location.pathname}
                             />
                         }/>
-                        <Route path="/dashboard/reservations" render={() =>
-                            <ReservationsContent
-                                title="Reservations"
-                                fnName="selectReservation"
-                                message="Please select a reservation"
-                                cmd="reservation"
-                            />
-                        }/>
+                        <Route path="/dashboard/reservations" component={ReservationsContent}/>
                     </div>
                 </div>
                 <Footer/>

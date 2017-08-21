@@ -1,9 +1,16 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import ItemsList from './items_list';
 import ItemDetails from './item_details';
+import {getFieldReservations} from '../actions';
 
 class Content extends Component {
     shouldComponentUpdate(nextProps) {
+        const {cmd, field, getFieldReservations} = this.props;
+        if (this.props.location !== nextProps.location && this.props[cmd]) {
+            getFieldReservations(field.id);
+        }
+
         if (this.props.title !== nextProps.title) {
             this.props.resetActiveItems();
         }
@@ -25,6 +32,7 @@ class Content extends Component {
                     </div>
                     <div className="col-md-9">
                         <ItemDetails
+                            key={this.props.location}
                             item={this.props.cmd}
                             message={this.props.message}
                         />
@@ -35,4 +43,12 @@ class Content extends Component {
     }
 }
 
-export default Content;
+function mapStateToProps(state) {
+    return {
+        locationItem: state.activeLocation,
+        favoriteLocation: state.activeFavoriteLocation,
+        field: state.activeField
+    }
+}
+
+export default connect(mapStateToProps, {getFieldReservations})(Content);
