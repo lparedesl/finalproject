@@ -13,27 +13,27 @@ class Sidebar extends Component {
         const tabs = [
             {
                 name: "Locations",
-                pathname: "locations",
+                pathname: "/dashboard/locations",
                 icon: "icon-map"
             },
             {
                 name: "Teams",
-                pathname: "teams",
+                pathname: "/dashboard/teams",
                 icon: "icon-trophy"
             },
             {
                 name: "Favorite Locations",
-                pathname: "favorite-locations",
+                pathname: "/dashboard/favorite-locations",
                 icon: "icon-star"
             },
             {
                 name: "Reservations",
-                pathname: "reservations",
+                pathname: "/dashboard/reservations",
                 icon: "icon-calendar"
             },
             {
                 name: "Profile",
-                pathname: "profile",
+                pathname: "/dashboard/profile",
                 icon: "icon-settings"
             }
         ];
@@ -41,9 +41,9 @@ class Sidebar extends Component {
         const {location} = this.props;
 
         return _.map(tabs, tab => {
-            const classNameLi = `nav-item ${`/dashboard/${tab.pathname}` === location ? 'active open' : ''}`;
-            const classNameSpan = `arrow ${`/dashboard/${tab.pathname}` === location ? 'open' : ''}`;
-            const selected = `/dashboard/${tab.pathname}` === location ? 'selected' : null;
+            const classNameLi = `nav-item ${tab.pathname === location ? 'active open' : ''}`;
+            const classNameSpan = `arrow ${tab.pathname === location ? 'open' : ''}`;
+            const selected = tab.pathname === location ? 'selected' : null;
 
             return (
                 <li className={classNameLi} key={tab.name}>
