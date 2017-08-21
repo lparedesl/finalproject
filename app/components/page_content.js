@@ -35,6 +35,7 @@ class Content extends Component {
                             key={this.props.location}
                             item={this.props.cmd}
                             message={this.props.message}
+                            location={this.props.location}
                         />
                     </div>
                 </div>

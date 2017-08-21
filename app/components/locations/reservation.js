@@ -7,6 +7,12 @@ import {connect} from 'react-redux';
 import {reserveField} from '../../actions';
 
 class Reservation extends Component {
+    constructor() {
+        super();
+
+        this.renderBackButton = this.renderBackButton.bind(this);
+    }
+
     renderDateField(field) {
         return (
             <div className="row">
@@ -71,6 +77,13 @@ class Reservation extends Component {
         });
     }
 
+    renderBackButton() {
+        const {location} = this.props;
+        const path = location.pathname.split("/");
+
+        return <Link className="btn blue btn-outline" to={`/dashboard/${path[2]}`}>Back</Link>
+    }
+
     render() {
         const {handleSubmit} = this.props;
 
@@ -92,9 +105,11 @@ class Reservation extends Component {
                                         <div className="row">
                                             <div className="col-md-12">
                                                 <Field
+                                                    name="DatePicker"
                                                     component={this.renderDateField}
                                                 />
                                                 <Field
+                                                    name="TimePicker"
                                                     component={this.renderTimeField}
                                                 />
                                             </div>
@@ -103,7 +118,8 @@ class Reservation extends Component {
                                             <div className="col-sm-6">
                                                 <div className="create-account">
                                                     <p>
-                                                        <Link className="btn blue btn-outline" to="/dashboard/locations">Back</Link>
+                                                        {/*<Link className="btn blue btn-outline" to="/dashboard/locations">Back</Link>*/}
+                                                        {this.renderBackButton()}
                                                     </p>
                                                 </div>
                                             </div>

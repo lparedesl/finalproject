@@ -59,6 +59,7 @@ class Dashboard extends Component {
                                 fnName="selectTeam"
                                 message="Please select a team or create a new one below"
                                 cmd="team"
+                                location={this.props.location.pathname}
                             />
                         }/>
                         <Route path="/dashboard/favorite-locations" render={() =>

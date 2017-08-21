@@ -28,6 +28,12 @@ class ItemDetails extends Component {
     }
 
     shouldComponentUpdate(nextProps) {
+        // console.log("======================");
+        // console.log(this.props);
+        // console.log("======================");
+        // console.log(nextProps);
+        // console.log("======================");
+
         if (nextProps.item !== "team") {
             const {item, setFirstField, getFieldReservations} = nextProps;
 
@@ -108,26 +114,36 @@ class ItemDetails extends Component {
             <div className="row">
                 <div className="col-md-8">
                     {this.renderHeader()}
-                    <Route path="/dashboard/locations/reserve-field" component={Reservation}/>
+                    <Route path="/dashboard/locations/reserve-field" render={() =>
+                        <Reservation
+                            location={this.props.location}
+                        />
+                    }/>
                     <Route
                         exact path="/dashboard/locations"
                         render={() =>
                             <Calendar
+                                location={this.props.location}
                                 item={item}
                             />
                         }
                     />
-                    <Route path="/dashboard/favorite-locations/reserve-field" component={Reservation}/>
+                    <Route path="/dashboard/favorite-locations/reserve-field" render={() =>
+                        <Reservation
+                            location={this.props.location}
+                        />
+                    }/>
                     <Route
                         exact path="/dashboard/favorite-locations"
                         render={() =>
                             <Calendar
+                                location={this.props.location}
                                 item={item}
                             />
                         }
                     />
                     <Route path="/dashboard/teams/add-team-member" component={TeamMemberForm}/>
-                    <Route path="/dashboard/teams" component={TeamList}/>
+                    <Route exact path="/dashboard/teams" component={TeamList}/>
                 </div>
                 <div className="col-md-4">
                     {this.renderRightCol()}

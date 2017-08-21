@@ -41,9 +41,9 @@ class Sidebar extends Component {
         const {location} = this.props;
 
         return _.map(tabs, tab => {
-            const classNameLi = `nav-item ${tab.pathname === location ? 'active open' : ''}`;
-            const classNameSpan = `arrow ${tab.pathname === location ? 'open' : ''}`;
-            const selected = tab.pathname === location ? 'selected' : null;
+            const classNameLi = `nav-item ${location.indexOf(tab.pathname) !== -1 ? 'active open' : ''}`;
+            const classNameSpan = `arrow ${location.indexOf(tab.pathname) !== -1 ? 'open' : ''}`;
+            const selected = location.indexOf(tab.pathname) !== -1 ? 'selected' : null;
 
             return (
                 <li className={classNameLi} key={tab.name}>

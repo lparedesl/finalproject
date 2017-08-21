@@ -70,12 +70,11 @@ class Calendar extends Component {
         return (
             <div className="row">
                 <div className="col-md-12">
-                    <Link className="btn blue btn-outline reserve-btn" to="/dashboard/locations/reserve-field">Reserve Field</Link>
+                    <Link className="btn blue btn-outline reserve-btn" to={`${this.props.location}/reserve-field`}>Reserve Field</Link>
                     <div className="portlet light portlet-fit bordered calendar">
                         <div className="portlet-title">
                             <div className="caption">
                                 <div className="form-group form-md-line-input has-info">
-                                    {/*<select className="form-control" id="form_control_1" onChange={event => this.onFieldSelect(event.target.value)}>*/}
                                     <select className="form-control" id="form_control_1" value={this.props.field.id} onChange={event => this.onFieldSelect(event.target.value)}>
                                         {this.renderOptGroups()}
                                     </select>
