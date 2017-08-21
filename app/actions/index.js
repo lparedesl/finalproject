@@ -49,13 +49,24 @@ export function signup(values, cb) {
     };
 }
 
-export function getUserInfo() {
-    const request = axios.get('/api/get-user-info');
-
+export function receivedUserInfo(data) {
     return {
-        type: GET_USER_INFO,
-        payload: request
+        type   : GET_USER_INFO,
+        payload: data
     };
+}
+
+export function getUserInfo(cb) {
+    return function (dispatch) {
+        return axios.get('/api/get-user-info')
+                    .then(res => {
+                        cb(res.data, proceed => {
+                            if (proceed) {
+                                dispatch(receivedUserInfo(res));
+                            }
+                        });
+                    });
+    }
 }
 
 export function getLocations() {
