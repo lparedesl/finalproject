@@ -1,11 +1,8 @@
 import React, {Component} from 'react';
-import {Link, withRouter} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
-import moment from 'moment';
-import {bindActionCreators} from 'redux';
 import {getAuthData} from '../../actions';
-import {signup} from '../../actions';
 
 class SignUpForm extends Component {
     componentDidMount() {
@@ -63,7 +60,7 @@ class SignUpForm extends Component {
 
         return (
             <div className="col-xs-6">
-                <input className={className} id="signup-dob" size="16" type={field.type} name={field.bodyName} placeholder={field.placeholder} value="" {...field.input}/>
+                <input className={className} id="signup-dob" size="16" type={field.type} name={field.bodyName} placeholder={field.placeholder} {...field.input}/>
                 <span className="help-block">{touched ? error : ''}</span>
             </div>
         );
@@ -81,22 +78,12 @@ class SignUpForm extends Component {
         }
     }
 
-    onSubmit(values) {
-        values.dob = moment(new Date(document.getElementById("signup-dob").value)).format();
-        values._csrf = this.props.authData.csrfToken;
-        this.props.signup(values, () => {
-            this.props.history.push('/user/signin')
-        });
-    }
-
     render() {
-        const {handleSubmit} = this.props;
-
         return (
             <div className="col-md-6 login-container bs-reset mt-login-5-bsfix">
                 <div className="login-content signup-content">
                     <h1>Sign up</h1>
-                    <form className="login-form" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+                    <form className="login-form" action="/authentication/signup" method="POST">
                         {this.renderErrors()}
                         <div className="row">
                             <Field
@@ -236,6 +223,7 @@ function validate(values) {
 
     if (!values.first_name) errors.first_name = 'Enter a First Name';
     if (!values.last_name) errors.last_name = 'Enter a Last Name';
+    // if (!values.date_of_birth) errors.date_of_birth = 'Enter a Date of Birth';
     if (!values.gender) errors.gender = 'Select a Gender';
     if (!hasNumber.test(values.phone)) errors.phone = 'Enter a phone number';
     if (!values.email) errors.email = 'Enter an email';
@@ -253,16 +241,9 @@ function mapStateToProps(state) {
     return {authData: state.authData}
 }
 
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators({
-        getAuthData: getAuthData,
-        signup: signup
-    }, dispatch)
-}
-
 export default reduxForm({
     validate,
     form: 'SignUpForm'
 })(
-    connect(mapStateToProps, mapDispatchToProps)(withRouter(SignUpForm))
+    connect(mapStateToProps, {getAuthData})(SignUpForm)
 );

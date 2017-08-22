@@ -1,14 +1,13 @@
 import axios from 'axios';
 
 export const GET_AUTH_DATA = 'get_auth_data';
-export const SIGNIN = 'signin';
-export const SIGNUP = 'signup';
 export const GET_USER_INFO = 'get_user_info';
 export const GET_LOCATIONS = 'get_locations';
 export const GET_USER_RESERVATIONS = 'get_user_reservations';
 export const LOCATION_SELECTED = 'location_selected';
 export const LOCATION_UPDATED = 'location_updated';
 export const FAVORITE_LOCATION_SELECTED = 'favorite_location_selected';
+export const SET_FIRST_FIELD = 'set_first_field';
 export const FIELD_SELECTED = 'field_selected';
 export const RESERVE_FIELD = 'reserve_field';
 export const GET_FIELD_RESERVATIONS = 'get_field_reservations';
@@ -29,33 +28,24 @@ export function getAuthData() {
     };
 }
 
-export function signin(values, cb) {
-    const request = axios.post('/authentication/signin', values)
-                         .then(() => cb());
-
+export function receivedUserInfo(data) {
     return {
-        type: SIGNIN,
-        payload: request
+        type   : GET_USER_INFO,
+        payload: data
     };
 }
 
-export function signup(values, cb) {
-    const request = axios.post('/authentication/signup', values)
-                         .then(() => cb());
-
-    return {
-        type: SIGNUP,
-        payload: request
-    };
-}
-
-export function getUserInfo() {
-    const request = axios.get('/api/get-user-info');
-
-    return {
-        type: GET_USER_INFO,
-        payload: request
-    };
+export function getUserInfo(cb) {
+    return function (dispatch) {
+        return axios.get('/api/get-user-info')
+                    .then(res => {
+                        cb(res.data, proceed => {
+                            if (proceed) {
+                                dispatch(receivedUserInfo(res));
+                            }
+                        });
+                    });
+    }
 }
 
 export function getLocations() {
@@ -97,6 +87,13 @@ export function resetActiveItems() {
     };
 }
 
+export function setFirstField(field) {
+    return {
+        type: SET_FIRST_FIELD,
+        payload: field
+    };
+}
+
 export function selectField(id) {
     const request = axios.post('/api/get-field', {id: id});
 
@@ -106,14 +103,23 @@ export function selectField(id) {
     };
 }
 
-export function reserveField(values, cb) {
-    const request = axios.post('/api/reserve-field', values)
-                         .then((data) => cb(data));
-
+export function fieldReserved() {
     return {
-        type: RESERVE_FIELD,
-        payload: request
+        type: RESERVE_FIELD
     };
+}
+
+export function reserveField(values, cb) {
+    return function (dispatch) {
+        return axios.post('/api/reserve-field', values)
+                    .then(res => {
+                        if (!res.data.error) {
+                            dispatch(getUserReservations(values.field));
+                        }
+                        dispatch(fieldReserved());
+                        cb(res);
+                    });
+    }
 }
 
 export function getUserReservations() {

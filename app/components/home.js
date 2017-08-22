@@ -11,7 +11,13 @@ class Home extends Component {
     }
 
     componentWillMount() {
-        this.props.getUserInfo();
+        this.props.getUserInfo((data, cb) => {
+            if (!data) {
+                cb(false);
+            } else {
+                cb(true);
+            }
+        });
     }
 
     componentDidMount() {

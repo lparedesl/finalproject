@@ -7,6 +7,12 @@ import {connect} from 'react-redux';
 import {reserveField} from '../../actions';
 
 class Reservation extends Component {
+    constructor() {
+        super();
+
+        this.renderBackButton = this.renderBackButton.bind(this);
+    }
+
     renderDateField(field) {
         return (
             <div className="row">
@@ -38,12 +44,14 @@ class Reservation extends Component {
     }
 
     onSubmit() {
+        const {userInfo, field, location} = this.props;
+        const path = location.pathname.split("/");
         const data = {
             reservation_date: $("input[name='reservation_date']").val(),
             reservation_time: $("input[name='reservation_time']").val(),
-            user: this.props.userInfo.id,
-            field: this.props.field.id,
-            field_number: this.props.field.field_number
+            user: userInfo.id,
+            field: field.id,
+            field_number: field.field_number
         };
 
         this.props.reserveField(data, res => {
@@ -66,9 +74,16 @@ class Reservation extends Component {
                     hideMethod     : "fadeOut"
                 };
                 toastr['success'](`"Field ${data.field_number}" was successfully reserved on ${moment(res.data.reservation_date).format("dddd MMMM D, YYYY")} from ${moment(res.data.reservation_date).format("hh:mm A")} to ${moment(res.data.reservation_date).add(1, "hours").format("hh:mm A")}.`, 'Field Reserved');
-                this.props.history.push('/dashboard/locations');
+                this.props.history.push(`/dashboard/${path[2]}`);
             }
         });
+    }
+
+    renderBackButton() {
+        const {location} = this.props;
+        const path = location.pathname.split("/");
+
+        return <Link className="btn blue btn-outline" to={`/dashboard/${path[2]}`}>Back</Link>
     }
 
     render() {
@@ -92,9 +107,11 @@ class Reservation extends Component {
                                         <div className="row">
                                             <div className="col-md-12">
                                                 <Field
+                                                    name="DatePicker"
                                                     component={this.renderDateField}
                                                 />
                                                 <Field
+                                                    name="TimePicker"
                                                     component={this.renderTimeField}
                                                 />
                                             </div>
@@ -103,7 +120,7 @@ class Reservation extends Component {
                                             <div className="col-sm-6">
                                                 <div className="create-account">
                                                     <p>
-                                                        <Link className="btn blue btn-outline" to="/dashboard/locations">Back</Link>
+                                                        {this.renderBackButton()}
                                                     </p>
                                                 </div>
                                             </div>

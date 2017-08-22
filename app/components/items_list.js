@@ -14,7 +14,7 @@ class ItemsList extends Component {
                     key={item.id}
                     data={item}
                     fnName={fnName}
-                    location={this.props.location}
+                    // location={this.props.location}
                 />
             )
         })
