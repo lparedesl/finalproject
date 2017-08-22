@@ -31,7 +31,7 @@ In response to a slow and inefficient reservation form currently in use by the C
 
 ## Author
 
-* **Luis Paredes** - [gasulliv](https://github.com/lparedesl)
+* **Luis Paredes** - [lparedesl](https://github.com/lparedesl)
 * **Robbie Geyer** - [dacanesrock](https://github.com/dacanesrock)
 * **Jake Beaube** - [jakebeaube](https://github.com/jakebeaube)
 
