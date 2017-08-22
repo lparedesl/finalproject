@@ -67,7 +67,8 @@ passport.use('local.signup', new LocalStrategy({
             phone: req.body.phone,
             email: email,
             password: password,
-			is_admin: req.body.is_admin
+			is_admin: req.body.is_admin,
+			status: 'active'
 		});
 
 		db.User.encryptPassword(password, function(hash) {

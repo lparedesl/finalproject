@@ -27,6 +27,8 @@ class AddMemberForm extends Component {
 
     onSubmit(values) {
         values.teamId = this.props.team.id;
+        values.teamName = this.props.team.name;
+        values.teamImg = this.props.team.image;
 
         this.props.addTeamMember(values, res => {
             if (res.data.error) {
@@ -47,6 +49,7 @@ class AddMemberForm extends Component {
                     showMethod     : "fadeIn",
                     hideMethod     : "fadeOut"
                 };
+
                 toastr['success'](`${res.data.first_name} ${res.data.last_name} was successfully added to team "${this.props.team.name}".`, 'Member Added');
                 this.props.getTeam(this.props.team.id);
                 this.props.history.push('/dashboard/teams');
@@ -84,7 +87,7 @@ class AddMemberForm extends Component {
                                             <div className="row">
                                                 <div className="col-md-offset-2 col-md-10">
                                                     <Link className="btn green btn-outline" to="/dashboard/teams">Back</Link>
-                                                    <button type="submit" className="btn btn-success uppercase pull-right">Create Team</button>
+                                                    <button type="submit" className="btn btn-success uppercase pull-right">Add Member</button>
                                                 </div>
                                             </div>
                                         </div>
