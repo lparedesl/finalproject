@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import {Route} from 'react-router-dom';
 import SignIn from './user/signin_form';
 import SignUp from './user/signup_form';
 import ForgotPassword from './user/forgot_pass';
@@ -18,15 +18,9 @@ class Authentication extends Component {
                             {/*<img class="login-logo" src="/pages/img/login/logo.png" />*/}
                         </div>
                     </div>
-                    <Router>
-                        <div>
-                            <Switch>
-                                <Route path="/user/signin" component={SignIn}/>
-                                <Route path="/user/signup" component={SignUp}/>
-                                <Route path="/user/forgot-password" component={ForgotPassword}/>
-                            </Switch>
-                        </div>
-                    </Router>
+                    <Route path="/user/signin" component={SignIn}/>
+                    <Route path="/user/signup" component={SignUp}/>
+                    <Route path="/user/forgot-password" component={ForgotPassword}/>
                 </div>
             </div>
         )

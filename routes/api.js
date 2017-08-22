@@ -5,6 +5,29 @@ var env = require("../config/env");
 var moment = require('moment');
 var db = require("../models");
 var NodeGeocoder = require('node-geocoder');
+var nodemailer = require('nodemailer');
+var hbs = require('nodemailer-express-handlebars');
+
+var mailer = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: {
+        user: 'cmfieldreservations@gmail.com',
+        pass: 'pass12345!'
+    }
+});
+
+mailer.use('compile', hbs({
+    viewEngine: {
+        extname: '.hbs',
+        layoutsDir: 'views/layouts/',
+        defaultLayout : 'email_template',
+        partialsDir : 'views/partials/'
+    },
+    viewPath: 'views/email/',
+    extName: '.hbs'
+}));
 
 var options = {
     provider: 'google',
@@ -427,37 +450,103 @@ router.post("/create-team", function(req, res, next) {
 });
 
 router.post("/add-team-member", function(req, res, next) {
+    var userName = "";
+
     db.User.findOne({
         where: {
-            email: req.body.email
+            email: req.session.passport.user
         }
     })
     .then(function(user) {
+        userName = user.first_name + " " + user.last_name;
+
+        return db.User.findOne({
+            where: {
+                email: req.body.email
+            }
+        });
+    })
+    .then(function(member) {
         var error = false;
 
-        if (!user) {
-          error = true;
-          res.json({error: "We couldn't find a user with that email. Try another one."});
+        if (!member) {
+            db.User.create({
+                email: req.body.email,
+                status: "pending"
+            })
+            .then(function(newUser) {
+                return db.UserTeam.create({
+                    user_id: newUser.id,
+                    team_id: req.body.teamId
+                });
+            })
+            .then(function() {
+                mailer.sendMail({
+                    from: '"Charlotte Mecklenburg Reservations" <cmfieldreservations@gmail.com>',
+                    replyTo: 'cmfieldreservations@gmail.com',
+                    to: req.body.email,
+                    // subject: '✔ Reservation Complete',
+                    subject: 'You have been invited to a team',
+                    template: 'add_nonexistent_team_member',
+                    context: {
+                        user: userName,
+                        teamName: req.body.teamName,
+                        teamImg: req.body.teamImg
+                    }
+                }, (error, info) => {
+                    if (error) {
+                        return console.log(error);
+                    }
+                    console.log('Message %s sent: %s', info.messageId, info.response);
+                });
+
+                res.json({
+                    first_name: req.body.email,
+                    last_name: ""
+                });
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
         } else {
             db.UserTeam.findOne({
                 where: {
-                    user_id: user.dataValues.id,
+                    user_id: member.dataValues.id,
                     team_id: req.body.teamId
                 }
             })
-            .then(function(member) {
-                if (member) {
+            .then(function(teamMember) {
+                if (teamMember) {
                     error = true;
                     res.json({error: "This user is already on this team."});
                 }
 
                 if (!error) {
                     db.UserTeam.create({
-                        user_id: user.dataValues.id,
+                        user_id: member.dataValues.id,
                         team_id: req.body.teamId
                     })
                     .then(function() {
-                        res.json(user);
+                        mailer.sendMail({
+                            from: '"Charlotte Mecklenburg Reservations" <cmfieldreservations@gmail.com>',
+                            replyTo: 'cmfieldreservations@gmail.com',
+                            to: req.body.email,
+                            // subject: '✔ Reservation Complete',
+                            subject: 'You have been added to a team',
+                            template: 'add_existent_team_member',
+                            context: {
+                                user: userName,
+                                teamName: req.body.teamName,
+                                teamImg: req.body.teamImg
+                            }
+                        }, (error, info) => {
+                            if (error) {
+                                return console.log(error);
+                            }
+                            console.log('Message %s sent: %s', info.messageId, info.response);
+                        });
+
+                        res.json(member);
                     })
                     .catch(function(error) {
                         console.log(error);

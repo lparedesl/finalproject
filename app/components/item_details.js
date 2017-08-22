@@ -1,7 +1,5 @@
-import _ from 'lodash';
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-import moment from 'moment';
+import {Route} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import LocationHeader from './locations/header';
@@ -14,6 +12,7 @@ import Info from './locations/info';
 import TeamList from './teams/team_list';
 import TeamMemberForm from './teams/add_member_form';
 import TeamImage from './teams/team_image';
+import {setFirstField} from '../actions';
 import {selectField} from '../actions';
 import {getFieldReservations} from '../actions';
 
@@ -21,61 +20,20 @@ class ItemDetails extends Component {
     constructor() {
         super();
 
-        this.getField = this.getField.bind(this);
         this.renderHeader = this.renderHeader.bind(this);
         this.renderStartHeader = this.renderStartHeader.bind(this);
         this.renderRightCol = this.renderRightCol.bind(this);
     }
 
-    getField() {
-        // if (this.props.field) {
-        //     console.log("FROM ITEM_DETAILS:", this.props.field);
-        //     this.props.getFieldReservations(this.props.field.id);
-        //     return this.props.field;
-        // }
+    shouldComponentUpdate(nextProps) {
+        if (nextProps.item !== "team") {
+            const {item, setFirstField, getFieldReservations} = nextProps;
 
-        const {item} = this.props;
-        let info = {};
-        info.reservations = [];
-
-        _.map(this.props[item].first_field.reservations, function(reservation) {
-            let obj = {
-                title: reservation.user.first_name + " " + reservation.user.last_name,
-                start: moment(reservation.reservation_date).format(),
-                end: moment(reservation.reservation_date).add(1, 'hours').format(),
-                backgroundColor: 'green',
-                allDay: false,
-            };
-            info.reservations.push(obj);
-        });
-
-        info.first_field_id = this.props[item].first_field.id;
-        info.openTime = this.props[item].open_time;
-        info.closeTime = this.props[item].close_time;
-
-        this.props.selectField(this.props[item].first_field.id);
-        this.props.getFieldReservations(this.props[item].first_field.id);
-
-        return info;
-    }
-
-    renderHeader() {
-        const {item} = this.props;
-
-        switch(item) {
-            case "locationItem":
-            case "favoriteLocation":
-                return (
-                    <LocationHeader
-                        item={item}
-                    />
-                );
-
-            case "team":
-                return (
-                    <TeamHeader/>
-                );
+            setFirstField(nextProps[item].first_field);
+            getFieldReservations(nextProps[item].first_field.id);
         }
+
+        return true;
     }
 
     renderStartHeader() {
@@ -83,12 +41,22 @@ class ItemDetails extends Component {
 
         switch(item) {
             case "team":
-                return (
-                    <TeamStartHeader message={message}/>
-                );
+                return <TeamStartHeader message={message}/>;
 
                 default:
                     return <h3>{message}</h3>
+        }
+    }
+
+    renderHeader() {
+        const {item} = this.props;
+
+        switch(item) {
+            case "team":
+                return <TeamHeader/>;
+
+            default:
+                return <LocationHeader item={item} />;
         }
     }
 
@@ -96,27 +64,22 @@ class ItemDetails extends Component {
         const {item} = this.props;
 
         switch(item) {
-            case "locationItem":
-            case "favoriteLocation":
-                return (
-                    <div>
-                        <div className="row">
-                            <Map
-                                item={item}
-                            />
-                        </div>
-                        <div className="row">
-                            <Info
-                                item={item}
-                            />
-                        </div>
-                    </div>
-                );
-
             case "team":
                 return (
                     <div className="row">
                         <TeamImage/>
+                    </div>
+                );
+
+            default:
+                return (
+                    <div>
+                        <div className="row">
+                            <Map item={item} />
+                        </div>
+                        <div className="row">
+                            <Info item={item} />
+                        </div>
                     </div>
                 );
         }
@@ -124,7 +87,6 @@ class ItemDetails extends Component {
 
     render() {
         const {item} = this.props;
-        console.log("LOCATION FROM ITEM_DETAILS:", this.props[item]);
 
         if (!this.props[item]) {
             return (
@@ -144,34 +106,36 @@ class ItemDetails extends Component {
             <div className="row">
                 <div className="col-md-8">
                     {this.renderHeader()}
-                    <Router>
-                        <div>
-                            <Switch>
-                                <Route path="/dashboard/locations/reserve-field" component={Reservation}/>
-                                <Route
-                                    exact path="/dashboard/locations"
-                                    render={() =>
-                                        <Calendar
-                                            locationItem={this.props[item]}
-                                            firstField={this.getField()}
-                                        />
-                                    }
-                                />
-                                <Route path="/dashboard/favorite-locations/reserve-field" component={Reservation}/>
-                                <Route
-                                    exact path="/dashboard/favorite-locations"
-                                    render={() =>
-                                        <Calendar
-                                            locationItem={this.props[item]}
-                                            firstField={this.getField()}
-                                        />
-                                    }
-                                />
-                                <Route path="/dashboard/teams/add-team-member" component={TeamMemberForm}/>
-                                <Route path="/dashboard/teams" component={TeamList}/>
-                            </Switch>
-                        </div>
-                    </Router>
+                    <Route path="/dashboard/locations/reserve-field" render={() =>
+                        <Reservation
+                            location={this.props.location}
+                        />
+                    }/>
+                    <Route
+                        exact path="/dashboard/locations"
+                        render={() =>
+                            <Calendar
+                                location={this.props.location}
+                                item={item}
+                            />
+                        }
+                    />
+                    <Route path="/dashboard/favorite-locations/reserve-field" render={() =>
+                        <Reservation
+                            location={this.props.location}
+                        />
+                    }/>
+                    <Route
+                        exact path="/dashboard/favorite-locations"
+                        render={() =>
+                            <Calendar
+                                location={this.props.location}
+                                item={item}
+                            />
+                        }
+                    />
+                    <Route path="/dashboard/teams/add-team-member" component={TeamMemberForm}/>
+                    <Route exact path="/dashboard/teams" component={TeamList}/>
                 </div>
                 <div className="col-md-4">
                     {this.renderRightCol()}
@@ -186,13 +150,12 @@ function mapStateToProps(state) {
         locationItem: state.activeLocation,
         favoriteLocation: state.activeFavoriteLocation,
         team: state.activeTeam,
-        // field: state.activeField,
-        userInfo: state.authData
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
+        setFirstField: setFirstField,
         selectField: selectField,
         getFieldReservations: getFieldReservations
     }, dispatch)

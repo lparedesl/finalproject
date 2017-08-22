@@ -1,80 +1,85 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import {bindActionCreators} from 'redux';
+import Header from './header';
+import Sidebar from './sidebar';
+import Footer from './footer';
 import ItemsList from './items_list';
 import ItemDetails from './item_details';
-import {getLocations} from '../actions';
-import {getTeams} from '../actions';
-import {getUserInfo} from '../actions';
+import {getLocations} from './../actions';
+import {getTeams} from './../actions';
+import {getUserInfo} from './../actions';
+import {resetActiveItems} from './../actions';
 
 class Content extends Component {
-    constructor() {
-        super();
-
-        this.isSignedIn = this.isSignedIn.bind(this);
-    }
-
     componentDidMount() {
-        this.props[`get${this.props.title}`]();
+        document.body.classList.remove("home");
+        document.body.classList.add("page-header-fixed", "page-sidebar-closed-hide-logo", "page-content-white", "page-md", "page-container-bg-solid", "page-sidebar-closed");
+        this.props.getLocations();
+        this.props.getTeams();
         this.props.getUserInfo();
     }
 
-    isSignedIn() {
-        if (this.props.userInfo) {
-            return this.props.userInfo.id
+    shouldComponentUpdate(nextProps) {
+        if (this.props.title !== nextProps.title) {
+            this.props.resetActiveItems();
         }
-
-        return 99999
+        return true;
     }
 
     render() {
+        if (!this.props.userInfo) {
+            return this.props.history.push('/');
+        }
+
         return (
-            <div>
-                <h1 className="page-title">
-                    {this.props.title}
-                </h1>
-                <div className="row">
-                    {console.log("FROM PAGE_CONTENT:", this.props.locations)}
-                    <div className="col-md-3">
-                        <ItemsList
-                            title={this.props.title}
-                            items={this.props[this.props.title.toLowerCase()]}
-                            fnName={this.props.fnName}
-                            location={this.props.location}
-                        />
-                    </div>
-                    <div className="col-md-9">
-                        <ItemDetails
-                            titleSingular={this.props.titleSingular}
-                            userId={this.isSignedIn()}
-                            item={this.props[this.props.cmd]}
-                            message={this.props.message}
-                            location={this.props.location}
-                        />
+            <div className="page-wrapper">
+                <Header/>
+                <div className="clearfix"> </div>
+                <div className="page-container">
+                    <Sidebar
+                        location={`/dashboard/${this.props.title.toLowerCase()}`}
+                    />
+                    <div className="page-content-wrapper">
+                        <div className="page-content">
+                            <h1 className="page-title">
+                                {this.props.title}
+                            </h1>
+                            <div className="row">
+                                <div className="col-md-3">
+                                    <ItemsList
+                                        title={this.props.title}
+                                        fnName={this.props.fnName}
+                                    />
+                                </div>
+                                <div className="col-md-9">
+                                    <ItemDetails
+                                        item={this.props.cmd}
+                                        message={this.props.message}
+                                    />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <Footer/>
             </div>
         )
     }
 }
 
 function mapStateToProps(state) {
-    return {
-        locations: state.locations,
-        teams: state.teams,
-        locationItem: state.activeLocation,
-        team: state.activeTeam,
-        userInfo: state.authData
-    }
+    return {userInfo: state.authData}
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         getLocations: getLocations,
         getTeams: getTeams,
-        getUserInfo: getUserInfo
+        getUserInfo: getUserInfo,
+        resetActiveItems: resetActiveItems
     }, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Content);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Content));

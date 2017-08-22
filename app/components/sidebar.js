@@ -13,27 +13,27 @@ class Sidebar extends Component {
         const tabs = [
             {
                 name: "Locations",
-                pathname: "locations",
+                pathname: "/dashboard/locations",
                 icon: "icon-map"
             },
             {
                 name: "Teams",
-                pathname: "teams",
+                pathname: "/dashboard/teams",
                 icon: "icon-trophy"
             },
             {
                 name: "Favorite Locations",
-                pathname: "favorite-locations",
+                pathname: "/dashboard/favorite-locations",
                 icon: "icon-star"
             },
             {
                 name: "Reservations",
-                pathname: "reservations",
+                pathname: "/dashboard/reservations",
                 icon: "icon-calendar"
             },
             {
                 name: "Profile",
-                pathname: "profile",
+                pathname: "/dashboard/profile",
                 icon: "icon-settings"
             }
         ];
@@ -41,13 +41,13 @@ class Sidebar extends Component {
         const {location} = this.props;
 
         return _.map(tabs, tab => {
-            const classNameLi = `nav-item ${`/dashboard/${tab.pathname}` === location.replace(' ', '-') ? 'active open' : ''}`;
-            const classNameSpan = `arrow ${`/dashboard/${tab.pathname}` === location.replace(' ', '-') ? 'open' : ''}`;
-            const selected = `/dashboard/${tab.pathname}` === location.replace(' ', '-') ? 'selected' : null;
+            const classNameLi = `nav-item ${location.indexOf(tab.pathname) !== -1 ? 'active open' : ''}`;
+            const classNameSpan = `arrow ${location.indexOf(tab.pathname) !== -1 ? 'open' : ''}`;
+            const selected = location.indexOf(tab.pathname) !== -1 ? 'selected' : null;
 
             return (
                 <li className={classNameLi} key={tab.name}>
-                    <Link to={`/dashboard/${tab.pathname}`} className="nav-link nav-toggle">
+                    <Link to={tab.pathname} className="nav-link nav-toggle">
                         <i className={tab.icon}></i>
                         <span className="title">{tab.name}</span>
                         <span className={selected}></span>
