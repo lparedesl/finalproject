@@ -1,8 +1,6 @@
 import axios from 'axios';
 
 export const GET_AUTH_DATA = 'get_auth_data';
-export const SIGNIN = 'signin';
-export const SIGNUP = 'signup';
 export const GET_USER_INFO = 'get_user_info';
 export const GET_LOCATIONS = 'get_locations';
 export const GET_USER_RESERVATIONS = 'get_user_reservations';
@@ -26,26 +24,6 @@ export function getAuthData() {
 
     return {
         type: GET_AUTH_DATA,
-        payload: request
-    };
-}
-
-export function signin(values, cb) {
-    const request = axios.post('/authentication/signin', values)
-                         .then(() => cb());
-
-    return {
-        type: SIGNIN,
-        payload: request
-    };
-}
-
-export function signup(values, cb) {
-    const request = axios.post('/authentication/signup', values)
-                         .then(() => cb());
-
-    return {
-        type: SIGNUP,
         payload: request
     };
 }

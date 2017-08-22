@@ -2,9 +2,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
 import {getAuthData} from '../../actions';
-import {signin} from '../../actions';
 
 class SignInForm extends Component {
     componentWillMount() {
@@ -134,16 +132,9 @@ function mapStateToProps(state) {
     return {authData: state.authData}
 }
 
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators({
-        getAuthData: getAuthData,
-        signin: signin
-    }, dispatch)
-}
-
 export default reduxForm({
     validate,
     form: 'SignInForm'
 })(
-    connect(mapStateToProps, mapDispatchToProps)(SignInForm)
+    connect(mapStateToProps, {getAuthData})(SignInForm)
 );
