@@ -470,8 +470,44 @@ router.post("/add-team-member", function(req, res, next) {
         var error = false;
 
         if (!member) {
-          error = true;
-          res.json({error: "We couldn't find a user with that email. Try another one."});
+            db.User.create({
+                email: req.body.email,
+                status: "pending"
+            })
+            .then(function(newUser) {
+                return db.UserTeam.create({
+                    user_id: newUser.id,
+                    team_id: req.body.teamId
+                });
+            })
+            .then(function() {
+                mailer.sendMail({
+                    from: '"Charlotte Mecklenburg Reservations" <cmfieldreservations@gmail.com>',
+                    replyTo: 'cmfieldreservations@gmail.com',
+                    to: req.body.email,
+                    // subject: '✔ Reservation Complete',
+                    subject: 'You have been invited to a team',
+                    template: 'add_nonexistent_team_member',
+                    context: {
+                        user: userName,
+                        teamName: req.body.teamName,
+                        teamImg: req.body.teamImg
+                    }
+                }, (error, info) => {
+                    if (error) {
+                        return console.log(error);
+                    }
+                    console.log('Message %s sent: %s', info.messageId, info.response);
+                });
+
+                res.json({
+                    first_name: req.body.email,
+                    last_name: ""
+                });
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
         } else {
             db.UserTeam.findOne({
                 where: {
@@ -482,27 +518,6 @@ router.post("/add-team-member", function(req, res, next) {
             .then(function(teamMember) {
                 if (teamMember) {
                     error = true;
-
-                    // mailer.sendMail({
-                    //     from: '"Charlotte Mecklenburg Reservations" <cmfieldreservations@gmail.com>',
-                    //     replyTo: 'cmfieldreservations@gmail.com',
-                    //     to: req.body.email,
-                    //     // subject: '✔ Reservation Complete',
-                    //     subject: 'You have been invited to a team',
-                    //     template: 'add_nonexistent_team_member',
-                    //     context: {
-                    //         // email: req.body.email,
-                    //         user: userName,
-                    //         teamName: req.body.teamName,
-                    //         teamImg: req.body.teamImg
-                    //     }
-                    // }, (error, info) => {
-                    //     if (error) {
-                    //         return console.log(error);
-                    //     }
-                    //     console.log('Message %s sent: %s', info.messageId, info.response);
-                    // });
-
                     res.json({error: "This user is already on this team."});
                 }
 
@@ -520,7 +535,6 @@ router.post("/add-team-member", function(req, res, next) {
                             subject: 'You have been added to a team',
                             template: 'add_existent_team_member',
                             context: {
-                                // email: req.body.email,
                                 user: userName,
                                 teamName: req.body.teamName,
                                 teamImg: req.body.teamImg
